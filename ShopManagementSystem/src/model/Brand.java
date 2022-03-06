@@ -4,7 +4,6 @@
  */
 package model;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -18,7 +17,6 @@ public class Brand {
     private List<Product> products;
 
     public Brand() {
-        this.products = new ArrayList<>();
     }
 
     public int getBrand_id() {

@@ -4,40 +4,38 @@
  */
 package view;
 
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
-import java.io.BufferedReader;
+import controller.CategoryController;
+import controller.ProductController;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.lang.reflect.Type;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.net.URLConnection;
-import java.util.ArrayList;
-import java.util.List;
+import model.Brand;
+import model.Category;
 import model.Product;
-import utils.Environment;
+
+
 
 /**
  *
  * @author TRINH
  */
 public class test {
-    public static void main(String[] args) throws MalformedURLException, IOException {
-        URL url = new URL(Environment.localhost + "/api/products/getProductsById/2");
-        URLConnection conn = url.openConnection();
-        BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-        String json = in.readLine();
-        Gson gson = new Gson();
-        Type productList = new TypeToken<ArrayList<Product>>(){}.getType();
-        List<Product> founderList = gson.fromJson(json, productList);  
-        for (Product p : founderList) {
+    public static void main(String[] args) throws IOException {
+        ProductController pc = new ProductController();
+        CategoryController cc = new CategoryController();
+        Product p = pc.getProductsById(11);
+        if(p != null) {
             System.out.println(p.getBrand());
             System.out.println(p.getCategory());
-            System.out.println(p.getProduct_id());
             System.out.println(p.getName());
-            System.out.println(p.getPrice());
-            System.out.println(p.getQuantity());
+            System.out.println(p.getProduct_id());
+            System.out.println(p.getCalculation_unit());
+        }
+        
+        for (Product pp : pc.getAllProducts()) {
+            System.out.println(pp.getBrand());
+            System.out.println(pp.getCategory());
+            System.out.println(pp.getName());
+            System.out.println(pp.getProduct_id());
+            System.out.println(pp.getCalculation_unit());
         }
     }
 }
