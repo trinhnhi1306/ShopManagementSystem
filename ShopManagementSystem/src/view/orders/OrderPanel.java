@@ -1,0 +1,896 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package view.orders;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.Enumeration;
+import java.util.List;
+import java.util.Vector;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.AbstractButton;
+import javax.swing.ButtonGroup;
+import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
+import javax.swing.RowFilter;
+import javax.swing.filechooser.FileNameExtensionFilter;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
+import javax.swing.table.TableRowSorter;
+//import model.database.Connect;
+//import model.database.Staff;
+//import swing.UIController;
+//import utilities.File;
+//import view.main.librarian.ReaderPanel;
+//import static view.main.librarian.ReaderPanel.hash;
+
+/**
+ *
+ * @author Admin
+ */
+public class OrderPanel extends javax.swing.JPanel {
+
+    private DefaultTableModel dtm;
+
+    private enum Mode {
+        ADD,
+        MODIFY,
+        FREE
+    }
+    private Mode mode;
+    private HistoryDialog history;
+
+    /**
+     * Creates new form StaffPanel
+     */
+    public OrderPanel() {
+        initComponents();
+//        getStaff();
+//        loadAddress();
+//        loadRole();
+//        UIController.setDefaultTableHeader(jTable_Staff);
+        setEditableForAll(false);
+    }
+
+//    void loadAddress() {
+//        Connection ketNoi = Connect.GetConnect();
+//        try {
+//            PreparedStatement ps = ketNoi.prepareStatement("select province_name from province");
+//            ResultSet rs = ps.executeQuery();
+//            while (rs.next()) {
+//                jComboBox_Province.addItem(rs.getString(1));
+//            }
+//            ps.close();
+//            rs.close();
+//            ketNoi.close();
+//        } catch (SQLException ex) {
+//            System.out.println("Lỗi lấy địa chỉ");
+//        }
+//    }
+
+//    void loadRole() {
+//        Connection ketNoi = Connect.GetConnect();
+//        try {
+//            PreparedStatement ps = ketNoi.prepareStatement("select role from role where role.role_id != 1");
+//            ResultSet rs = ps.executeQuery();
+//            while (rs.next()) {
+//                jComboBox_Role.addItem(rs.getString(1));
+//            }
+//            ps.close();
+//            rs.close();
+//            ketNoi.close();
+//        } catch (SQLException ex) {
+//            System.out.println("Lỗi lấy role!!");
+//        }
+//    }
+
+    // get nhân viên (trừ độc giả) có status == 1(chưa xóa).
+//    void getStaff() {
+//        dtm = (DefaultTableModel) jTable_Staff.getModel();
+//        dtm.setNumRows(0);
+//        Connection ketNoi = Connect.GetConnect();
+//        Vector vt;
+//        try {
+//            PreparedStatement ps = ketNoi.prepareStatement("select a.username,a.Full_Name,role.role,a.gender,a.date_of_birth,address.specific_address + ' - ' + ward.ward_name  + ' - ' + district.district_name + ' - ' + province.province_name as diachi,a.phone_number,a.email,a.registered_date from account a\n"
+//                    + "  inner join address\n"
+//                    + "  on address.address_id = a.address_id\n"
+//                    + "  left join ward\n"
+//                    + "  on address.ward_id = ward.ward_id\n"
+//                    + "  left join district\n"
+//                    + "  on ward.district_id = district.district_id\n"
+//                    + "  left join province\n"
+//                    + "  on district.province_id = province.province_id\n"
+//                    + "	left join role\n"
+//                    + " on role.role_id = a.role_id where role.role_id != 1 and a.status = 1");
+//            ResultSet rs = ps.executeQuery();
+//            while (rs.next()) {
+//                vt = new Vector();
+//                vt.add(rs.getString(1));
+//                vt.add(rs.getString(2));
+//                vt.add(rs.getString(3));
+//                vt.add(rs.getString(4));
+//                vt.add(rs.getDate(5));
+//                vt.add(rs.getString(6));
+//                vt.add(rs.getString(7));
+//                vt.add(rs.getString(8));
+//                vt.add(rs.getDate(9));
+//                dtm.addRow(vt);
+//            }
+//            jTable_Staff.setModel(dtm);
+//            ps.close();
+//            rs.close();
+//            ketNoi.close();
+//        } catch (SQLException ex) {
+//            System.out.println("loi lay user");
+//        }
+//
+//    }
+
+    /**
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
+     */
+    @SuppressWarnings("unchecked")
+    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
+    private void initComponents() {
+
+        buttonGroup1 = new javax.swing.ButtonGroup();
+        jPanel1 = new javax.swing.JPanel();
+        jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        jTextField_ID = new javax.swing.JTextField();
+        jTextField_User = new javax.swing.JTextField();
+        jLabel3 = new javax.swing.JLabel();
+        jTextField_Price = new javax.swing.JTextField();
+        jLabel4 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
+        jPanel2 = new javax.swing.JPanel();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        jTable_Product = new javax.swing.JTable();
+        jTextField_Date = new javax.swing.JTextField();
+        jLabel14 = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jTable_Order = new javax.swing.JTable();
+        jButton_History = new javax.swing.JButton();
+        jPanel3 = new javax.swing.JPanel();
+        jRadioButton_DaHuy = new javax.swing.JRadioButton();
+        jRadioButton_YeuCauHuy = new javax.swing.JRadioButton();
+        jRadioButton_ChoXacNhan = new javax.swing.JRadioButton();
+        jRadioButton_DangGiao = new javax.swing.JRadioButton();
+        jRadioButton_DaGiao = new javax.swing.JRadioButton();
+        jDateChooser_Search = new com.toedter.calendar.JDateChooser();
+        jPanel_Card3 = new javax.swing.JPanel();
+        jButton_Yes = new javax.swing.JButton();
+        jButton_No = new javax.swing.JButton();
+
+        setBackground(new java.awt.Color(255, 255, 255));
+
+        jPanel1.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Order detail", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 2, 14), new java.awt.Color(153, 153, 153))); // NOI18N
+
+        jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 15)); // NOI18N
+        jLabel1.setText("Order ID");
+
+        jLabel2.setFont(new java.awt.Font("Segoe UI", 0, 15)); // NOI18N
+        jLabel2.setText("User ID");
+
+        jTextField_ID.setEditable(false);
+        jTextField_ID.setFont(new java.awt.Font("Segoe UI", 0, 15)); // NOI18N
+
+        jTextField_User.setEditable(false);
+        jTextField_User.setFont(new java.awt.Font("Segoe UI", 0, 15)); // NOI18N
+
+        jLabel3.setFont(new java.awt.Font("Segoe UI", 0, 15)); // NOI18N
+        jLabel3.setText("Total price");
+
+        jTextField_Price.setEditable(false);
+        jTextField_Price.setFont(new java.awt.Font("Segoe UI", 0, 15)); // NOI18N
+
+        jLabel4.setFont(new java.awt.Font("Segoe UI", 0, 15)); // NOI18N
+        jLabel4.setText("Date");
+
+        jLabel5.setFont(new java.awt.Font("Segoe UI", 0, 15)); // NOI18N
+        jLabel5.setForeground(new java.awt.Color(153, 153, 153));
+        jLabel5.setText("VNĐ");
+
+        jPanel2.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Products", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 2, 14), new java.awt.Color(153, 153, 153))); // NOI18N
+
+        jTable_Product.setFont(new java.awt.Font("Segoe UI", 0, 15)); // NOI18N
+        jTable_Product.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "ID", "Name", "Quantity", "Price"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, true, true
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jScrollPane2.setViewportView(jTable_Product);
+
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 467, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+
+        jTextField_Date.setEditable(false);
+        jTextField_Date.setFont(new java.awt.Font("Segoe UI", 0, 15)); // NOI18N
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel1)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel3)
+                            .addComponent(jLabel2)
+                            .addComponent(jLabel4))
+                        .addGap(28, 28, 28)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jTextField_ID, javax.swing.GroupLayout.DEFAULT_SIZE, 177, Short.MAX_VALUE)
+                            .addComponent(jTextField_User)
+                            .addComponent(jTextField_Date)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                                .addComponent(jTextField_Price)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jLabel5)))))
+                .addGap(73, 73, 73)
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(3, 3, 3)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel1)
+                    .addComponent(jTextField_ID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel2)
+                    .addComponent(jTextField_User, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel3)
+                    .addComponent(jTextField_Price, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel4)
+                    .addComponent(jTextField_Date, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(45, Short.MAX_VALUE))
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+
+        jLabel14.setFont(new java.awt.Font("Segoe UI", 0, 15)); // NOI18N
+        jLabel14.setText("Search:");
+
+        jTable_Order.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Order ID", "User ID", "Total price", "Date"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jTable_Order.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTable_OrderMouseClicked(evt);
+            }
+        });
+        jScrollPane1.setViewportView(jTable_Order);
+
+        jButton_History.setFont(new java.awt.Font("Segoe UI", 1, 17)); // NOI18N
+        jButton_History.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/history.png"))); // NOI18N
+        jButton_History.setText("History");
+        jButton_History.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jButton_History.setFocusPainted(false);
+        jButton_History.setPreferredSize(new java.awt.Dimension(300, 60));
+        jButton_History.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton_HistoryActionPerformed(evt);
+            }
+        });
+
+        jPanel3.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Trạng thái", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 2, 14), new java.awt.Color(153, 153, 153))); // NOI18N
+
+        jRadioButton_DaHuy.setBackground(new java.awt.Color(255, 255, 255));
+        buttonGroup1.add(jRadioButton_DaHuy);
+        jRadioButton_DaHuy.setFont(new java.awt.Font("Segoe UI", 0, 15)); // NOI18N
+        jRadioButton_DaHuy.setText("Đã hủy");
+
+        jRadioButton_YeuCauHuy.setBackground(new java.awt.Color(255, 255, 255));
+        buttonGroup1.add(jRadioButton_YeuCauHuy);
+        jRadioButton_YeuCauHuy.setFont(new java.awt.Font("Segoe UI", 0, 15)); // NOI18N
+        jRadioButton_YeuCauHuy.setText("Yêu cầu hủy");
+
+        jRadioButton_ChoXacNhan.setBackground(new java.awt.Color(255, 255, 255));
+        buttonGroup1.add(jRadioButton_ChoXacNhan);
+        jRadioButton_ChoXacNhan.setFont(new java.awt.Font("Segoe UI", 0, 15)); // NOI18N
+        jRadioButton_ChoXacNhan.setSelected(true);
+        jRadioButton_ChoXacNhan.setText("Chờ xác nhận");
+
+        jRadioButton_DangGiao.setBackground(new java.awt.Color(255, 255, 255));
+        buttonGroup1.add(jRadioButton_DangGiao);
+        jRadioButton_DangGiao.setFont(new java.awt.Font("Segoe UI", 0, 15)); // NOI18N
+        jRadioButton_DangGiao.setText("Đang giao");
+
+        jRadioButton_DaGiao.setBackground(new java.awt.Color(255, 255, 255));
+        buttonGroup1.add(jRadioButton_DaGiao);
+        jRadioButton_DaGiao.setFont(new java.awt.Font("Segoe UI", 0, 15)); // NOI18N
+        jRadioButton_DaGiao.setText("Đã giao");
+
+        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
+        jPanel3.setLayout(jPanel3Layout);
+        jPanel3Layout.setHorizontalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jRadioButton_ChoXacNhan)
+                    .addComponent(jRadioButton_YeuCauHuy))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addComponent(jRadioButton_DangGiao)
+                        .addGap(18, 18, 18)
+                        .addComponent(jRadioButton_DaGiao))
+                    .addComponent(jRadioButton_DaHuy))
+                .addContainerGap(47, Short.MAX_VALUE))
+        );
+        jPanel3Layout.setVerticalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jRadioButton_ChoXacNhan)
+                    .addComponent(jRadioButton_DangGiao)
+                    .addComponent(jRadioButton_DaGiao))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jRadioButton_YeuCauHuy)
+                    .addComponent(jRadioButton_DaHuy))
+                .addGap(0, 12, Short.MAX_VALUE))
+        );
+
+        jDateChooser_Search.setDate(new java.util.Date());
+        jDateChooser_Search.setDateFormatString("dd-MM-yyyy");
+        jDateChooser_Search.setFont(new java.awt.Font("Segoe UI", 0, 15)); // NOI18N
+
+        jPanel_Card3.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel_Card3.setMaximumSize(new java.awt.Dimension(30000, 33));
+        jPanel_Card3.setPreferredSize(new java.awt.Dimension(439, 30));
+        jPanel_Card3.setLayout(new java.awt.GridLayout(0, 1, 35, 35));
+
+        jButton_Yes.setFont(new java.awt.Font("Segoe UI", 1, 15)); // NOI18N
+        jButton_Yes.setForeground(new java.awt.Color(51, 51, 51));
+        jButton_Yes.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/Check.png"))); // NOI18N
+        jButton_Yes.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jButton_Yes.setMaximumSize(new java.awt.Dimension(95, 30));
+        jButton_Yes.setMinimumSize(new java.awt.Dimension(95, 30));
+        jButton_Yes.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton_YesActionPerformed(evt);
+            }
+        });
+        jPanel_Card3.add(jButton_Yes);
+
+        jButton_No.setFont(new java.awt.Font("Segoe UI", 1, 15)); // NOI18N
+        jButton_No.setForeground(new java.awt.Color(51, 51, 51));
+        jButton_No.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/x.png"))); // NOI18N
+        jButton_No.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jButton_No.setMaximumSize(new java.awt.Dimension(95, 33));
+        jButton_No.setMinimumSize(new java.awt.Dimension(95, 30));
+        jButton_No.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton_NoActionPerformed(evt);
+            }
+        });
+        jPanel_Card3.add(jButton_No);
+
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
+        this.setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel14)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(jDateChooser_Search, javax.swing.GroupLayout.PREFERRED_SIZE, 177, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(0, 0, Short.MAX_VALUE)))
+                        .addGap(18, 18, 18)
+                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jButton_History, javax.swing.GroupLayout.DEFAULT_SIZE, 131, Short.MAX_VALUE)
+                            .addComponent(jPanel_Card3, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
+                        .addGap(18, 18, 18)
+                        .addComponent(jScrollPane1)))
+                .addContainerGap())
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jDateChooser_Search, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel14))
+                        .addGap(64, 64, 64))
+                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jPanel_Card3, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jButton_History, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 418, Short.MAX_VALUE))
+                .addContainerGap())
+        );
+    }// </editor-fold>//GEN-END:initComponents
+
+//    public void clearAll() {
+//        jRadioButton_Male.setSelected(true);
+//        jDateChooser_DateOfBirth.setDate(null);
+//        jTextField_Name.setText("");
+//        jTextField_PhoneNumber.setText("");
+//        jTextField_Email.setText("");
+//        jTextField_ID.setText("");
+//        jComboBox_Province.setSelectedIndex(0);
+//        jComboBox_District.setSelectedIndex(0);
+//        jComboBox_Commune.setSelectedIndex(0);
+//        jComboBox_Role.setSelectedIndex(0);
+//    }
+
+    public void setEditableForAll(boolean editable) {
+//        jDateChooser_DateOfBirth.setEnabled(editable);
+//        jTextField_Name.setEditable(editable);
+//        jTextField_PhoneNumber.setEditable(editable);
+//        jTextField_Email.setEditable(editable);
+//        jComboBox_Province.setEnabled(editable);
+//        jComboBox_District.setEnabled(editable);
+//        jComboBox_Commune.setEnabled(editable);
+//        jComboBox_Role.setEnabled(editable);
+    }
+
+//    private boolean checkinput() {
+//        String id = jTextField_ID.getText();
+//        String sqlId = "select * from account where username = '" + id + "'";
+//        String sqlEmail = "select * from account where email = '" + jTextField_Email.getText() + "'";
+//        String sqlPhone = "select * from account where phone_number = '" + jTextField_PhoneNumber.getText() + "'";
+//        if ("".equals(id)) {
+//            JOptionPane.showMessageDialog(this, "Mã nhân viên không được trống!!", "Warning", JOptionPane.WARNING_MESSAGE);
+//            jTextField_ID.requestFocusInWindow();
+//            return false;
+//        } else if (checkExist(sqlId) != 0) {
+//            JOptionPane.showMessageDialog(this, "Mã nhân viên đã tồn tại!!", "Warning", JOptionPane.WARNING_MESSAGE);
+//            jTextField_ID.requestFocusInWindow();
+//            return false;
+//        } else if ("".equals(jTextField_Name.getText())) {
+//            JOptionPane.showMessageDialog(this, "Tên nhân viên không được trống!!", "Warning", JOptionPane.WARNING_MESSAGE);
+//            jTextField_Name.requestFocusInWindow();
+//            return false;
+//        } else if ("".equals(jTextField_PhoneNumber.getText())) {
+//            JOptionPane.showMessageDialog(this, "SĐT nhân viên không được trống!!", "Warning", JOptionPane.WARNING_MESSAGE);
+//            jTextField_PhoneNumber.requestFocusInWindow();
+//            return false;
+//        } else if (!jTextField_PhoneNumber.getText().matches("0[0-9]{9}")) {
+//            JOptionPane.showMessageDialog(this, "SĐT nhân viên nhập chưa đúng định dạng!!", "Warning", JOptionPane.WARNING_MESSAGE);
+//            jTextField_PhoneNumber.requestFocusInWindow();
+//            return false;
+//        } else if (checkExist(sqlPhone) != 0) {
+//            JOptionPane.showMessageDialog(this, "SĐT nhân viên đã được sử dụng!!", "Warning", JOptionPane.WARNING_MESSAGE);
+//            jTextField_ID.requestFocusInWindow();
+//            return false;
+//        } else if ("".equals(jTextField_Email.getText())) {
+//            JOptionPane.showMessageDialog(this, "Email nhân viên không được trống!!", "Warning", JOptionPane.WARNING_MESSAGE);
+//            jTextField_Email.requestFocusInWindow();
+//            return false;
+//        } else if (!jTextField_Email.getText().matches("^[a-zA-Z][\\w]+@([\\w]+\\.[\\w]+|[\\w]+\\.[\\w]{2,}\\.[\\w]{2,})$")) {
+//            JOptionPane.showMessageDialog(this, "Email nhân viên nhập chưa đúng định dạng!!", "Warning", JOptionPane.WARNING_MESSAGE);
+//            jTextField_Email.requestFocusInWindow();
+//            return false;
+//        } else if (checkExist(sqlEmail) != 0) {
+//            JOptionPane.showMessageDialog(this, "Email nhân viên đã được sử dụng!!", "Warning", JOptionPane.WARNING_MESSAGE);
+//            jTextField_ID.requestFocusInWindow();
+//            return false;
+//        } else if ("".equals(jTextField_Address.getText())) {
+//            JOptionPane.showMessageDialog(this, "Adress nhân viên không được trống!!", "Warning", JOptionPane.WARNING_MESSAGE);
+//            jTextField_Address.requestFocusInWindow();
+//            return false;
+//        } else {
+//            return true;
+//        }
+//    }
+
+//    public int checkExist(String sql) {
+//        Connection ketNoi = Connect.GetConnect();
+//        int tonTai = 0;
+//        try {
+//            PreparedStatement ps = ketNoi.prepareStatement(sql);
+//            ResultSet rs = ps.executeQuery();
+//            while (rs.next()) {
+//                tonTai = 1;
+//            }
+//        } catch (SQLException ex) {
+//            Logger.getLogger(OrderPanel.class.getName()).log(Level.SEVERE, null, ex);
+//        }
+//        return tonTai;
+//    }
+
+    // check ward_id và specific_address , nếu trùng thì không cần thêm.
+//    private int getAddress_idBySpecific_address(int ward_id, String specific_address) {
+//        int id = -1;
+//        Connection ketNoi = Connect.GetConnect();
+//        String sql = "select * from address WHERE specific_address ='" + specific_address + "' and ward_id = '" + ward_id + "'";
+//        try {
+//            PreparedStatement ps = ketNoi.prepareStatement(sql);
+//            ResultSet rs = ps.executeQuery();
+//            while (rs.next()) {
+//                id = rs.getInt("address_id");
+//
+//            }
+//        } catch (SQLException ex) {
+//            Logger.getLogger(OrderPanel.class
+//                    .getName()).log(Level.SEVERE, null, ex);
+//        }
+//        return id;
+//    }
+
+    // nếu không trùng thì thêm specific_address
+//    private void insertNewAddress(int ward_id, String specific_address) {
+//        Connection ketNoi = Connect.GetConnect();
+//        String sql = "insert into address(ward_id,specific_address) values(?,?)";
+//        try {
+//            PreparedStatement ps = ketNoi.prepareStatement(sql);
+//            ps.setInt(1, ward_id);
+//            ps.setString(2, specific_address);
+//            ps.executeUpdate();
+//
+//        } catch (SQLException ex) {
+//            Logger.getLogger(OrderPanel.class
+//                    .getName()).log(Level.SEVERE, null, ex);
+//        }
+//    }
+
+    //ok
+//    public boolean insertAccount(Staff s) {
+//        Connection ketNoi = Connect.GetConnect();
+//        String sql = "INSERT INTO account (username, password , Full_Name, gender,date_of_birth,registered_date,address_id,phone_number,email,role_id,status)\n"
+//                + "VALUES (?,?, ?, ?,?,?,?,?,?,?,?)";
+//        PreparedStatement ps;
+//        try {
+//            ps = ketNoi.prepareStatement(sql);
+//            ps.setString(1, s.getUsername());
+//            ps.setString(2, s.getPassword());
+//            ps.setString(3, s.getFullName());
+//            ps.setString(4, s.getGender());
+//            ps.setString(5, s.getDateOfBirth());
+//            ps.setString(6, s.getRegisteredDate());
+//            ps.setInt(7, s.getAddress_id());
+//            ps.setString(8, s.getPhoneNumber());
+//            ps.setString(9, s.getEmail());
+//            ps.setInt(10, s.getRoleId());
+//            ps.setInt(11, s.getStatus());
+//            return ps.executeUpdate() > 0;
+//
+//        } catch (SQLException ex) {
+//            Logger.getLogger(ReaderPanel.class
+//                    .getName()).log(Level.SEVERE, null, ex);
+//        }
+//        return false;
+//    }
+
+    //
+//    int getIdWard(String nameWard, String nameDistrict, String nameProvince) {
+//        int i = 0;
+//        Connection ketNoi = Connect.GetConnect();
+//        try {
+//            PreparedStatement ps = ketNoi.prepareStatement("select ward.ward_id from ward where ward.ward_name = ? and ward.district_id = ?");
+//            ps.setString(1, nameWard);
+//            ps.setInt(2, getIdDistrict(nameDistrict, nameProvince));
+//            ResultSet rs = ps.executeQuery();
+//            while (rs.next()) {
+//                i = rs.getInt(1);
+//            }
+//            ps.close();
+//            rs.close();
+//            ketNoi.close();
+//        } catch (SQLException ex) {
+//        }
+//        return i;
+//    }
+
+    public String getSelectedButtonText(ButtonGroup buttonGroup) {
+        for (Enumeration<AbstractButton> buttons = buttonGroup.getElements(); buttons.hasMoreElements();) {
+            AbstractButton button = buttons.nextElement();
+            if (button.isSelected()) {
+                return button.getText();
+            }
+        }
+        return null;
+    }
+
+//    public boolean updateAccount(String username, String Full_Name, String gender, String date_of_birth, int address_id, String phone_number, String email, int roleId) {
+//        Connection ketNoi = Connect.GetConnect();
+//        String sql = "update account\n"
+//                + "set Full_Name= ?, gender = ?, date_of_birth = ?,address_id = ?, phone_number= ?, email= ? , role_id = ?\n"
+//                + "WHERE username = ?";
+//        PreparedStatement ps;
+//        try {
+//            ps = ketNoi.prepareStatement(sql);
+//            ps.setString(1, Full_Name);
+//            ps.setString(2, gender);
+//            ps.setString(3, date_of_birth);
+//            ps.setInt(4, address_id);
+//            ps.setString(5, phone_number);
+//            ps.setString(6, email);
+//            ps.setInt(7, roleId);
+//            ps.setString(8, username);
+//            ps.executeUpdate();
+//            return true;
+//        } catch (SQLException ex) {
+//            Logger.getLogger(ReaderPanel.class
+//                    .getName()).log(Level.SEVERE, null, ex);
+//        }
+//        return false;
+//    }
+
+    // status 0 => 1
+//    public void xoaNhanVien(String maNV) {
+//        String sql = "update account set status = 0 where username =  ? ";
+//        Connection con = Connect.GetConnect();
+//        try {
+//            PreparedStatement ps = con.prepareStatement(sql);
+//            ps.setString(1, maNV);
+//            ps.executeUpdate();
+//            ps.close();
+//            con.close();
+//
+//        } catch (SQLException ex) {
+//            Logger.getLogger(OrderPanel.class
+//                    .getName()).log(Level.SEVERE, null, ex);
+//        }
+//    }
+
+//    int getIdProvince(String nameProvince) {
+//        int i = 0;
+//        Connection ketNoi = Connect.GetConnect();
+//        try {
+//            PreparedStatement ps = ketNoi.prepareStatement("select province.province_id from province where province.province_name = ?");
+//            ps.setString(1, nameProvince);
+//            ResultSet rs = ps.executeQuery();
+//            while (rs.next()) {
+//                i = rs.getInt(1);
+//            }
+//            ps.close();
+//            rs.close();
+//            ketNoi.close();
+//        } catch (SQLException ex) {
+//            System.out.println("Lỗi lấy IdProvince!!");
+//        }
+//        return i;
+//    }
+
+//    int getIdRole(String role) {
+//        int i = 0;
+//        Connection ketNoi = Connect.GetConnect();
+//        try {
+//            PreparedStatement ps = ketNoi.prepareStatement("select role.role_id from role where role.role = ?");
+//            ps.setString(1, role);
+//            ResultSet rs = ps.executeQuery();
+//            while (rs.next()) {
+//                i = rs.getInt(1);
+//            }
+//            ps.close();
+//            rs.close();
+//            ketNoi.close();
+//        } catch (SQLException ex) {
+//            System.out.println("Lỗi lấy role_id");
+//        }
+//        return i;
+//    }
+
+//    int getIdDistrict(String nameDistrict, String nameProvince) {
+//        int i = 0;
+//        Connection ketNoi = Connect.GetConnect();
+//        try {
+//            PreparedStatement ps = ketNoi.prepareStatement("select district.district_id from district where district.district_name = ? and district.province_id = ?");
+//            ps.setString(1, nameDistrict);
+//            ps.setInt(2, getIdProvince(nameProvince));
+//            ResultSet rs = ps.executeQuery();
+//            while (rs.next()) {
+//                i = rs.getInt(1);
+//            }
+//            ps.close();
+//            rs.close();
+//            ketNoi.close();
+//        } catch (SQLException ex) {
+//            System.out.println("Lỗi lấy district_id!!");
+//        }
+//        return i;
+//    }
+
+
+    private void jTable_OrderMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable_OrderMouseClicked
+        // TODO add your handling code here:
+//        DefaultTableModel model = (DefaultTableModel) jTable_Staff.getModel();
+//        int selectedRow = jTable_Staff.getSelectedRow();
+//
+//        List<Integer> list = getIdDistrictAndIdProvince(model.getValueAt(selectedRow, 0).toString());
+//        jTextField_ID.setText(model.getValueAt(selectedRow, 0).toString());
+//        jTextField_Name.setText(model.getValueAt(selectedRow, 1).toString());
+//        jTextField_Email.setText(model.getValueAt(selectedRow, 7).toString());
+//        jTextField_PhoneNumber.setText(model.getValueAt(selectedRow, 6).toString());
+//        jTextField_Address.setText(model.getValueAt(selectedRow, 5).toString().split(" - ")[0]);
+//        jComboBox_Province.setSelectedIndex(list.get(2) - 1);
+//        jComboBox_District.setSelectedItem(model.getValueAt(selectedRow, 5).toString().split(" - ")[2]);
+//        jComboBox_Commune.setSelectedItem(model.getValueAt(selectedRow, 5).toString().split(" - ")[1]);
+//        jComboBox_Role.setSelectedItem(model.getValueAt(selectedRow, 2).toString());
+//        if (model.getValueAt(selectedRow, 3).toString().equalsIgnoreCase("Nam")) {
+//            jRadioButton_Male.setSelected(true);
+//        } else if (model.getValueAt(selectedRow, 3).toString().equalsIgnoreCase("Nữ")) {
+//            jRadioButton_Female.setSelected(true);
+//        } else {
+//            jRadioButton_Other.setSelected(true);
+//        }
+//        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+//        try {
+//            jDateChooser_DateOfBirth.setDate(sdf.parse(model.getValueAt(selectedRow, 4).toString()));
+//        } catch (ParseException ex) {
+//            System.out.println(ex.getMessage());
+//        }
+//        jButton_Modify.setEnabled(true);
+//        jButton_Remove.setEnabled(true);
+    }//GEN-LAST:event_jTable_OrderMouseClicked
+
+    private void jButton_HistoryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_HistoryActionPerformed
+        history = new HistoryDialog(null, true);
+//        history.setIngredientList(ingredientList);
+//        history.setProviderList(providerList);
+//        history.addRowsToHistoryTable(ingredientList);
+//        UIControl.setLocationCenterForDialog(history);
+        history.setVisible(true);
+    }//GEN-LAST:event_jButton_HistoryActionPerformed
+
+    private void jButton_YesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_YesActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton_YesActionPerformed
+
+    private void jButton_NoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_NoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton_NoActionPerformed
+
+//    List<Integer> getIdDistrictAndIdProvince(String username) {
+//        int i = 0;
+//        int j = 0;
+//        int x = 0;
+//        List<Integer> list = new ArrayList<Integer>();
+//        Connection ketNoi = Connect.GetConnect();
+//        try {
+//            PreparedStatement ps = ketNoi.prepareStatement("select ward.ward_id,district.district_id,province.province_id from ward,district,province,address\n"
+//                    + "where ward.district_id = district.district_id\n"
+//                    + "and district.province_id = province.province_id\n"
+//                    + "and ward.ward_id = address.ward_id\n"
+//                    + "and address.address_id = ?");
+//            ps.setInt(1, getIdAddressByUserName(username));
+//            ResultSet rs = ps.executeQuery();
+//            while (rs.next()) {
+//                i = rs.getInt(1);
+//                j = rs.getInt(2);
+//                x = rs.getInt(3);
+//            }
+//            ps.close();
+//            rs.close();
+//            ketNoi.close();
+//        } catch (SQLException ex) {
+//            System.out.println("Lỗi lấy getIdDistrictAndIdProvince");
+//        }
+//        list.add(i);
+//        list.add(j);
+//        list.add(x);
+//        return list;
+//    }
+
+//    int getIdAddressByUserName(String username) {
+//        int i = 0;
+//        Connection ketNoi = Connect.GetConnect();
+//        try {
+//            PreparedStatement ps = ketNoi.prepareStatement("select account.address_id from account where account.username = ?");
+//            ps.setString(1, username);
+//            ResultSet rs = ps.executeQuery();
+//            while (rs.next()) {
+//                i = rs.getInt(1);
+//            }
+//            ps.close();
+//            rs.close();
+//            ketNoi.close();
+//        } catch (SQLException ex) {
+//            System.out.println("Lỗi lấy address_id từ username!!");
+//        }
+//        return i;
+//    }
+
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.ButtonGroup buttonGroup1;
+    private javax.swing.JButton jButton_History;
+    private javax.swing.JButton jButton_No;
+    private javax.swing.JButton jButton_Yes;
+    private com.toedter.calendar.JDateChooser jDateChooser_Search;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel14;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel3;
+    private javax.swing.JPanel jPanel_Card3;
+    private javax.swing.JRadioButton jRadioButton_ChoXacNhan;
+    private javax.swing.JRadioButton jRadioButton_DaGiao;
+    private javax.swing.JRadioButton jRadioButton_DaHuy;
+    private javax.swing.JRadioButton jRadioButton_DangGiao;
+    private javax.swing.JRadioButton jRadioButton_YeuCauHuy;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JTable jTable_Order;
+    private javax.swing.JTable jTable_Product;
+    private javax.swing.JTextField jTextField_Date;
+    private javax.swing.JTextField jTextField_ID;
+    private javax.swing.JTextField jTextField_Price;
+    private javax.swing.JTextField jTextField_User;
+    // End of variables declaration//GEN-END:variables
+}
