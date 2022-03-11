@@ -9,7 +9,7 @@ package model;
  * @author TRINH
  */
 public class Product {
-    private int product_id;
+    private Integer product_id;
     private String name;
     private String description;
     private String image;
@@ -26,11 +26,27 @@ public class Product {
     public Product() {
     }
 
-    public int getProduct_id() {
+    public Product(Integer product_id, String name, String description, String image, double price, String specification, String calculation_unit, int discount, int sold_quantity, int quantity, Category Category, Brand Brand, boolean status) {
+        this.product_id = product_id;
+        this.name = name;
+        this.description = description;
+        this.image = image;
+        this.price = price;
+        this.specification = specification;
+        this.calculation_unit = calculation_unit;
+        this.discount = discount;
+        this.sold_quantity = sold_quantity;
+        this.quantity = quantity;
+        this.Category = Category;
+        this.Brand = Brand;
+        this.status = status;
+    }
+
+    public Integer getProduct_id() {
         return product_id;
     }
 
-    public void setProduct_id(int product_id) {
+    public void setProduct_id(Integer product_id) {
         this.product_id = product_id;
     }
 
