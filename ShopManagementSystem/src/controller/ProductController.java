@@ -28,20 +28,19 @@ import utils.ConnectAPI;
  *
  * @author TRINH
  */
-public class ProductController {
+public class ProductController extends BaseController{  
     
-    private final Gson gson = new Gson();
-    private final String getProductByID = "/api/products/getProductsById/";
-    private final String getAllProducts = "/api/products/getAllProducts";
-    private final String addProduct = "/api/products/addProduct";
-    private final String editOrDeleteProduct = "/api/products/";
     public ProductController() {
+        getOneByID = "/api/products/getProductsById/";
+        getAll = "/api/products/getAllProducts";
+        addOne = "/api/products/addProduct";
+        editOrDelete = "/api/products/";
     }
-    
+
     public Product getProductsById(int id) {
         List<Product> founderList = null;        
         try {
-            String json = ConnectAPI.excuteHttpMethod("", getProductByID + id, "GET");
+            String json = ConnectAPI.excuteHttpMethod("", getOneByID + id, "GET");
             Type typeOfT = new TypeToken<ArrayList<Product>>(){}.getType();
             founderList = gson.fromJson(json, typeOfT);
             
@@ -56,7 +55,7 @@ public class ProductController {
     public List<Product> getAllProducts() {
         List<Product> founderList= null;
         try {
-            String json = ConnectAPI.excuteHttpMethod("", getAllProducts, "GET");
+            String json = ConnectAPI.excuteHttpMethod("", getAll, "GET");
             Type typeOfT = new TypeToken<ArrayList<Product>>(){}.getType();
             founderList = gson.fromJson(json, typeOfT);
             
@@ -72,7 +71,7 @@ public class ProductController {
         String response = "";
         try {
             String json = gson.toJson(p);
-            response = ConnectAPI.excuteHttpMethod(json, addProduct , "POST");
+            response = ConnectAPI.excuteHttpMethod(json, addOne , "POST");
             //print in String
             System.out.println(response);
             
@@ -86,7 +85,7 @@ public class ProductController {
         String response = "";
         try {            
             String json = gson.toJson(p);
-            response = ConnectAPI.excuteHttpMethod(json, editOrDeleteProduct + id , "PUT");
+            response = ConnectAPI.excuteHttpMethod(json, editOrDelete + id , "PUT");
             //print in String
             System.out.println(response);
             
@@ -99,7 +98,7 @@ public class ProductController {
     public String deleteProductByID(int id) {
         String response = "";
         try {  
-            response = ConnectAPI.excuteHttpMethod("", editOrDeleteProduct + id , "DELETE");
+            response = ConnectAPI.excuteHttpMethod("", editOrDelete + id , "DELETE");
             //print in String
             System.out.println(response);
             

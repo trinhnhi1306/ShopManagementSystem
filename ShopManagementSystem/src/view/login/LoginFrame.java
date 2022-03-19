@@ -5,15 +5,15 @@
  */
 package view.login;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import controller.LoginController;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
+import model.ERole;
+import model.Login;
+import utils.ConnectAPI;
 //import model.database.Connect;
 //import org.mindrot.bcrypt.BCrypt;
-import view.main.admin.AdminMainFrame;
+import view.admin.AdminMainFrame;
 
 /**
  *
@@ -23,6 +23,7 @@ public class LoginFrame extends javax.swing.JFrame {
 
     private RecoveryPasswordDialog recoveryPasswordDialog;
     private AdminMainFrame adminMainFrame;
+    private LoginController lc;
 
     private boolean showPass = false;
     public static String OTPSystem;
@@ -30,6 +31,7 @@ public class LoginFrame extends javax.swing.JFrame {
     public static String Email;
     public static String username;
     public static String name;
+    public static int userID;
     private String password;
     private int Idrole;
 
@@ -39,6 +41,7 @@ public class LoginFrame extends javax.swing.JFrame {
     public LoginFrame() {
         initComponents();
         setLocationRelativeTo(null);
+        lc = new LoginController();
         OTPSystem = "";
         PhoneNumber = "";
         Email = "";
@@ -233,40 +236,40 @@ public class LoginFrame extends javax.swing.JFrame {
 
     private void jButton_LoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_LoginActionPerformed
         // TODO add your handling code here:
-//        String pwd = new String(jPasswordField_Pass.getPassword());
-//        String passwordConfirm = getPassword(jTextField_Username.getText().trim());
-//        if(jTextField_Username.getText().trim().equalsIgnoreCase("")){
-//            JOptionPane.showMessageDialog(null, "Username không được để khoảng trắng. Vui lòng nhập lại!", "Thông báo", JOptionPane.ERROR_MESSAGE);
-//             return;
-//        }
-//        if(pwd.equalsIgnoreCase("")){
-//            JOptionPane.showMessageDialog(null, "Không được để trống password. Vui lòng nhập lại!", "Thông báo", JOptionPane.ERROR_MESSAGE);
-//             return;
-//        }
-//        if(passwordConfirm.equalsIgnoreCase("")){
-//            JOptionPane.showMessageDialog(null, "Username không tồn tại. Vui lòng nhập lại!", "Thông báo", JOptionPane.ERROR_MESSAGE);
-//             return;
-//        }
-//        
-//        if(!verifyHash(pwd, passwordConfirm)){
-//            JOptionPane.showMessageDialog(null, "Sai mật khẩu. Vui lòng nhập lại!", "Thông báo", JOptionPane.ERROR_MESSAGE);
-//             return;
-//        }
+        username = jTextField_Username.getText();
+        password = new String(jPasswordField_Pass.getPassword());
+        if(jTextField_Username.getText().trim().equalsIgnoreCase("")){
+            JOptionPane.showMessageDialog(null, "Username không được để khoảng trắng. Vui lòng nhập lại!", "Thông báo", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        if(password.equalsIgnoreCase("")){
+            JOptionPane.showMessageDialog(null, "Không được để trống password. Vui lòng nhập lại!", "Thông báo", JOptionPane.ERROR_MESSAGE);
+             return;
+        }
+        Login userLogin = lc.login(username, password);
+        
+        if(userLogin == null){
+            JOptionPane.showMessageDialog(null, "Username hoặc password không đúng. Vui lòng nhập lại!", "Thông báo", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        if(!userLogin.getRoles().contains(ERole.ROLE_ADMIN)) {
+            JOptionPane.showMessageDialog(null, "Bạn không có quyền đăng nhập vào hệ thống quản trị!", "Thông báo", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        
+        
+        PhoneNumber = userLogin.getPhone();
+        Email = userLogin.getEmail();
+        username = userLogin.getUsername();
+        userID = userLogin.getId();
+        ConnectAPI.tokenType = userLogin.getTokenType();
+        ConnectAPI.accessToken = userLogin.getAccessToken();
+        System.out.println(ConnectAPI.accessToken);
+        
         this.dispose();
-//        username = jTextField_Username.getText().trim();
-//        if(Idrole == 4){
         this.adminMainFrame = new AdminMainFrame();
         this.adminMainFrame.setVisible(true);
-//        }else if(Idrole == 3){
-//            this.archivistMainFrame = new ArchivistMainFrame();  
-//            this.archivistMainFrame.setVisible(true);
-//        }else if(Idrole == 2){
-//            this.librarianMainFrame = new LibrarianMainFrame();  
-//            this.librarianMainFrame.setVisible(true);
-//        }else{
-//            this.readerMainFrame = new ReaderMainFrame();  
-//            this.readerMainFrame.setVisible(true);
-//        }
     }//GEN-LAST:event_jButton_LoginActionPerformed
 
     /**
@@ -304,32 +307,7 @@ public class LoginFrame extends javax.swing.JFrame {
             }
         });
     }
-//    String getPassword(String username){
-//      
-//        Connection ketNoi= Connect.GetConnect();
-//        try {
-//            PreparedStatement ps=ketNoi.prepareStatement("select password,role_id from account where username = ?");
-//            ps.setString(1, username);
-//            ResultSet rs=ps.executeQuery();
-//            while(rs.next()){
-//                Idrole = rs.getInt(2);
-//                return rs.getString(1);
-//            }
-//            ps.close();
-//            rs.close();
-//            ketNoi.close();
-//        } catch (SQLException ex) {
-//            System.out.println("loi lay phone and email");
-//        }
-//        return "";
-//    }
-//    public static String hash(String password) {
-//        return BCrypt.hashpw(password, BCrypt.gensalt(12));
-//    }
-
-//    public static boolean verifyHash(String password, String hash) {
-//        return BCrypt.checkpw(password, hash);
-//    }
+ 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton_Forgot;
     private javax.swing.JButton jButton_Login;

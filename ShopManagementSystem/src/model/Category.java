@@ -11,7 +11,7 @@ import java.util.List;
  * @author TRINH
  */
 public class Category {
-    private int category_id;
+    private Integer categoryId;
     private String name;
     private String image;
     private String note;
@@ -20,12 +20,20 @@ public class Category {
     public Category() {
     }
 
-    public int getCategory_id() {
-        return category_id;
+    public Category(Integer categoryId, String name, String image, String note, List<Product> products) {
+        this.categoryId = categoryId;
+        this.name = name;
+        this.image = image;
+        this.note = note;
+        this.products = products;
     }
 
-    public void setCategory_id(int category_id) {
-        this.category_id = category_id;
+    public Integer getCategoryId() {
+        return categoryId;
+    }
+
+    public void setCategoryId(Integer categoryId) {
+        this.categoryId = categoryId;
     }
 
     public String getName() {
@@ -62,7 +70,7 @@ public class Category {
 
     @Override
     public String toString() {
-        return "Category{" + "category_id=" + category_id + ", name=" + name + ", image=" + image + ", note=" + note;
+        return "Category{" + "category_id=" + categoryId + ", name=" + name + ", image=" + image + ", note=" + note + "}";
     }
     
 }

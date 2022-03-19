@@ -11,7 +11,7 @@ import java.util.List;
  * @author TRINH
  */
 public class Brand {
-    private int brand_id;
+    private Integer brandId;
     private String name;
     private String description;
     private List<Product> products;
@@ -19,12 +19,19 @@ public class Brand {
     public Brand() {
     }
 
-    public int getBrand_id() {
-        return brand_id;
+    public Brand(Integer brandId, String name, String description, List<Product> products) {
+        this.brandId = brandId;
+        this.name = name;
+        this.description = description;
+        this.products = products;
     }
 
-    public void setBrand_id(int brand_id) {
-        this.brand_id = brand_id;
+    public Integer getBrandId() {
+        return brandId;
+    }
+
+    public void setBrandId(Integer brandId) {
+        this.brandId = brandId;
     }
 
     public String getName() {
@@ -53,7 +60,7 @@ public class Brand {
 
     @Override
     public String toString() {
-        return "Brand{" + "brand_id=" + brand_id + ", name=" + name + ", description=" + description;
+        return "Brand{" + "brand_id=" + brandId + ", name=" + name + ", description=" + description + "}";
     }
     
 }

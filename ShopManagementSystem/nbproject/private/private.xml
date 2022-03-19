@@ -3,19 +3,10 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-<<<<<<< HEAD
-            <file>file:/D:/PhatTrienPhanMemHuongDichVu/ShopManagementSystem/ShopManagementSystem/src/view/login/LoginFrame.java</file>
-=======
-            <file>file:/C:/Users/TRINH/OneDrive%20-%20Sang%20ltd/Desktop/New%20folder/ShopManagementSystem/ShopManagementSystem/src/controller/ProductController.java</file>
-            <file>file:/C:/Users/TRINH/OneDrive%20-%20Sang%20ltd/Desktop/New%20folder/ShopManagementSystem/ShopManagementSystem/src/model/User.java</file>
-            <file>file:/C:/Users/TRINH/OneDrive%20-%20Sang%20ltd/Desktop/New%20folder/ShopManagementSystem/ShopManagementSystem/src/utils/ConnectAPI.java</file>
-            <file>file:/C:/Users/TRINH/OneDrive%20-%20Sang%20ltd/Desktop/New%20folder/ShopManagementSystem/ShopManagementSystem/src/model/Category.java</file>
-            <file>file:/C:/Users/TRINH/OneDrive%20-%20Sang%20ltd/Desktop/New%20folder/ShopManagementSystem/ShopManagementSystem/src/view/test.java</file>
-            <file>file:/C:/Users/TRINH/OneDrive%20-%20Sang%20ltd/Desktop/New%20folder/ShopManagementSystem/ShopManagementSystem/src/model/Permission.java</file>
-            <file>file:/C:/Users/TRINH/OneDrive%20-%20Sang%20ltd/Desktop/New%20folder/ShopManagementSystem/ShopManagementSystem/src/model/Product.java</file>
-            <file>file:/C:/Users/TRINH/OneDrive%20-%20Sang%20ltd/Desktop/New%20folder/ShopManagementSystem/ShopManagementSystem/src/model/Brand.java</file>
-            <file>file:/C:/Users/TRINH/OneDrive%20-%20Sang%20ltd/Desktop/New%20folder/ShopManagementSystem/ShopManagementSystem/src/controller/CategoryController.java</file>
->>>>>>> 503fd0c92d154bf478e49d7b708c8dff4f0c47ba
+            <file>file:/C:/Users/TRINH/OneDrive%20-%20Sang%20ltd/Desktop/New%20folder/ShopManagementSystem/ShopManagementSystem/src/view/login/LoginFrame.java</file>
+            <file>file:/C:/Users/TRINH/OneDrive%20-%20Sang%20ltd/Desktop/New%20folder/ShopManagementSystem/ShopManagementSystem/src/view/orders/OrderPanel.java</file>
+            <file>file:/C:/Users/TRINH/OneDrive%20-%20Sang%20ltd/Desktop/New%20folder/ShopManagementSystem/ShopManagementSystem/src/view/products/ProductPanel.java</file>
+            <file>file:/C:/Users/TRINH/OneDrive%20-%20Sang%20ltd/Desktop/New%20folder/ShopManagementSystem/ShopManagementSystem/src/view/admin/AdminMainFrame.java</file>
         </group>
     </open-files>
 </project-private>

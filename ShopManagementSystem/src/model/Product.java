@@ -9,15 +9,15 @@ package model;
  * @author TRINH
  */
 public class Product {
-    private Integer product_id;
+    private Integer productId;
     private String name;
     private String description;
     private String image;
     private double price;   
     private String specification;
-    private String calculation_unit;
+    private String calculationUnit;
     private int discount;
-    private int sold_quantity;
+    private int soldQuantity;
     private int quantity;
     private Category Category;
     private Brand Brand;
@@ -26,28 +26,28 @@ public class Product {
     public Product() {
     }
 
-    public Product(Integer product_id, String name, String description, String image, double price, String specification, String calculation_unit, int discount, int sold_quantity, int quantity, Category Category, Brand Brand, boolean status) {
-        this.product_id = product_id;
+    public Product(Integer productId, String name, String description, String image, double price, String specification, String calculationUnit, int discount, int soldQuantity, int quantity, Category Category, Brand Brand, boolean status) {
+        this.productId = productId;
         this.name = name;
         this.description = description;
         this.image = image;
         this.price = price;
         this.specification = specification;
-        this.calculation_unit = calculation_unit;
+        this.calculationUnit = calculationUnit;
         this.discount = discount;
-        this.sold_quantity = sold_quantity;
+        this.soldQuantity = soldQuantity;
         this.quantity = quantity;
         this.Category = Category;
         this.Brand = Brand;
         this.status = status;
     }
 
-    public Integer getProduct_id() {
-        return product_id;
+    public Integer getProductId() {
+        return productId;
     }
 
-    public void setProduct_id(Integer product_id) {
-        this.product_id = product_id;
+    public void setProductId(Integer productId) {
+        this.productId = productId;
     }
 
     public String getName() {
@@ -90,12 +90,12 @@ public class Product {
         this.specification = specification;
     }
 
-    public String getCalculation_unit() {
-        return calculation_unit;
+    public String getCalculationUnit() {
+        return calculationUnit;
     }
 
-    public void setCalculation_unit(String calculation_unit) {
-        this.calculation_unit = calculation_unit;
+    public void setCalculationUnit(String calculationUnit) {
+        this.calculationUnit = calculationUnit;
     }
 
     public int getDiscount() {
@@ -106,12 +106,12 @@ public class Product {
         this.discount = discount;
     }
 
-    public int getSold_quantity() {
-        return sold_quantity;
+    public int getSoldQuantity() {
+        return soldQuantity;
     }
 
-    public void setSold_quantity(int sold_quantity) {
-        this.sold_quantity = sold_quantity;
+    public void setSoldQuantity(int soldQuantity) {
+        this.soldQuantity = soldQuantity;
     }
 
     public int getQuantity() {
@@ -145,6 +145,6 @@ public class Product {
     public void setStatus(boolean status) {
         this.status = status;
     }
-    
+
     
 }

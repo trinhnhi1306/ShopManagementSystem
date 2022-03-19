@@ -4,14 +4,13 @@
  */
 package model;
 
-import java.util.HashSet;
 import java.util.Set;
 
 /**
  *
  * @author TRINH
  */
-public class User {
+public class Login {
     private Integer id;
     private String username;
     private String password;
@@ -21,15 +20,13 @@ public class User {
     private String email;
     private String phone;
     private Set<ERole> roles;
-    private Set<Address> addresses;
-    private boolean status;
+    private String tokenType;
+    private String accessToken;
 
-    public User() {
-        roles = new HashSet<>();
-        addresses = new HashSet<>();
+    public Login() {
     }
 
-    public User(Integer id, String username, String password, String firstName, String lastName, String image, String email, String phone, Set<ERole> roles, Set<Address> addresses, boolean status) {
+    public Login(Integer id, String username, String password, String firstName, String lastName, String image, String email, String phone, Set<ERole> roles, String tokenType, String accessToken) {
         this.id = id;
         this.username = username;
         this.password = password;
@@ -39,8 +36,8 @@ public class User {
         this.email = email;
         this.phone = phone;
         this.roles = roles;
-        this.addresses = addresses;
-        this.status = status;
+        this.tokenType = tokenType;
+        this.accessToken = accessToken;
     }
 
     public Integer getId() {
@@ -115,20 +112,21 @@ public class User {
         this.roles = roles;
     }
 
-    public Set<Address> getAddresses() {
-        return addresses;
+    public String getTokenType() {
+        return tokenType;
     }
 
-    public void setAddresses(Set<Address> addresses) {
-        this.addresses = addresses;
+    public void setTokenType(String tokenType) {
+        this.tokenType = tokenType;
     }
 
-    public boolean isStatus() {
-        return status;
+    public String getAccessToken() {
+        return accessToken;
     }
 
-    public void setStatus(boolean status) {
-        this.status = status;
+    public void setAccessToken(String accessToken) {
+        this.accessToken = accessToken;
     }
+    
     
 }
