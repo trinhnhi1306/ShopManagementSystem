@@ -105,6 +105,7 @@ public class LoginFrame extends javax.swing.JFrame {
         jLabel3.setText("Username:");
 
         jTextField_Username.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        jTextField_Username.setText("reintrinh");
 
         jLabel4.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         jLabel4.setText("Password:");
@@ -117,6 +118,7 @@ public class LoginFrame extends javax.swing.JFrame {
         });
 
         jPasswordField_Pass.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        jPasswordField_Pass.setText("123456");
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -158,7 +160,6 @@ public class LoginFrame extends javax.swing.JFrame {
             }
         });
 
-        jButton_Forgot.setBackground(new java.awt.Color(255, 255, 255));
         jButton_Forgot.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
         jButton_Forgot.setForeground(new java.awt.Color(0, 153, 153));
         jButton_Forgot.setText("Forgot password");
@@ -265,7 +266,6 @@ public class LoginFrame extends javax.swing.JFrame {
         userID = userLogin.getId();
         ConnectAPI.tokenType = userLogin.getTokenType();
         ConnectAPI.accessToken = userLogin.getAccessToken();
-        System.out.println(ConnectAPI.accessToken);
         
         this.dispose();
         this.adminMainFrame = new AdminMainFrame();

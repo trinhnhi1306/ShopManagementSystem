@@ -4,24 +4,15 @@
  */
 package controller;
 
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
-import java.io.BufferedReader;
-import java.io.DataOutputStream;
+import java.awt.Image;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.lang.reflect.Type;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.net.URLConnection;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.table.DefaultTableModel;
 import model.Product;
+import output.ProductOutput;
 import utils.ConnectAPI;
 
 /**
@@ -30,40 +21,39 @@ import utils.ConnectAPI;
  */
 public class ProductController extends BaseController{  
     
+    private String getProductInOnePage;
+    private String getImage;
+    
     public ProductController() {
-        getOneByID = "/api/products/getProductsById/";
+        getOneByID = "/api/product/get-product?idProduct=";
         getAll = "/api/products/getAllProducts";
         addOne = "/api/products/addProduct";
         editOrDelete = "/api/products/";
+        getProductInOnePage = "/api/product/";
+        getImage = "/api/product/get-image/";
     }
 
-    public Product getProductsById(int id) {
-        List<Product> founderList = null;        
+    public Product getProductById(String id) {
+        Product p = null;        
         try {
-            String json = ConnectAPI.excuteHttpMethod("", getOneByID + id, "GET");
-            Type typeOfT = new TypeToken<ArrayList<Product>>(){}.getType();
-            founderList = gson.fromJson(json, typeOfT);
+            String json = ConnectAPI.excuteHttpMethodHasAuthentication("", getOneByID + id, "GET");
+            p = gson.fromJson(json, Product.class);
             
         } catch (IOException ex) {
             System.out.println(ex.getMessage());
         }
-        if(founderList.isEmpty())
-            return null;
-        return founderList.get(0);
+        return p;
     }
     
-    public List<Product> getAllProducts() {
-        List<Product> founderList= null;
+    public ProductOutput getProductInOnePage(int pageNo) {
+        ProductOutput founderList= null;
         try {
-            String json = ConnectAPI.excuteHttpMethod("", getAll, "GET");
-            Type typeOfT = new TypeToken<ArrayList<Product>>(){}.getType();
-            founderList = gson.fromJson(json, typeOfT);
+            String json = ConnectAPI.excuteHttpMethodHasAuthentication("", getProductInOnePage + pageNo, "GET");
+            founderList = gson.fromJson(json, ProductOutput.class);
             
         } catch (IOException ex) {
             System.out.println(ex.getMessage());
         }
-        if(founderList.isEmpty())
-            return null;
         return founderList;
     }
     
@@ -106,5 +96,31 @@ public class ProductController extends BaseController{
             System.out.println(ex.getMessage());
         }
         return response;
+    }
+    
+    public void loadTable(List<Product> list, DefaultTableModel dtm) {
+        dtm.setNumRows(0);
+        Vector vt;
+        for (Product p: list) {
+            vt = new Vector();
+            vt.add(p.getProductId());
+            vt.add(p.getName());
+            vt.add(p.getCategory().getName());
+            vt.add(p.getBrand().getName());
+            vt.add(p.getCalculationUnit());
+            vt.add(p.getPrice());
+            vt.add(p.getQuantity());
+            dtm.addRow(vt);
+        }
+    }
+    
+    public Image getImage(String imageName) {
+        Image img = null;
+        try {
+            img = ConnectAPI.getImageHasAuthentication(getImage + imageName);
+        } catch (IOException ex) {
+            Logger.getLogger(ProductController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return img;
     }
 }

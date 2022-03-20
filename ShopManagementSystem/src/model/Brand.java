@@ -60,7 +60,7 @@ public class Brand {
 
     @Override
     public String toString() {
-        return "Brand{" + "brand_id=" + brandId + ", name=" + name + ", description=" + description + "}";
+        return name;
     }
     
 }

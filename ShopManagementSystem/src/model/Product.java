@@ -19,14 +19,14 @@ public class Product {
     private int discount;
     private int soldQuantity;
     private int quantity;
-    private Category Category;
-    private Brand Brand;
+    private Category category;
+    private Brand brand;
     private boolean status;
 
     public Product() {
     }
 
-    public Product(Integer productId, String name, String description, String image, double price, String specification, String calculationUnit, int discount, int soldQuantity, int quantity, Category Category, Brand Brand, boolean status) {
+    public Product(Integer productId, String name, String description, String image, double price, String specification, String calculationUnit, int discount, int soldQuantity, int quantity, Category category, Brand brand, boolean status) {
         this.productId = productId;
         this.name = name;
         this.description = description;
@@ -37,8 +37,8 @@ public class Product {
         this.discount = discount;
         this.soldQuantity = soldQuantity;
         this.quantity = quantity;
-        this.Category = Category;
-        this.Brand = Brand;
+        this.category = category;
+        this.brand = brand;
         this.status = status;
     }
 
@@ -123,19 +123,19 @@ public class Product {
     }
 
     public Category getCategory() {
-        return Category;
+        return category;
     }
 
-    public void setCategory(Category Category) {
-        this.Category = Category;
+    public void setCategory(Category category) {
+        this.category = category;
     }
 
     public Brand getBrand() {
-        return Brand;
+        return brand;
     }
 
-    public void setBrand(Brand Brand) {
-        this.Brand = Brand;
+    public void setBrand(Brand brand) {
+        this.brand = brand;
     }
 
     public boolean isStatus() {

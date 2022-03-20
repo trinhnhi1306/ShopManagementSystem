@@ -4,6 +4,8 @@
  */
 package utils;
 
+import java.awt.Image;
+import java.awt.Toolkit;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -72,5 +74,14 @@ public class ConnectAPI {
         }
         in.close();
         return response.toString();
+    }
+    
+    public static Image getImageHasAuthentication(String link) throws MalformedURLException, IOException{
+        Toolkit toolkit = Toolkit.getDefaultToolkit();
+        
+        // Absolute URL -
+        URL monaURL = new URL(LOCALHOST + link);
+        Image monaImage = toolkit.getImage(monaURL);
+        return monaImage;
     }
 }

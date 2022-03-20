@@ -30,6 +30,7 @@ public class NewCategoryDialog extends javax.swing.JDialog {
         super(parent, modal);
         initComponents();
         setLocationRelativeTo(null);
+        jTextArea_Note.setWrapStyleWord(true);
 //        getId();
     }
 

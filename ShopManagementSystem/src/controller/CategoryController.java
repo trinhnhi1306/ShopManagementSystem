@@ -4,7 +4,6 @@
  */
 package controller;
 
-import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import java.io.IOException;
 import java.lang.reflect.Type;
@@ -19,18 +18,16 @@ import utils.ConnectAPI;
  *
  * @author TRINH
  */
-public class CategoryController {
-    private final Gson gson = new Gson();
-    private final String getAllCategories = "/api/categories";
-    private final String addCategory = "/api/categories/addCategory";
-
+public class CategoryController extends BaseController{
+    
     public CategoryController() {
+        getAll = "/api/category";
     }
     
     public List<Category> getAllCategories() {
         List<Category> founderList = null;
         try {
-            String json = ConnectAPI.excuteHttpMethod("", getAllCategories, "GET");
+            String json = ConnectAPI.excuteHttpMethodHasAuthentication("", getAll, "GET");
             Type typeOfT = new TypeToken<ArrayList<Category>>(){}.getType();
             founderList = gson.fromJson(json, typeOfT);
         } catch (IOException ex) {
@@ -39,11 +36,11 @@ public class CategoryController {
         return founderList;
     }
     
-    public String addCategory(Category p) {
+    public String addCategory(Category c) {
         String response = "";
         try {
-            String json = gson.toJson(p);
-            response = ConnectAPI.excuteHttpMethod(json, addCategory , "POST");
+            String json = gson.toJson(c);
+            response = ConnectAPI.excuteHttpMethod(json, addOne , "POST");
             //print in String
             System.out.println(response);
             

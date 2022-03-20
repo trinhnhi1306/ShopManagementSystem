@@ -3,10 +3,12 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/TRINH/OneDrive%20-%20Sang%20ltd/Desktop/New%20folder/ShopManagementSystem/ShopManagementSystem/src/view/login/LoginFrame.java</file>
-            <file>file:/C:/Users/TRINH/OneDrive%20-%20Sang%20ltd/Desktop/New%20folder/ShopManagementSystem/ShopManagementSystem/src/view/orders/OrderPanel.java</file>
-            <file>file:/C:/Users/TRINH/OneDrive%20-%20Sang%20ltd/Desktop/New%20folder/ShopManagementSystem/ShopManagementSystem/src/view/products/ProductPanel.java</file>
-            <file>file:/C:/Users/TRINH/OneDrive%20-%20Sang%20ltd/Desktop/New%20folder/ShopManagementSystem/ShopManagementSystem/src/view/admin/AdminMainFrame.java</file>
+            <file>file:/C:/Users/TRINH/OneDrive%20-%20Sang%20ltd/Documents/Nam4/Phat%20trien%20PM%20huong%20dich%20vu/ShopManagementSystem/ShopManagementSystem/src/view/login/LoginFrame.java</file>
+            <file>file:/C:/Users/TRINH/OneDrive%20-%20Sang%20ltd/Documents/Nam4/Phat%20trien%20PM%20huong%20dich%20vu/ShopManagementSystem/ShopManagementSystem/src/view/products/ProductPanel.java</file>
+            <file>file:/C:/Users/TRINH/OneDrive%20-%20Sang%20ltd/Documents/Nam4/Phat%20trien%20PM%20huong%20dich%20vu/ShopManagementSystem/ShopManagementSystem/src/view/users/UserPanel.java</file>
+            <file>file:/C:/Users/TRINH/OneDrive%20-%20Sang%20ltd/Documents/Nam4/Phat%20trien%20PM%20huong%20dich%20vu/ShopManagementSystem/ShopManagementSystem/src/controller/ProductController.java</file>
+            <file>file:/C:/Users/TRINH/OneDrive%20-%20Sang%20ltd/Documents/Nam4/Phat%20trien%20PM%20huong%20dich%20vu/ShopManagementSystem/ShopManagementSystem/src/view/admin/AdminMainFrame.java</file>
+            <file>file:/C:/Users/TRINH/OneDrive%20-%20Sang%20ltd/Documents/Nam4/Phat%20trien%20PM%20huong%20dich%20vu/ShopManagementSystem/ShopManagementSystem/src/utils/ConnectAPI.java</file>
         </group>
     </open-files>
 </project-private>

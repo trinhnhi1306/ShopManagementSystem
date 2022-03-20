@@ -4,7 +4,6 @@
  */
 package controller;
 
-import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import java.io.IOException;
 import java.lang.reflect.Type;
@@ -12,26 +11,24 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import model.Category;
+import model.Brand;
 import utils.ConnectAPI;
 
 /**
  *
  * @author TRINH
  */
-public class BrandController {
-    private final Gson gson = new Gson();
-    private final String getAllCategories = "/api/categories";
-    private final String addCategory = "/api/categories/addCategory";
+public class BrandController extends BaseController{
 
     public BrandController() {
+        getAll = "/api/brand";
     }
     
-    public List<Category> getAllCategories() {
-        List<Category> founderList = null;
+    public List<Brand> getAllBrands() {
+        List<Brand> founderList = null;
         try {
-            String json = ConnectAPI.excuteHttpMethod("", getAllCategories, "GET");
-            Type typeOfT = new TypeToken<ArrayList<Category>>(){}.getType();
+            String json = ConnectAPI.excuteHttpMethodHasAuthentication("", getAll, "GET");
+            Type typeOfT = new TypeToken<ArrayList<Brand>>(){}.getType();
             founderList = gson.fromJson(json, typeOfT);
         } catch (IOException ex) {
             Logger.getLogger(BrandController.class.getName()).log(Level.SEVERE, null, ex);
@@ -39,11 +36,11 @@ public class BrandController {
         return founderList;
     }
     
-    public String addCategory(Category p) {
+    public String addBrand(Brand b) {
         String response = "";
         try {
-            String json = gson.toJson(p);
-            response = ConnectAPI.excuteHttpMethod(json, addCategory , "POST");
+            String json = gson.toJson(b);
+            response = ConnectAPI.excuteHttpMethod(json, addOne , "POST");
             //print in String
             System.out.println(response);
             

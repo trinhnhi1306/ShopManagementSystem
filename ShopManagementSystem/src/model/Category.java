@@ -70,7 +70,7 @@ public class Category {
 
     @Override
     public String toString() {
-        return "Category{" + "category_id=" + categoryId + ", name=" + name + ", image=" + image + ", note=" + note + "}";
+        return name;
     }
     
 }

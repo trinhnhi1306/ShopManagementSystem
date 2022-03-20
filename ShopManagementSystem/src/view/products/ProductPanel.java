@@ -13,20 +13,32 @@ package view.products;
 //import java.text.SimpleDateFormat;
 //import java.util.ArrayList;
 //import java.util.Date;
+import controller.BrandController;
+import controller.CategoryController;
+import controller.ProductController;
+import java.awt.Image;
 import java.util.Enumeration;
+import java.util.List;
 //import java.util.List;
 //import java.util.Vector;
 //import java.util.logging.Level;
 //import java.util.logging.Logger;
 import javax.swing.AbstractButton;
 import javax.swing.ButtonGroup;
+import javax.swing.ImageIcon;
+import javax.swing.JFileChooser;
 //import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.RowFilter;
+import javax.swing.filechooser.FileNameExtensionFilter;
 //import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
+import model.Brand;
+import model.Category;
+import model.Product;
+import output.ProductOutput;
 //import model.database.Connect;
 //import model.database.Staff;
 import swing.UIController;
@@ -39,6 +51,10 @@ import swing.UIController;
 public class ProductPanel extends javax.swing.JPanel {
 
     private DefaultTableModel dtm;
+    private ProductController pc;
+    private CategoryController cc;
+    private BrandController bc;
+    private ProductOutput output;
 
     private enum Mode {
         ADD,
@@ -57,28 +73,42 @@ public class ProductPanel extends javax.swing.JPanel {
      */
     public ProductPanel() {
         initComponents();
-//        getStaff();
-//        loadAddress();
-//        loadRole();
-//        UIController.setDefaultTableHeader(jTable_Staff);
-//        setEditableForAll(false);
+        jTextArea_Description.setWrapStyleWord(true);
+        dtm = (DefaultTableModel) jTable_Product.getModel();
+        pc = new ProductController();
+        cc = new CategoryController();
+        bc = new BrandController();        
+        
+        loadData(1);
+        loadCategory();
+        loadBrand();
+        setEditableForAll(false);
+        TableRowSorter<TableModel> sorter = new TableRowSorter<TableModel>(jTable_Product.getModel());
+        jTable_Product.setRowSorter(sorter);
+    }
+    
+    public void loadData(int page) {        
+        output = pc.getProductInOnePage(page);
+        jLabel_Page.setText(output.getPage() + "/" + output.getTotalPage());
+        pc.loadTable(output.getListResult(), dtm);
     }
 
-//    void loadAddress() {
-//        Connection ketNoi = Connect.GetConnect();
-//        try {
-//            PreparedStatement ps = ketNoi.prepareStatement("select province_name from province");
-//            ResultSet rs = ps.executeQuery();
-//            while (rs.next()) {
-//                jComboBox_Province.addItem(rs.getString(1));
-//            }
-//            ps.close();
-//            rs.close();
-//            ketNoi.close();
-//        } catch (SQLException ex) {
-//            System.out.println("Lỗi lấy địa chỉ");
-//        }
-//    }
+    public void loadCategory() {
+        List<Category> list = cc.getAllCategories();
+        for(Category c: list) {
+            jComboBox_Category.addItem(c);
+            jComboBox_FilterCategory.addItem(c);
+        }
+    }
+    
+    public void loadBrand() {
+        List<Brand> list = bc.getAllBrands();
+        for(Brand b: list) {
+            jComboBox_Brand.addItem(b);
+            jComboBox_FilterBrand.addItem(b);
+        }
+    }
+    
 //    void loadRole() {
 //        Connection ketNoi = Connect.GetConnect();
 //        try {
@@ -94,47 +124,7 @@ public class ProductPanel extends javax.swing.JPanel {
 //            System.out.println("Lỗi lấy role!!");
 //        }
 //    }
-    // get nhân viên (trừ độc giả) có status == 1(chưa xóa).
-//    void getStaff() {
-//        dtm = (DefaultTableModel) jTable_Staff.getModel();
-//        dtm.setNumRows(0);
-//        Connection ketNoi = Connect.GetConnect();
-//        Vector vt;
-//        try {
-//            PreparedStatement ps = ketNoi.prepareStatement("select a.username,a.Full_Name,role.role,a.gender,a.date_of_birth,address.specific_address + ' - ' + ward.ward_name  + ' - ' + district.district_name + ' - ' + province.province_name as diachi,a.phone_number,a.email,a.registered_date from account a\n"
-//                    + "  inner join address\n"
-//                    + "  on address.address_id = a.address_id\n"
-//                    + "  left join ward\n"
-//                    + "  on address.ward_id = ward.ward_id\n"
-//                    + "  left join district\n"
-//                    + "  on ward.district_id = district.district_id\n"
-//                    + "  left join province\n"
-//                    + "  on district.province_id = province.province_id\n"
-//                    + "	left join role\n"
-//                    + " on role.role_id = a.role_id where role.role_id != 1 and a.status = 1");
-//            ResultSet rs = ps.executeQuery();
-//            while (rs.next()) {
-//                vt = new Vector();
-//                vt.add(rs.getString(1));
-//                vt.add(rs.getString(2));
-//                vt.add(rs.getString(3));
-//                vt.add(rs.getString(4));
-//                vt.add(rs.getDate(5));
-//                vt.add(rs.getString(6));
-//                vt.add(rs.getString(7));
-//                vt.add(rs.getString(8));
-//                vt.add(rs.getDate(9));
-//                dtm.addRow(vt);
-//            }
-//            jTable_Staff.setModel(dtm);
-//            ps.close();
-//            rs.close();
-//            ketNoi.close();
-//        } catch (SQLException ex) {
-//            System.out.println("loi lay user");
-//        }
-//
-//    }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -151,7 +141,7 @@ public class ProductPanel extends javax.swing.JPanel {
         jLabel8 = new javax.swing.JLabel();
         jLabel13 = new javax.swing.JLabel();
         jTextField_ID = new javax.swing.JTextField();
-        jLabel15 = new javax.swing.JLabel();
+        jLabel_Category = new javax.swing.JLabel();
         jComboBox_Brand = new javax.swing.JComboBox<>();
         jComboBox_Category = new javax.swing.JComboBox<>();
         jTextField_Name = new javax.swing.JTextField();
@@ -171,10 +161,10 @@ public class ProductPanel extends javax.swing.JPanel {
         jScrollPane2 = new javax.swing.JScrollPane();
         jTextArea_Description = new javax.swing.JTextArea();
         jLabel18 = new javax.swing.JLabel();
-        jPanel_Image = new javax.swing.JPanel();
         jButton_Change = new javax.swing.JButton();
         jButton_Category = new javax.swing.JButton();
         jButton_Brand = new javax.swing.JButton();
+        jLabel_Image = new javax.swing.JLabel();
         jPanel_Card = new javax.swing.JPanel();
         jPanel_Card1 = new javax.swing.JPanel();
         jButton_Add = new javax.swing.JButton();
@@ -197,6 +187,9 @@ public class ProductPanel extends javax.swing.JPanel {
         jButton_Import = new javax.swing.JButton();
         jButton_ShowImportHistory = new javax.swing.JButton();
         jButton_Deleted = new javax.swing.JButton();
+        jButton_PreviousPage = new javax.swing.JButton();
+        jButton_NextPage = new javax.swing.JButton();
+        jLabel_Page = new javax.swing.JLabel();
 
         setBackground(new java.awt.Color(255, 255, 255));
 
@@ -221,8 +214,8 @@ public class ProductPanel extends javax.swing.JPanel {
         jTextField_ID.setEditable(false);
         jTextField_ID.setFont(new java.awt.Font("Segoe UI", 0, 15)); // NOI18N
 
-        jLabel15.setFont(new java.awt.Font("Segoe UI", 0, 15)); // NOI18N
-        jLabel15.setText("Category");
+        jLabel_Category.setFont(new java.awt.Font("Segoe UI", 0, 15)); // NOI18N
+        jLabel_Category.setText("Category");
 
         jComboBox_Brand.setEditable(true);
         jComboBox_Brand.setFont(new java.awt.Font("Segoe UI", 0, 15)); // NOI18N
@@ -277,24 +270,13 @@ public class ProductPanel extends javax.swing.JPanel {
         jLabel17.setText("Description");
 
         jTextArea_Description.setColumns(20);
+        jTextArea_Description.setFont(new java.awt.Font("Segoe UI", 0, 15)); // NOI18N
+        jTextArea_Description.setLineWrap(true);
         jTextArea_Description.setRows(5);
         jScrollPane2.setViewportView(jTextArea_Description);
 
         jLabel18.setFont(new java.awt.Font("Segoe UI", 0, 15)); // NOI18N
         jLabel18.setText("Image");
-
-        jPanel_Image.setBorder(javax.swing.BorderFactory.createEtchedBorder());
-
-        javax.swing.GroupLayout jPanel_ImageLayout = new javax.swing.GroupLayout(jPanel_Image);
-        jPanel_Image.setLayout(jPanel_ImageLayout);
-        jPanel_ImageLayout.setHorizontalGroup(
-            jPanel_ImageLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 183, Short.MAX_VALUE)
-        );
-        jPanel_ImageLayout.setVerticalGroup(
-            jPanel_ImageLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
-        );
 
         jButton_Change.setFont(new java.awt.Font("Segoe UI", 1, 15)); // NOI18N
         jButton_Change.setForeground(new java.awt.Color(51, 51, 51));
@@ -327,6 +309,8 @@ public class ProductPanel extends javax.swing.JPanel {
                 jButton_BrandActionPerformed(evt);
             }
         });
+
+        jLabel_Image.setText("image");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -361,7 +345,7 @@ public class ProductPanel extends javax.swing.JPanel {
                                         .addGap(1, 1, 1))
                                     .addGroup(jPanel1Layout.createSequentialGroup()
                                         .addGap(26, 26, 26)
-                                        .addComponent(jSpinner_Discount, javax.swing.GroupLayout.DEFAULT_SIZE, 120, Short.MAX_VALUE))))
+                                        .addComponent(jSpinner_Discount, javax.swing.GroupLayout.DEFAULT_SIZE, 126, Short.MAX_VALUE))))
                             .addComponent(jTextField_ID)))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel9)
@@ -381,12 +365,12 @@ public class ProductPanel extends javax.swing.JPanel {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jLabel17, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jLabel13, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jLabel15, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jLabel_Category, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 400, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 59, Short.MAX_VALUE))
+                        .addGap(0, 65, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                             .addComponent(jComboBox_Brand, 0, 235, Short.MAX_VALUE)
@@ -395,12 +379,12 @@ public class ProductPanel extends javax.swing.JPanel {
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(jButton_Category, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jButton_Brand, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 62, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 69, Short.MAX_VALUE)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jButton_Change, javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(jLabel18, javax.swing.GroupLayout.Alignment.TRAILING))))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jPanel_Image, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(17, 17, 17)
+                .addComponent(jLabel_Image, javax.swing.GroupLayout.PREFERRED_SIZE, 184, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -408,7 +392,7 @@ public class ProductPanel extends javax.swing.JPanel {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(3, 3, 3)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanel_Image, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabel_Image, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel1Layout.createSequentialGroup()
@@ -438,7 +422,7 @@ public class ProductPanel extends javax.swing.JPanel {
                                         .addComponent(jLabel16)
                                         .addComponent(jLabel5)
                                         .addComponent(jSpinner_Discount)
-                                        .addComponent(jLabel15)
+                                        .addComponent(jLabel_Category)
                                         .addComponent(jComboBox_Category, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addComponent(jLabel18))))
                             .addGroup(jPanel1Layout.createSequentialGroup()
@@ -489,9 +473,9 @@ public class ProductPanel extends javax.swing.JPanel {
         jButton_Modify.setEnabled(false);
         jButton_Modify.setMaximumSize(new java.awt.Dimension(95, 33));
         jButton_Modify.setMinimumSize(new java.awt.Dimension(95, 30));
-        jButton_Modify.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton_ModifyActionPerformed(evt);
+        jButton_Modify.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jButton_ModifyMouseClicked(evt);
             }
         });
         jPanel_Card1.add(jButton_Modify);
@@ -572,12 +556,24 @@ public class ProductPanel extends javax.swing.JPanel {
                 "ID", "Name", "Category", "Brand", "Unit", "Price", "Quantity"
             }
         ) {
+            Class[] types = new Class [] {
+                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Double.class, java.lang.Integer.class
+            };
             boolean[] canEdit = new boolean [] {
                 false, false, false, false, false, false, false
             };
 
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];
+            }
+        });
+        jTable_Product.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                jTable_ProductFocusLost(evt);
             }
         });
         jTable_Product.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -658,6 +654,23 @@ public class ProductPanel extends javax.swing.JPanel {
             }
         });
 
+        jButton_PreviousPage.setText("<");
+        jButton_PreviousPage.setEnabled(false);
+        jButton_PreviousPage.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton_PreviousPageActionPerformed(evt);
+            }
+        });
+
+        jButton_NextPage.setText(">");
+        jButton_NextPage.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton_NextPageActionPerformed(evt);
+            }
+        });
+
+        jLabel_Page.setText("/");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -686,11 +699,21 @@ public class ProductPanel extends javax.swing.JPanel {
                         .addComponent(jPanel_Card, javax.swing.GroupLayout.PREFERRED_SIZE, 439, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                         .addComponent(jScrollPane1)
-                        .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jButton_ShowImportHistory, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 136, Short.MAX_VALUE)
-                            .addComponent(jButton_Deleted, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-                            .addComponent(jButton_Import, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(18, 18, 18)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(jButton_ShowImportHistory, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 136, Short.MAX_VALUE)
+                                    .addComponent(jButton_Deleted, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                                    .addComponent(jButton_Import, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addGap(31, 31, 31)
+                                .addComponent(jButton_PreviousPage)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 16, Short.MAX_VALUE)
+                                .addComponent(jLabel_Page, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(jButton_NextPage)
+                                .addGap(22, 22, 22)))))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -713,7 +736,7 @@ public class ProductPanel extends javax.swing.JPanel {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(18, 18, 18)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 366, Short.MAX_VALUE)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 355, Short.MAX_VALUE)
                         .addContainerGap())
                     .addGroup(layout.createSequentialGroup()
                         .addGap(86, 86, 86)
@@ -722,32 +745,38 @@ public class ProductPanel extends javax.swing.JPanel {
                         .addComponent(jButton_ShowImportHistory, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(jButton_Deleted, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jButton_PreviousPage)
+                            .addComponent(jButton_NextPage)
+                            .addComponent(jLabel_Page))
+                        .addGap(26, 26, 26))))
         );
     }// </editor-fold>//GEN-END:initComponents
 
-//    public void clearAll() {
-//        jRadioButton_Male.setSelected(true);
-//        jDateChooser_DateOfBirth.setDate(null);
-//        jTextField_Name.setText("");
-//        jTextField_PhoneNumber.setText("");
-//        jTextField_Email.setText("");
-//        jTextField_ID.setText("");
-//        jComboBox_Province.setSelectedIndex(0);
-//        jComboBox_District.setSelectedIndex(0);
-//        jComboBox_Commune.setSelectedIndex(0);
-//        jComboBox_Role.setSelectedIndex(0);
-//    }
-//    public void setEditableForAll(boolean editable) {
-//        jDateChooser_DateOfBirth.setEnabled(editable);
-//        jTextField_Name.setEditable(editable);
-//        jTextField_PhoneNumber.setEditable(editable);
-//        jTextField_Email.setEditable(editable);
-//        jComboBox_Province.setEnabled(editable);
-//        jComboBox_District.setEnabled(editable);
-//        jComboBox_Commune.setEnabled(editable);
-//        jComboBox_Role.setEnabled(editable);
-//    }
+    public void clearAll() {
+        jTextField_ID.setText("");
+        jTextField_Name.setText("");
+        jTextArea_Description.setText("");
+        jTextField_Unit.setText("");
+        jTextField_Specification.setText("");
+        jComboBox_Category.setSelectedIndex(-1);
+        jComboBox_Brand.setSelectedIndex(-1);
+        jSpinner_Quantity.setValue(0);
+        jSpinner_Price.setValue(0);
+        jSpinner_Discount.setValue(0);
+    }
+    public void setEditableForAll(boolean editable) {
+        jTextField_Name.setEditable(editable);
+        jTextArea_Description.setEditable(editable);
+        jTextField_Unit.setEditable(editable);
+        jTextField_Specification.setEditable(editable);
+        jComboBox_Category.setEnabled(editable);
+        jComboBox_Brand.setEnabled(editable);
+        jSpinner_Quantity.setEnabled(editable);
+        jSpinner_Price.setEnabled(editable);
+        jSpinner_Discount.setEnabled(editable);
+    }
 //    private boolean checkinput() {
 //        String id = jTextField_ID.getText();
 //        String sqlId = "select * from account where username = '" + id + "'";
@@ -918,8 +947,8 @@ public class ProductPanel extends javax.swing.JPanel {
     private void jButton_CancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_CancelActionPerformed
         // TODO add your handling code here:
         mode = Mode.FREE;
-//        clearAll();
-//        setEditableForAll(false);
+        clearAll();
+        setEditableForAll(false);
 //        if (jTable_Staff.getSelectedRow() != -1) {
 //        } else {
 //            jButton_Modify.setEnabled(false);
@@ -930,7 +959,7 @@ public class ProductPanel extends javax.swing.JPanel {
 
     private void jButton_ClearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_ClearActionPerformed
         // TODO add your handling code here:
-//        clearAll();
+        clearAll();
     }//GEN-LAST:event_jButton_ClearActionPerformed
 
     // check ward_id và specific_address , nếu trùng thì không cần thêm.
@@ -968,17 +997,10 @@ public class ProductPanel extends javax.swing.JPanel {
 //    }
 
     private void jButton_AddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_AddActionPerformed
-//        clearAll();
+        clearAll();
         mode = Mode.ADD;
         UIController.showCardLayout("cardSecond", jPanel_Card);
-//        setEditableForAll(true);
-//        jTextField_ID.setEditable(true);
-//
-//        Date date = new Date();
-//        jDateChooser_DateOfBirth.setDate(date);
-//        jComboBox_Province.setSelectedIndex(0);
-//        jComboBox_District.setSelectedIndex(0);
-//        jComboBox_Commune.setSelectedIndex(0);
+        setEditableForAll(true);
     }//GEN-LAST:event_jButton_AddActionPerformed
 
     //ok
@@ -1036,13 +1058,6 @@ public class ProductPanel extends javax.swing.JPanel {
         }
         return null;
     }
-
-    private void jButton_ModifyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_ModifyActionPerformed
-        // TODO add your handling code here:
-        mode = Mode.MODIFY;
-        UIController.showCardLayout("cardSecond", jPanel_Card);
-//        setEditableForAll(true);
-    }//GEN-LAST:event_jButton_ModifyActionPerformed
 
 //    public boolean updateAccount(String username, String Full_Name, String gender, String date_of_birth, int address_id, String phone_number, String email, int roleId) {
 //        Connection ketNoi = Connect.GetConnect();
@@ -1162,35 +1177,39 @@ public class ProductPanel extends javax.swing.JPanel {
 //    }
 
     private void jTable_ProductMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable_ProductMouseClicked
-        // TODO add your handling code here:
-//        DefaultTableModel model = (DefaultTableModel) jTable_Staff.getModel();
-//        int selectedRow = jTable_Staff.getSelectedRow();
-//
-//        List<Integer> list = getIdDistrictAndIdProvince(model.getValueAt(selectedRow, 0).toString());
-//        jTextField_ID.setText(model.getValueAt(selectedRow, 0).toString());
-//        jTextField_Name.setText(model.getValueAt(selectedRow, 1).toString());
-//        jTextField_Email.setText(model.getValueAt(selectedRow, 7).toString());
-//        jTextField_PhoneNumber.setText(model.getValueAt(selectedRow, 6).toString());
-//        jTextField_Address.setText(model.getValueAt(selectedRow, 5).toString().split(" - ")[0]);
-//        jComboBox_Province.setSelectedIndex(list.get(2) - 1);
-//        jComboBox_District.setSelectedItem(model.getValueAt(selectedRow, 5).toString().split(" - ")[2]);
-//        jComboBox_Commune.setSelectedItem(model.getValueAt(selectedRow, 5).toString().split(" - ")[1]);
-//        jComboBox_Role.setSelectedItem(model.getValueAt(selectedRow, 2).toString());
-//        if (model.getValueAt(selectedRow, 3).toString().equalsIgnoreCase("Nam")) {
-//            jRadioButton_Male.setSelected(true);
-//        } else if (model.getValueAt(selectedRow, 3).toString().equalsIgnoreCase("Nữ")) {
-//            jRadioButton_Female.setSelected(true);
-//        } else {
-//            jRadioButton_Other.setSelected(true);
-//        }
-//        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-//        try {
-//            jDateChooser_DateOfBirth.setDate(sdf.parse(model.getValueAt(selectedRow, 4).toString()));
-//        } catch (ParseException ex) {
-//            System.out.println(ex.getMessage());
-//        }
-//        jButton_Modify.setEnabled(true);
-//        jButton_Remove.setEnabled(true);
+        // TODO add your handling code here:   
+        if(mode == Mode.ADD) return;
+        int selectedRow = jTable_Product.convertRowIndexToModel(jTable_Product.getSelectedRow());
+
+        Product p = pc.getProductById(dtm.getValueAt(selectedRow, 0).toString());
+        jTextField_ID.setText(p.getProductId() + "");
+        jTextField_Name.setText(p.getName());
+        jTextField_Unit.setText(p.getCalculationUnit());
+        jTextField_Specification.setText(p.getSpecification());
+        jTextField_Sold.setText(p.getSoldQuantity() + "");
+        jTextArea_Description.setText(p.getDescription());
+        
+        for (int i = 0; i < jComboBox_Brand.getItemCount(); i++) {
+            if (jComboBox_Brand.getItemAt(i).getBrandId().equals(p.getBrand().getBrandId())) {
+                jComboBox_Brand.setSelectedIndex(i);
+            }
+        }
+        
+        for (int i = 0; i < jComboBox_Category.getItemCount(); i++) {
+            if (jComboBox_Category.getItemAt(i).getCategoryId().equals(p.getCategory().getCategoryId())) {
+                jComboBox_Category.setSelectedIndex(i);
+            }
+        }
+        
+        Image img = pc.getImage(p.getImage());
+        Image newImg = img.getScaledInstance(jLabel_Image.getWidth(), jLabel_Image.getHeight(), java.awt.Image.SCALE_SMOOTH);
+        jLabel_Image.setIcon(new ImageIcon(newImg));
+        
+        jSpinner_Price.setValue(p.getPrice());
+        jSpinner_Discount.setValue(p.getDiscount());
+        jSpinner_Quantity.setValue(p.getQuantity());
+        jButton_Modify.setEnabled(true);
+        jButton_Remove.setEnabled(true);
     }//GEN-LAST:event_jTable_ProductMouseClicked
 
     private void jComboBox_CategoryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox_CategoryActionPerformed
@@ -1216,7 +1235,7 @@ public class ProductPanel extends javax.swing.JPanel {
         String tuKhoa = jTextField_NameSearch.getText().toLowerCase();
         TableRowSorter<TableModel> trs = new TableRowSorter<>(jTable_Product.getModel());
         jTable_Product.setRowSorter(trs);
-        trs.setRowFilter(RowFilter.regexFilter("(?i)" + tuKhoa, 1));
+        trs.setRowFilter(RowFilter.regexFilter("(?i)" + tuKhoa));
     }//GEN-LAST:event_jTextField_NameSearchCaretUpdate
 
     private void jButton_ExportExcelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_ExportExcelActionPerformed
@@ -1227,6 +1246,21 @@ public class ProductPanel extends javax.swing.JPanel {
 
     private void jButton_ChangeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_ChangeActionPerformed
         // TODO add your handling code here:
+        JFileChooser fileChooser = new JFileChooser();
+        FileNameExtensionFilter imageFilter = new FileNameExtensionFilter("Image Files", "jpg", "png");
+        fileChooser.setFileFilter(imageFilter);
+        fileChooser.setMultiSelectionEnabled(false);
+        int x = fileChooser.showDialog(this, "Chọn file");
+        if (x == JFileChooser.APPROVE_OPTION) {
+            java.io.File file = fileChooser.getSelectedFile();
+            ImageIcon imgIcon = new ImageIcon(file.getAbsolutePath());
+            Image img = imgIcon.getImage();
+            Image newImg = img.getScaledInstance(jLabel_Image.getWidth(), jLabel_Image.getHeight(), java.awt.Image.SCALE_SMOOTH);
+            jLabel_Image.setIcon(new ImageIcon(newImg));
+        }
+        else {
+            return;
+        }
     }//GEN-LAST:event_jButton_ChangeActionPerformed
 
     private void jComboBox_FilterCategoryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox_FilterCategoryActionPerformed
@@ -1269,6 +1303,40 @@ public class ProductPanel extends javax.swing.JPanel {
         productDeletedDialog = new ProductDeletedDialog(null, true);
         productDeletedDialog.setVisible(true);
     }//GEN-LAST:event_jButton_DeletedActionPerformed
+
+    private void jButton_NextPageActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_NextPageActionPerformed
+        // TODO add your handling code here:
+        if(output.getPage() < output.getTotalPage()) {
+            loadData(output.getPage() + 1);
+            jButton_PreviousPage.setEnabled(true);
+        }
+        if(output.getPage() == output.getTotalPage())
+            jButton_NextPage.setEnabled(false);
+    }//GEN-LAST:event_jButton_NextPageActionPerformed
+
+    private void jButton_PreviousPageActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_PreviousPageActionPerformed
+        // TODO add your handling code here:
+        if(output.getPage() > 1) {
+            loadData(output.getPage() - 1);
+            jButton_NextPage.setEnabled(true);
+        }
+        if(output.getPage() == 1)
+            jButton_PreviousPage.setEnabled(false);
+    }//GEN-LAST:event_jButton_PreviousPageActionPerformed
+
+    private void jTable_ProductFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTable_ProductFocusLost
+        // TODO add your handling code here:
+        jButton_Modify.setEnabled(false);
+        jButton_Remove.setEnabled(false);
+    }//GEN-LAST:event_jTable_ProductFocusLost
+
+    private void jButton_ModifyMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton_ModifyMouseClicked
+        // TODO add your handling code here:
+        System.out.println("modify");
+        mode = Mode.MODIFY;
+        UIController.showCardLayout("cardSecond", jPanel_Card);
+        setEditableForAll(true);
+    }//GEN-LAST:event_jButton_ModifyMouseClicked
 
 //    List<Integer> getIdDistrictAndIdProvince(String username) {
 //        int i = 0;
@@ -1330,17 +1398,18 @@ public class ProductPanel extends javax.swing.JPanel {
     private javax.swing.JButton jButton_ExportExcel;
     private javax.swing.JButton jButton_Import;
     private javax.swing.JButton jButton_Modify;
+    private javax.swing.JButton jButton_NextPage;
     private javax.swing.JButton jButton_OK;
+    private javax.swing.JButton jButton_PreviousPage;
     private javax.swing.JButton jButton_Remove;
     private javax.swing.JButton jButton_ShowImportHistory;
-    private javax.swing.JComboBox<String> jComboBox_Brand;
-    private javax.swing.JComboBox<String> jComboBox_Category;
-    private javax.swing.JComboBox<String> jComboBox_FilterBrand;
-    private javax.swing.JComboBox<String> jComboBox_FilterCategory;
+    private javax.swing.JComboBox<Brand> jComboBox_Brand;
+    private javax.swing.JComboBox<Category> jComboBox_Category;
+    private javax.swing.JComboBox<Brand> jComboBox_FilterBrand;
+    private javax.swing.JComboBox<Category> jComboBox_FilterCategory;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel14;
-    private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel16;
     private javax.swing.JLabel jLabel17;
     private javax.swing.JLabel jLabel18;
@@ -1355,11 +1424,13 @@ public class ProductPanel extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
+    private javax.swing.JLabel jLabel_Category;
+    private javax.swing.JLabel jLabel_Image;
+    private javax.swing.JLabel jLabel_Page;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel_Card;
     private javax.swing.JPanel jPanel_Card1;
     private javax.swing.JPanel jPanel_Card2;
-    private javax.swing.JPanel jPanel_Image;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JSpinner jSpinner_Discount;
