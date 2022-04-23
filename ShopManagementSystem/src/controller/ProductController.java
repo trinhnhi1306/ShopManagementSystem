@@ -30,7 +30,7 @@ public class ProductController extends BaseController{
         getAll = "/api/products/getAllProducts";
         addOne = "/api/product";
         editOrDelete = "/api/products/";
-        getProductInOnePage = "/api/product/";
+        getProductInOnePage = "/api/product?pageNo=%d&pageSize=20&sortField=productId&sortDirection=desc";
         getImage = "/api/product/get-image/";
     }
 
@@ -47,9 +47,11 @@ public class ProductController extends BaseController{
     }
     
     public ProductOutput getProductInOnePage(int pageNo) {
+        String str = String.format(getProductInOnePage, pageNo);
+        System.out.println(str);
         ProductOutput founderList = null;
         try {
-            Response response = ConnectAPI.excuteHttpMethod("", getProductInOnePage + pageNo, "GET", true);
+            Response response = ConnectAPI.excuteHttpMethod("", str, "GET", true);
             founderList = gson.fromJson(response.getMessage(), ProductOutput.class);
             
         } catch (IOException ex) {
