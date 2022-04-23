@@ -38,6 +38,7 @@ import javax.swing.table.TableRowSorter;
 import model.Brand;
 import model.Category;
 import model.Product;
+import model.Response;
 import output.ProductOutput;
 //import model.database.Connect;
 //import model.database.Staff;
@@ -55,6 +56,7 @@ public class ProductPanel extends javax.swing.JPanel {
     private CategoryController cc;
     private BrandController bc;
     private ProductOutput output;
+    private String imageName = "";
 
     private enum Mode {
         ADD,
@@ -458,6 +460,11 @@ public class ProductPanel extends javax.swing.JPanel {
         jButton_Add.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         jButton_Add.setMaximumSize(new java.awt.Dimension(95, 30));
         jButton_Add.setMinimumSize(new java.awt.Dimension(95, 30));
+        jButton_Add.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jButton_AddMouseClicked(evt);
+            }
+        });
         jButton_Add.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton_AddActionPerformed(evt);
@@ -476,6 +483,11 @@ public class ProductPanel extends javax.swing.JPanel {
         jButton_Modify.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jButton_ModifyMouseClicked(evt);
+            }
+        });
+        jButton_Modify.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton_ModifyActionPerformed(evt);
             }
         });
         jPanel_Card1.add(jButton_Modify);
@@ -776,6 +788,10 @@ public class ProductPanel extends javax.swing.JPanel {
         jSpinner_Quantity.setEnabled(editable);
         jSpinner_Price.setEnabled(editable);
         jSpinner_Discount.setEnabled(editable);
+        jComboBox_FilterBrand.setEnabled(!editable);
+        jComboBox_FilterCategory.setEnabled(!editable);
+        jTextField_NameSearch.setEnabled(!editable);
+        jButton_Change.setEnabled(editable);
     }
 //    private boolean checkinput() {
 //        String id = jTextField_ID.getText();
@@ -843,64 +859,39 @@ public class ProductPanel extends javax.swing.JPanel {
 
     private void jButton_OKActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_OKActionPerformed
         // TODO add your handling code here:
-//        String username = jTextField_ID.getText();
-//        String Full_Name = jTextField_Name.getText();
-//        String genderEndlish = getSelectedButtonText(buttonGroup1);
-//        String gender = "";
-//        if (genderEndlish.equalsIgnoreCase("Male")) {
-//            gender = "Nam";
-//        } else if (genderEndlish.equalsIgnoreCase("Female")) {
-//            gender = "Nữ";
-//        } else {
-//            gender = "Khác";
-//        }
-//        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-//        String date_of_birth = sdf.format(jDateChooser_DateOfBirth.getDate());
-//        String specific_address = jTextField_Address.getText();
-//        String email = jTextField_Email.getText();
-//        String phone_number = jTextField_PhoneNumber.getText();
-//        int ward_id = getIdWard(jComboBox_Commune.getSelectedItem().toString(), jComboBox_District.getSelectedItem().toString(), jComboBox_Province.getSelectedItem().toString());
-//        String registeredDate = java.time.LocalDate.now().toString();
-//        if (mode == Mode.ADD) {
-//            if (checkinput() == true) {
-//                String username = jTextField_ID.getText();
-//                String Full_Name = jTextField_Name.getText();
-//                String genderEndlish = getSelectedButtonText(buttonGroup1);
-//                String gender = "";
-//                if (genderEndlish.equalsIgnoreCase("Male")) {
-//                    gender = "Nam";
-//                } else if (genderEndlish.equalsIgnoreCase("Female")) {
-//                    gender = "Nữ";
-//                } else {
-//                    gender = "Khác";
-//                }
-//                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-//                String date_of_birth = sdf.format(jDateChooser_DateOfBirth.getDate());
-//                String specific_address = jTextField_Address.getText();
-//                String email = jTextField_Email.getText();
-//                String phone_number = jTextField_PhoneNumber.getText();
-//                int ward_id = getIdWard(jComboBox_Commune.getSelectedItem().toString(), jComboBox_District.getSelectedItem().toString(), jComboBox_Province.getSelectedItem().toString());
-//                String registeredDate = java.time.LocalDate.now().toString();
-//                
-//                int address_id = getAddress_idBySpecific_address(ward_id, specific_address);
-//                if (address_id == -1) {
-//                    insertNewAddress(ward_id, specific_address);
-//                    address_id = getAddress_idBySpecific_address(ward_id, specific_address);
-//                }
-//                
-//                String role = jComboBox_Role.getSelectedItem().toString();
-//                int roleId = getIdRole(role);
-//                
-//                Staff s1 = new Staff(username, hash(username), Full_Name, gender, date_of_birth, registeredDate, address_id, phone_number, email, roleId, 1);
-//                boolean flag = insertAccount(s1);
-//                if (flag != false) {
-//                    JOptionPane.showMessageDialog(this, "Thêm nhân viên mới thành công!!!", "", JOptionPane.CLOSED_OPTION);
-//                    getStaff();
-//                } else {
-//                    JOptionPane.showMessageDialog(this, "Thêm nhân viên mới thất bại!!!", "", JOptionPane.ERROR_MESSAGE);
-//                }
-//            }
-//        }
+        String name = jTextField_Name.getText();
+        String unit = jTextField_Unit.getText();
+        String specification = jTextField_Specification.getText();
+        String description = jTextArea_Description.getText();
+        double price = Double.parseDouble(jSpinner_Price.getValue().toString());
+        int discount = Integer.parseInt(jSpinner_Discount.getValue().toString());
+        int soldQuantity = Integer.parseInt(jTextField_Sold.getText());
+        int quantity = Integer.parseInt(jSpinner_Quantity.getValue().toString());
+        
+        Brand brand = (Brand) jComboBox_Brand.getSelectedItem();
+        Category category = (Category) jComboBox_Category.getSelectedItem();        
+        
+        if (mode == Mode.ADD) {
+            Product product = new Product();
+            product.setName(name);
+            product.setDescription(description);
+            product.setImage(imageName);
+            product.setPrice(price);
+            product.setSpecification(specification);
+            product.setCalculationUnit(unit);
+            product.setDiscount(discount);
+            product.setSoldQuantity(soldQuantity);
+            product.setQuantity(quantity);
+            product.setCategory(category);
+            product.setBrand(brand);
+            product.setStatus(true);
+            Response response = pc.addProduct(product);
+            JOptionPane.showMessageDialog(this, response.getMessage());
+            if(response.getResponseCode() == 200)
+                loadData(output.getPage());
+            else
+                return;            
+        }
 //        if (mode == Mode.MODIFY) {
 //            //jTextField_ID.setEnabled(false);
 //            String username = jTextField_ID.getText();
@@ -941,7 +932,11 @@ public class ProductPanel extends javax.swing.JPanel {
 //                JOptionPane.showMessageDialog(null, "Sửa thông tin nhân viên mới thất bại!!!", "", JOptionPane.ERROR_MESSAGE);
 //            }
 //        }
+        mode = Mode.FREE;
         UIController.showCardLayout("cardFirst", jPanel_Card);
+        setEditableForAll(false);
+        jTable_Product.setEnabled(true);
+        imageName = "";
     }//GEN-LAST:event_jButton_OKActionPerformed
 
     private void jButton_CancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_CancelActionPerformed
@@ -949,12 +944,14 @@ public class ProductPanel extends javax.swing.JPanel {
         mode = Mode.FREE;
         clearAll();
         setEditableForAll(false);
+        jTable_Product.setEnabled(true);
 //        if (jTable_Staff.getSelectedRow() != -1) {
 //        } else {
 //            jButton_Modify.setEnabled(false);
 //            jButton_Remove.setEnabled(false);
 //        }
         UIController.showCardLayout("cardFirst", jPanel_Card);
+        imageName = "";
     }//GEN-LAST:event_jButton_CancelActionPerformed
 
     private void jButton_ClearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_ClearActionPerformed
@@ -1001,6 +998,9 @@ public class ProductPanel extends javax.swing.JPanel {
         mode = Mode.ADD;
         UIController.showCardLayout("cardSecond", jPanel_Card);
         setEditableForAll(true);
+        jTable_Product.setEnabled(false);
+        imageName = "default.png";
+        jTextField_Sold.setText("0");
     }//GEN-LAST:event_jButton_AddActionPerformed
 
     //ok
@@ -1178,7 +1178,7 @@ public class ProductPanel extends javax.swing.JPanel {
 
     private void jTable_ProductMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable_ProductMouseClicked
         // TODO add your handling code here:   
-        if(mode == Mode.ADD) return;
+        if(mode == Mode.ADD || mode == Mode.MODIFY) return;
         int selectedRow = jTable_Product.convertRowIndexToModel(jTable_Product.getSelectedRow());
 
         Product p = pc.getProductById(dtm.getValueAt(selectedRow, 0).toString());
@@ -1203,7 +1203,8 @@ public class ProductPanel extends javax.swing.JPanel {
         
         Image img = pc.getImage(p.getImage());
         Image newImg = img.getScaledInstance(jLabel_Image.getWidth(), jLabel_Image.getHeight(), java.awt.Image.SCALE_SMOOTH);
-        jLabel_Image.setIcon(new ImageIcon(newImg));
+        ImageIcon icon = new ImageIcon(newImg);
+        jLabel_Image.setIcon(icon);
         
         jSpinner_Price.setValue(p.getPrice());
         jSpinner_Discount.setValue(p.getDiscount());
@@ -1257,6 +1258,8 @@ public class ProductPanel extends javax.swing.JPanel {
             Image img = imgIcon.getImage();
             Image newImg = img.getScaledInstance(jLabel_Image.getWidth(), jLabel_Image.getHeight(), java.awt.Image.SCALE_SMOOTH);
             jLabel_Image.setIcon(new ImageIcon(newImg));
+            imageName = file.getName();
+            System.out.println(file.getName());
         }
         else {
             return;
@@ -1336,7 +1339,25 @@ public class ProductPanel extends javax.swing.JPanel {
         mode = Mode.MODIFY;
         UIController.showCardLayout("cardSecond", jPanel_Card);
         setEditableForAll(true);
+        jTable_Product.setEnabled(false);
     }//GEN-LAST:event_jButton_ModifyMouseClicked
+
+    private void jButton_ModifyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_ModifyActionPerformed
+        // TODO add your handling code here:
+//        System.out.println("modify");
+//        mode = Mode.MODIFY;
+//        UIController.showCardLayout("cardSecond", jPanel_Card);
+//        setEditableForAll(true);
+    }//GEN-LAST:event_jButton_ModifyActionPerformed
+
+    private void jButton_AddMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton_AddMouseClicked
+        // TODO add your handling code here:
+        clearAll();
+        mode = Mode.ADD;
+        UIController.showCardLayout("cardSecond", jPanel_Card);
+        setEditableForAll(true);
+        jTable_Product.setEnabled(false);
+    }//GEN-LAST:event_jButton_AddMouseClicked
 
 //    List<Integer> getIdDistrictAndIdProvince(String username) {
 //        int i = 0;

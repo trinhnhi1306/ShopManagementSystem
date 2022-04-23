@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
+import model.Response;
 import model.User;
 import utils.ConnectAPI;
 
@@ -27,9 +28,9 @@ public class UserController {
     public List<User> signIn() {
         List<User> founderList= null;
         try {
-            String json = ConnectAPI.excuteHttpMethod("", signIn, "GET");
+            Response response = ConnectAPI.excuteHttpMethod("", signIn, "GET", false);
             Type typeOfT = new TypeToken<ArrayList<User>>(){}.getType();
-            founderList = gson.fromJson(json, typeOfT);
+            founderList = gson.fromJson(response.getMessage(), typeOfT);
             
         } catch (IOException ex) {
             System.out.println(ex.getMessage());

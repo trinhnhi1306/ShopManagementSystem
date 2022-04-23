@@ -49,6 +49,6 @@ public class test {
         System.out.println(output.getRoles().toArray()[0]);
         ConnectAPI.tokenType = output.getTokenType();
         ConnectAPI.accessToken = output.getAccessToken();
-        System.out.println(ConnectAPI.excuteHttpMethodHasAuthentication("", "/api/test/user", "GET"));
+        System.out.println(ConnectAPI.excuteHttpMethod("", "/api/test/user", "GET", true));
     }
 }

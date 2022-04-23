@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import model.Category;
+import model.Response;
 import utils.ConnectAPI;
 
 /**
@@ -27,22 +28,22 @@ public class CategoryController extends BaseController{
     public List<Category> getAllCategories() {
         List<Category> founderList = null;
         try {
-            String json = ConnectAPI.excuteHttpMethodHasAuthentication("", getAll, "GET");
+            Response reponse = ConnectAPI.excuteHttpMethod("", getAll, "GET", true);
             Type typeOfT = new TypeToken<ArrayList<Category>>(){}.getType();
-            founderList = gson.fromJson(json, typeOfT);
+            founderList = gson.fromJson(reponse.getMessage(), typeOfT);
         } catch (IOException ex) {
             Logger.getLogger(CategoryController.class.getName()).log(Level.SEVERE, null, ex);
         }
         return founderList;
     }
     
-    public String addCategory(Category c) {
-        String response = "";
+    public Response addCategory(Category c) {
+        Response response = null;
         try {
             String json = gson.toJson(c);
-            response = ConnectAPI.excuteHttpMethod(json, addOne , "POST");
+            response = ConnectAPI.excuteHttpMethod(json, addOne , "POST", true);
             //print in String
-            System.out.println(response);
+            System.out.println(response.getMessage());
             
         } catch (IOException ex) {
             System.out.println(ex.getMessage());

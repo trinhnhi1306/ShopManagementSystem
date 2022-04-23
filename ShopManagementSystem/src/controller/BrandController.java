@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import model.Brand;
+import model.Response;
 import utils.ConnectAPI;
 
 /**
@@ -27,20 +28,20 @@ public class BrandController extends BaseController{
     public List<Brand> getAllBrands() {
         List<Brand> founderList = null;
         try {
-            String json = ConnectAPI.excuteHttpMethodHasAuthentication("", getAll, "GET");
+            Response response = ConnectAPI.excuteHttpMethod("", getAll, "GET", true);
             Type typeOfT = new TypeToken<ArrayList<Brand>>(){}.getType();
-            founderList = gson.fromJson(json, typeOfT);
+            founderList = gson.fromJson(response.getMessage(), typeOfT);
         } catch (IOException ex) {
             Logger.getLogger(BrandController.class.getName()).log(Level.SEVERE, null, ex);
         }
         return founderList;
     }
     
-    public String addBrand(Brand b) {
-        String response = "";
+    public Response addBrand(Brand b) {
+        Response response = null;
         try {
             String json = gson.toJson(b);
-            response = ConnectAPI.excuteHttpMethod(json, addOne , "POST");
+            response = ConnectAPI.excuteHttpMethod(json, addOne , "POST", true);
             //print in String
             System.out.println(response);
             

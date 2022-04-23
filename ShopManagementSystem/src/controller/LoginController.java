@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.Map;
 import model.Login;
+import model.Response;
 import utils.ConnectAPI;
 
 /**
@@ -31,8 +32,8 @@ public class LoginController extends BaseController{
         System.out.println("Json: " + json);
         Login output = null;        
         try {
-            String json1 = ConnectAPI.excuteHttpMethod(json, login, "POST");
-            output = gson.fromJson(json1, Login.class);
+            Response response = ConnectAPI.excuteHttpMethod(json, login, "POST", false);
+            output = gson.fromJson(response.getMessage(), Login.class);
         } catch (IOException ex) {
             System.out.println(ex.getMessage());
         }

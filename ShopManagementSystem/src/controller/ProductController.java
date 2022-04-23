@@ -12,6 +12,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.table.DefaultTableModel;
 import model.Product;
+import model.Response;
 import output.ProductOutput;
 import utils.ConnectAPI;
 
@@ -27,7 +28,7 @@ public class ProductController extends BaseController{
     public ProductController() {
         getOneByID = "/api/product/get-product?idProduct=";
         getAll = "/api/products/getAllProducts";
-        addOne = "/api/products/addProduct";
+        addOne = "/api/product";
         editOrDelete = "/api/products/";
         getProductInOnePage = "/api/product/";
         getImage = "/api/product/get-image/";
@@ -36,8 +37,8 @@ public class ProductController extends BaseController{
     public Product getProductById(String id) {
         Product p = null;        
         try {
-            String json = ConnectAPI.excuteHttpMethodHasAuthentication("", getOneByID + id, "GET");
-            p = gson.fromJson(json, Product.class);
+            Response response = ConnectAPI.excuteHttpMethod("", getOneByID + id, "GET", true);
+            p = gson.fromJson(response.getMessage(), Product.class);
             
         } catch (IOException ex) {
             System.out.println(ex.getMessage());
@@ -46,10 +47,10 @@ public class ProductController extends BaseController{
     }
     
     public ProductOutput getProductInOnePage(int pageNo) {
-        ProductOutput founderList= null;
+        ProductOutput founderList = null;
         try {
-            String json = ConnectAPI.excuteHttpMethodHasAuthentication("", getProductInOnePage + pageNo, "GET");
-            founderList = gson.fromJson(json, ProductOutput.class);
+            Response response = ConnectAPI.excuteHttpMethod("", getProductInOnePage + pageNo, "GET", true);
+            founderList = gson.fromJson(response.getMessage(), ProductOutput.class);
             
         } catch (IOException ex) {
             System.out.println(ex.getMessage());
@@ -57,13 +58,13 @@ public class ProductController extends BaseController{
         return founderList;
     }
     
-    public String addProduct(Product p) {
-        String response = "";
+    public Response addProduct(Product p) {
+        Response response = null;
         try {
             String json = gson.toJson(p);
-            response = ConnectAPI.excuteHttpMethod(json, addOne , "POST");
+            response = ConnectAPI.excuteHttpMethod(json, addOne , "POST", true);
             //print in String
-            System.out.println(response);
+            System.out.println(response.getMessage());
             
         } catch (IOException ex) {
             System.out.println(ex.getMessage());
@@ -71,13 +72,13 @@ public class ProductController extends BaseController{
         return response;
     }
     
-    public String updateProductByID(int id, Product p) {
-        String response = "";
+    public Response updateProductByID(int id, Product p) {
+        Response response = null;
         try {            
             String json = gson.toJson(p);
-            response = ConnectAPI.excuteHttpMethod(json, editOrDelete + id , "PUT");
+            response = ConnectAPI.excuteHttpMethod(json, editOrDelete + id , "PUT", true);
             //print in String
-            System.out.println(response);
+            System.out.println(response.getMessage());
             
         } catch (IOException ex) {
             System.out.println(ex.getMessage());
@@ -85,12 +86,12 @@ public class ProductController extends BaseController{
         return response;
     }
     
-    public String deleteProductByID(int id) {
-        String response = "";
+    public Response deleteProductByID(int id) {
+        Response response = null;
         try {  
-            response = ConnectAPI.excuteHttpMethod("", editOrDelete + id , "DELETE");
+            response = ConnectAPI.excuteHttpMethod("", editOrDelete + id , "DELETE", true);
             //print in String
-            System.out.println(response);
+            System.out.println(response.getMessage());
             
         } catch (IOException ex) {
             System.out.println(ex.getMessage());
