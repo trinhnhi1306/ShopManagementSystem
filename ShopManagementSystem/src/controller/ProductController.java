@@ -29,7 +29,7 @@ public class ProductController extends BaseController{
         getOneByID = "/api/product/get-product?idProduct=";
         getAll = "/api/products/getAllProducts";
         addOne = "/api/product";
-        editOrDelete = "/api/products/";
+        editOrDelete = "/api/product/";
         getProductInOnePage = "/api/product?pageNo=%d&pageSize=20&sortField=productId&sortDirection=desc";
         getImage = "/api/product/get-image/";
     }
@@ -88,7 +88,7 @@ public class ProductController extends BaseController{
         return response;
     }
     
-    public Response deleteProductByID(int id) {
+    public Response deleteProductByID(String id) {
         Response response = null;
         try {  
             response = ConnectAPI.excuteHttpMethod("", editOrDelete + id , "DELETE", true);

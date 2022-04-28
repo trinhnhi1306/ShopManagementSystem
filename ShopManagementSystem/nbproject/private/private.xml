@@ -5,15 +5,16 @@
         <group>
             <file>file:/C:/Users/TRINH/OneDrive%20-%20Sang%20ltd/Documents/Nam4/Phat%20trien%20PM%20huong%20dich%20vu/ShopManagementSystem/ShopManagementSystem/src/view/products/ProductDeletedDialog.java</file>
             <file>file:/C:/Users/TRINH/OneDrive%20-%20Sang%20ltd/Documents/Nam4/Phat%20trien%20PM%20huong%20dich%20vu/ShopManagementSystem/ShopManagementSystem/src/view/login/LoginFrame.java</file>
-            <file>file:/C:/Users/TRINH/OneDrive%20-%20Sang%20ltd/Documents/Nam4/Phat%20trien%20PM%20huong%20dich%20vu/ShopManagementSystem/ShopManagementSystem/src/view/products/ProductPanel.java</file>
             <file>file:/C:/Users/TRINH/OneDrive%20-%20Sang%20ltd/Documents/Nam4/Phat%20trien%20PM%20huong%20dich%20vu/ShopManagementSystem/ShopManagementSystem/src/controller/LoginController.java</file>
+            <file>file:/C:/Users/TRINH/OneDrive%20-%20Sang%20ltd/Documents/Nam4/Phat%20trien%20PM%20huong%20dich%20vu/ShopManagementSystem/ShopManagementSystem/src/view/admin/AdminMainFrame.java</file>
+            <file>file:/C:/Users/TRINH/OneDrive%20-%20Sang%20ltd/Documents/Nam4/Phat%20trien%20PM%20huong%20dich%20vu/ShopManagementSystem/ShopManagementSystem/src/service/APIClient.java</file>
+            <file>file:/C:/Users/TRINH/OneDrive%20-%20Sang%20ltd/Documents/Nam4/Phat%20trien%20PM%20huong%20dich%20vu/ShopManagementSystem/ShopManagementSystem/src/view/products/ProductPanel.java</file>
             <file>file:/C:/Users/TRINH/OneDrive%20-%20Sang%20ltd/Documents/Nam4/Phat%20trien%20PM%20huong%20dich%20vu/ShopManagementSystem/ShopManagementSystem/src/model/Login.java</file>
             <file>file:/C:/Users/TRINH/OneDrive%20-%20Sang%20ltd/Documents/Nam4/Phat%20trien%20PM%20huong%20dich%20vu/ShopManagementSystem/ShopManagementSystem/src/controller/ProductController.java</file>
-            <file>file:/C:/Users/TRINH/OneDrive%20-%20Sang%20ltd/Documents/Nam4/Phat%20trien%20PM%20huong%20dich%20vu/ShopManagementSystem/ShopManagementSystem/src/controller/BaseController.java</file>
-            <file>file:/C:/Users/TRINH/OneDrive%20-%20Sang%20ltd/Documents/Nam4/Phat%20trien%20PM%20huong%20dich%20vu/ShopManagementSystem/ShopManagementSystem/src/view/admin/AdminMainFrame.java</file>
             <file>file:/C:/Users/TRINH/OneDrive%20-%20Sang%20ltd/Documents/Nam4/Phat%20trien%20PM%20huong%20dich%20vu/ShopManagementSystem/ShopManagementSystem/src/model/Product.java</file>
             <file>file:/C:/Users/TRINH/OneDrive%20-%20Sang%20ltd/Documents/Nam4/Phat%20trien%20PM%20huong%20dich%20vu/ShopManagementSystem/ShopManagementSystem/src/utils/ConnectAPI.java</file>
             <file>file:/C:/Users/TRINH/OneDrive%20-%20Sang%20ltd/Documents/Nam4/Phat%20trien%20PM%20huong%20dich%20vu/ShopManagementSystem/ShopManagementSystem/src/controller/UserController.java</file>
+            <file>file:/C:/Users/TRINH/OneDrive%20-%20Sang%20ltd/Documents/Nam4/Phat%20trien%20PM%20huong%20dich%20vu/ShopManagementSystem/ShopManagementSystem/src/service/UploadFileService.java</file>
             <file>file:/C:/Users/TRINH/OneDrive%20-%20Sang%20ltd/Documents/Nam4/Phat%20trien%20PM%20huong%20dich%20vu/ShopManagementSystem/ShopManagementSystem/src/controller/CategoryController.java</file>
         </group>
     </open-files>

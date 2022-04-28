@@ -17,8 +17,13 @@ import controller.BrandController;
 import controller.CategoryController;
 import controller.ProductController;
 import java.awt.Image;
+import java.io.File;
+import java.io.IOException;
+import java.net.HttpURLConnection;
 import java.util.Enumeration;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 //import java.util.List;
 //import java.util.Vector;
 //import java.util.logging.Level;
@@ -39,10 +44,20 @@ import model.Brand;
 import model.Category;
 import model.Product;
 import model.Response;
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
+import okhttp3.ResponseBody;
+import okio.ByteString;
 import output.ProductOutput;
+import retrofit2.Call;
+import retrofit2.Callback;
+import service.APIClient;
 //import model.database.Connect;
 //import model.database.Staff;
 import swing.UIController;
+import utils.ConnectAPI;
+import service.UploadFileService;
 //import utilities.File;
 
 /**
@@ -57,6 +72,7 @@ public class ProductPanel extends javax.swing.JPanel {
     private BrandController bc;
     private ProductOutput output;
     private String imageName = "";
+    private File selectedFile;
 
     private enum Mode {
         ADD,
@@ -87,8 +103,24 @@ public class ProductPanel extends javax.swing.JPanel {
         setEditableForAll(false);
         TableRowSorter<TableModel> sorter = new TableRowSorter<TableModel>(jTable_Product.getModel());
         jTable_Product.setRowSorter(sorter);
+        
+        
     }
     
+    public void upload() {   
+        File fileName = new File("C:\\Users\\TRINH\\OneDrive - Sang ltd\\Documents\\Nam4\\Phat trien cac ung dung di dong\\GiuaKy\\GiuaKiAndroid\\QuanLyTruyenHinh_Nhom10\\app\\src\\main\\res\\drawable\\category.png");
+        String url = "http://localhost:8080/api/image/category";
+        try {
+            int res = ConnectAPI.uploadImage(fileName, url, "POST", true);
+            if (res == HttpURLConnection.HTTP_OK) {
+            System.err.println("Success!");
+        } else {
+            System.err.printf("Failed %d\n", res);
+        }
+        } catch (IOException ex) {
+            Logger.getLogger(ProductPanel.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
     public void loadData(int page) {        
         output = pc.getProductInOnePage(page);
         jLabel_Page.setText(output.getPage() + "/" + output.getTotalPage());
@@ -500,6 +532,11 @@ public class ProductPanel extends javax.swing.JPanel {
         jButton_Remove.setEnabled(false);
         jButton_Remove.setMaximumSize(new java.awt.Dimension(123, 35));
         jButton_Remove.setMinimumSize(new java.awt.Dimension(95, 30));
+        jButton_Remove.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jButton_RemoveMouseClicked(evt);
+            }
+        });
         jButton_Remove.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton_RemoveActionPerformed(evt);
@@ -871,8 +908,62 @@ public class ProductPanel extends javax.swing.JPanel {
         Brand brand = (Brand) jComboBox_Brand.getSelectedItem();
         Category category = (Category) jComboBox_Category.getSelectedItem();        
         
-        if (mode == Mode.ADD) {
+        if (mode == Mode.ADD) {            
             Product product = new Product();
+            product.setName(name);
+            product.setDescription(description);
+            product.setPrice(price);
+            product.setSpecification(specification);
+            product.setCalculationUnit(unit);
+            product.setDiscount(discount);
+            product.setSoldQuantity(soldQuantity);
+            product.setQuantity(quantity);
+            product.setCategory(category);
+            product.setBrand(brand);
+            product.setStatus(true);
+            if(selectedFile != null) {
+                try {
+                    RequestBody requestBody = RequestBody.create(MediaType.parse("multipart/form-data"), selectedFile);
+                    MultipartBody.Part part = MultipartBody.Part.createFormData("file", selectedFile.getName(), requestBody);
+                    UploadFileService uploadFileInterface = APIClient.getClient().create(UploadFileService.class);
+                    uploadFileInterface.upload(part).enqueue(new Callback<ResponseBody>() {
+
+                        @Override
+                        public void onResponse(Call<ResponseBody> call, retrofit2.Response<ResponseBody> response) {
+                            try {
+                                if(response.isSuccessful()) {
+                                    String str = response.body().string();
+                                    product.setImage(str);
+                                    System.out.println("vãi: " + product.getImage());
+                                }
+                            } catch (Exception e) {
+                                JOptionPane.showMessageDialog(null, e.getMessage());
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<ResponseBody> call, Throwable t) {
+                            JOptionPane.showMessageDialog(null, t.getMessage());
+                        }
+
+                    });
+                } catch (Exception e) {
+                    JOptionPane.showMessageDialog(this, e.getMessage());
+                }
+            }
+            else {
+                product.setImage("default.png");
+            }
+            Response response = pc.addProduct(product);
+            JOptionPane.showMessageDialog(this, response.getMessage());
+            if(response.getResponseCode() == 200)
+                loadData(output.getPage());
+            else
+                return;            
+        }
+        if (mode == Mode.MODIFY) {
+            Product product = new Product();
+            product.setProductId(Integer.parseInt(jTextField_ID.getText()));
             product.setName(name);
             product.setDescription(description);
             product.setImage(imageName);
@@ -885,53 +976,13 @@ public class ProductPanel extends javax.swing.JPanel {
             product.setCategory(category);
             product.setBrand(brand);
             product.setStatus(true);
-            Response response = pc.addProduct(product);
+            Response response = pc.updateProductByID(product.getProductId(), product);
             JOptionPane.showMessageDialog(this, response.getMessage());
             if(response.getResponseCode() == 200)
                 loadData(output.getPage());
             else
-                return;            
+                return;          
         }
-//        if (mode == Mode.MODIFY) {
-//            //jTextField_ID.setEnabled(false);
-//            String username = jTextField_ID.getText();
-//            String Full_Name = jTextField_Name.getText();
-//            String genderEndlish = getSelectedButtonText(buttonGroup1);
-//            String gender = "";
-//            if (genderEndlish.equalsIgnoreCase("Male")) {
-//                gender = "Nam";
-//            } else if (genderEndlish.equalsIgnoreCase("Female")) {
-//                gender = "Nữ";
-//            } else {
-//                gender = "Khác";
-//            }
-//            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-//            String date_of_birth = sdf.format(jDateChooser_DateOfBirth.getDate());
-//            String specific_address = jTextField_Address.getText();
-//            String email = jTextField_Email.getText();
-//            String phone_number = jTextField_PhoneNumber.getText();
-//            int ward_id = getIdWard(jComboBox_Commune.getSelectedItem().toString(), jComboBox_District.getSelectedItem().toString(), jComboBox_Province.getSelectedItem().toString());
-//            String registeredDate = java.time.LocalDate.now().toString();
-//
-//            int address_id = getAddress_idBySpecific_address(ward_id, specific_address);
-//            if (address_id == -1) {
-//                insertNewAddress(ward_id, specific_address);
-//                address_id = getAddress_idBySpecific_address(ward_id, specific_address);
-//            } else {
-//                address_id = getAddress_idBySpecific_address(ward_id, specific_address);
-//            }
-//
-//            String role = jComboBox_Role.getSelectedItem().toString();
-//            int roleId = getIdRole(role);
-//
-//            boolean flag = updateAccount(username, Full_Name, gender, date_of_birth, address_id, phone_number, email, roleId);
-//            if (flag == true) {
-//                JOptionPane.showMessageDialog(null, "Sửa thông tin nhân viên mới thành công!!!", "", JOptionPane.CLOSED_OPTION);
-//                getStaff();
-//            } else {
-//                JOptionPane.showMessageDialog(null, "Sửa thông tin nhân viên mới thất bại!!!", "", JOptionPane.ERROR_MESSAGE);
-//            }
-//        }
         mode = Mode.FREE;
         UIController.showCardLayout("cardFirst", jPanel_Card);
         setEditableForAll(false);
@@ -959,40 +1010,6 @@ public class ProductPanel extends javax.swing.JPanel {
         clearAll();
     }//GEN-LAST:event_jButton_ClearActionPerformed
 
-    // check ward_id và specific_address , nếu trùng thì không cần thêm.
-//    private int getAddress_idBySpecific_address(int ward_id, String specific_address) {
-//        int id = -1;
-//        Connection ketNoi = Connect.GetConnect();
-//        String sql = "select * from address WHERE specific_address ='" + specific_address + "' and ward_id = '" + ward_id + "'";
-//        try {
-//            PreparedStatement ps = ketNoi.prepareStatement(sql);
-//            ResultSet rs = ps.executeQuery();
-//            while (rs.next()) {
-//                id = rs.getInt("address_id");
-//
-//            }
-//        } catch (SQLException ex) {
-//            Logger.getLogger(ProductPanel.class
-//                    .getName()).log(Level.SEVERE, null, ex);
-//        }
-//        return id;
-//    }
-    // nếu không trùng thì thêm specific_address
-//    private void insertNewAddress(int ward_id, String specific_address) {
-//        Connection ketNoi = Connect.GetConnect();
-//        String sql = "insert into address(ward_id,specific_address) values(?,?)";
-//        try {
-//            PreparedStatement ps = ketNoi.prepareStatement(sql);
-//            ps.setInt(1, ward_id);
-//            ps.setString(2, specific_address);
-//            ps.executeUpdate();
-//
-//        } catch (SQLException ex) {
-//            Logger.getLogger(ProductPanel.class
-//                    .getName()).log(Level.SEVERE, null, ex);
-//        }
-//    }
-
     private void jButton_AddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_AddActionPerformed
         clearAll();
         mode = Mode.ADD;
@@ -1003,52 +1020,6 @@ public class ProductPanel extends javax.swing.JPanel {
         jTextField_Sold.setText("0");
     }//GEN-LAST:event_jButton_AddActionPerformed
 
-    //ok
-//    public boolean insertAccount(Staff s) {
-//        Connection ketNoi = Connect.GetConnect();
-//        String sql = "INSERT INTO account (username, password , Full_Name, gender,date_of_birth,registered_date,address_id,phone_number,email,role_id,status)\n"
-//                + "VALUES (?,?, ?, ?,?,?,?,?,?,?,?)";
-//        PreparedStatement ps;
-//        try {
-//            ps = ketNoi.prepareStatement(sql);
-//            ps.setString(1, s.getUsername());
-//            ps.setString(2, s.getPassword());
-//            ps.setString(3, s.getFullName());
-//            ps.setString(4, s.getGender());
-//            ps.setString(5, s.getDateOfBirth());
-//            ps.setString(6, s.getRegisteredDate());
-//            ps.setInt(7, s.getAddress_id());
-//            ps.setString(8, s.getPhoneNumber());
-//            ps.setString(9, s.getEmail());
-//            ps.setInt(10, s.getRoleId());
-//            ps.setInt(11, s.getStatus());
-//            return ps.executeUpdate() > 0;
-//
-//        } catch (SQLException ex) {
-//            Logger.getLogger(ReaderPanel.class
-//                    .getName()).log(Level.SEVERE, null, ex);
-//        }
-//        return false;
-//    }
-    //
-//    int getIdWard(String nameWard, String nameDistrict, String nameProvince) {
-//        int i = 0;
-//        Connection ketNoi = Connect.GetConnect();
-//        try {
-//            PreparedStatement ps = ketNoi.prepareStatement("select ward.ward_id from ward where ward.ward_name = ? and ward.district_id = ?");
-//            ps.setString(1, nameWard);
-//            ps.setInt(2, getIdDistrict(nameDistrict, nameProvince));
-//            ResultSet rs = ps.executeQuery();
-//            while (rs.next()) {
-//                i = rs.getInt(1);
-//            }
-//            ps.close();
-//            rs.close();
-//            ketNoi.close();
-//        } catch (SQLException ex) {
-//        }
-//        return i;
-//    }
     public String getSelectedButtonText(ButtonGroup buttonGroup) {
         for (Enumeration<AbstractButton> buttons = buttonGroup.getElements(); buttons.hasMoreElements();) {
             AbstractButton button = buttons.nextElement();
@@ -1059,48 +1030,18 @@ public class ProductPanel extends javax.swing.JPanel {
         return null;
     }
 
-//    public boolean updateAccount(String username, String Full_Name, String gender, String date_of_birth, int address_id, String phone_number, String email, int roleId) {
-//        Connection ketNoi = Connect.GetConnect();
-//        String sql = "update account\n"
-//                + "set Full_Name= ?, gender = ?, date_of_birth = ?,address_id = ?, phone_number= ?, email= ? , role_id = ?\n"
-//                + "WHERE username = ?";
-//        PreparedStatement ps;
-//        try {
-//            ps = ketNoi.prepareStatement(sql);
-//            ps.setString(1, Full_Name);
-//            ps.setString(2, gender);
-//            ps.setString(3, date_of_birth);
-//            ps.setInt(4, address_id);
-//            ps.setString(5, phone_number);
-//            ps.setString(6, email);
-//            ps.setInt(7, roleId);
-//            ps.setString(8, username);
-//            ps.executeUpdate();
-//            return true;
-//        } catch (SQLException ex) {
-//            Logger.getLogger(ReaderPanel.class
-//                    .getName()).log(Level.SEVERE, null, ex);
-//        }
-//        return false;
-//    }
-
     private void jButton_RemoveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_RemoveActionPerformed
-        // TODO add your handling code here:
-        jButton_Modify.setEnabled(false);
-        jButton_Remove.setEnabled(false);
-        String maNV = jTextField_ID.getText();
-        if (maNV.equals("")) {
-            JOptionPane.showMessageDialog(this, "Vui lòng chọn nhân viên bạn muốn xóa");
-        } else {
-            int luaChon = JOptionPane.showConfirmDialog(this, "Bạn có chắc chắn muốn xóa?", "Xác nhận", 0);
-            if (luaChon == JOptionPane.CANCEL_OPTION) {
-                return;
-            } else if (luaChon == JOptionPane.OK_OPTION) {
-//                xoaNhanVien(maNV);
-                JOptionPane.showMessageDialog(this, "Xóa nhân viên thành công!");
-//                clearAll();
-//                getStaff();
-            }
+        // TODO add your handling code here:        
+        int luaChon = JOptionPane.showConfirmDialog(this, "Are you sure you want to remove this product?", "OK", 0);
+        if (luaChon == JOptionPane.CANCEL_OPTION) {
+            return;
+        } else if (luaChon == JOptionPane.OK_OPTION) {
+            Response response = pc.deleteProductByID(jTextField_ID.getText());
+            JOptionPane.showMessageDialog(this, response.getMessage());
+            if(response.getResponseCode() == 200)
+                loadData(output.getPage());
+            else
+                return;            
         }
     }//GEN-LAST:event_jButton_RemoveActionPerformed
 
@@ -1188,6 +1129,7 @@ public class ProductPanel extends javax.swing.JPanel {
         jTextField_Specification.setText(p.getSpecification());
         jTextField_Sold.setText(p.getSoldQuantity() + "");
         jTextArea_Description.setText(p.getDescription());
+        imageName = p.getImage();
         
         for (int i = 0; i < jComboBox_Brand.getItemCount(); i++) {
             if (jComboBox_Brand.getItemAt(i).getBrandId().equals(p.getBrand().getBrandId())) {
@@ -1251,15 +1193,15 @@ public class ProductPanel extends javax.swing.JPanel {
         FileNameExtensionFilter imageFilter = new FileNameExtensionFilter("Image Files", "jpg", "png");
         fileChooser.setFileFilter(imageFilter);
         fileChooser.setMultiSelectionEnabled(false);
-        int x = fileChooser.showDialog(this, "Chọn file");
+        int x = fileChooser.showDialog(this, "Select image");
         if (x == JFileChooser.APPROVE_OPTION) {
-            java.io.File file = fileChooser.getSelectedFile();
-            ImageIcon imgIcon = new ImageIcon(file.getAbsolutePath());
+            selectedFile = fileChooser.getSelectedFile();
+            ImageIcon imgIcon = new ImageIcon(selectedFile.getAbsolutePath());
             Image img = imgIcon.getImage();
             Image newImg = img.getScaledInstance(jLabel_Image.getWidth(), jLabel_Image.getHeight(), java.awt.Image.SCALE_SMOOTH);
             jLabel_Image.setIcon(new ImageIcon(newImg));
-            imageName = file.getName();
-            System.out.println(file.getName());
+            imageName = selectedFile.getName();
+            System.out.println(selectedFile.getName());
         }
         else {
             return;
@@ -1358,6 +1300,23 @@ public class ProductPanel extends javax.swing.JPanel {
         setEditableForAll(true);
         jTable_Product.setEnabled(false);
     }//GEN-LAST:event_jButton_AddMouseClicked
+
+    private void jButton_RemoveMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton_RemoveMouseClicked
+        // TODO add your handling code here:
+        int luaChon = JOptionPane.showConfirmDialog(this, "Are you sure you want to remove this product?", "OK", 0);
+        if (luaChon == JOptionPane.CANCEL_OPTION) {
+            return;
+        } else if (luaChon == JOptionPane.OK_OPTION) {
+            Response response = pc.deleteProductByID(jTextField_ID.getText());
+            JOptionPane.showMessageDialog(this, response.getMessage());
+            if(response.getResponseCode() == 200) {
+                loadData(output.getPage());
+                clearAll();
+            }
+            else
+                return;            
+        }
+    }//GEN-LAST:event_jButton_RemoveMouseClicked
 
 //    List<Integer> getIdDistrictAndIdProvince(String username) {
 //        int i = 0;
