@@ -5,29 +5,13 @@
  */
 package view.products;
 
-//import java.sql.Connection;
-//import java.sql.PreparedStatement;
-//import java.sql.ResultSet;
-//import java.sql.SQLException;
-//import java.text.ParseException;
-//import java.text.SimpleDateFormat;
-//import java.util.ArrayList;
-//import java.util.Date;
 import controller.BrandController;
 import controller.CategoryController;
 import controller.ProductController;
 import java.awt.Image;
 import java.io.File;
-import java.io.IOException;
-import java.net.HttpURLConnection;
 import java.util.Enumeration;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-//import java.util.List;
-//import java.util.Vector;
-//import java.util.logging.Level;
-//import java.util.logging.Logger;
 import javax.swing.AbstractButton;
 import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
@@ -48,7 +32,6 @@ import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
-import okio.ByteString;
 import output.ProductOutput;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -56,7 +39,6 @@ import service.APIClient;
 //import model.database.Connect;
 //import model.database.Staff;
 import swing.UIController;
-import utils.ConnectAPI;
 import service.UploadFileService;
 //import utilities.File;
 
@@ -66,13 +48,14 @@ import service.UploadFileService;
  */
 public class ProductPanel extends javax.swing.JPanel {
 
+    private static final String DEFAULT_IMAGE = "default.png";
     private DefaultTableModel dtm;
     private ProductController pc;
     private CategoryController cc;
     private BrandController bc;
     private ProductOutput output;
-    private String imageName = "";
     private File selectedFile;
+    private String imageName;
 
     private enum Mode {
         ADD,
@@ -102,25 +85,10 @@ public class ProductPanel extends javax.swing.JPanel {
         loadBrand();
         setEditableForAll(false);
         TableRowSorter<TableModel> sorter = new TableRowSorter<TableModel>(jTable_Product.getModel());
-        jTable_Product.setRowSorter(sorter);
-        
+        jTable_Product.setRowSorter(sorter);       
         
     }
     
-    public void upload() {   
-        File fileName = new File("C:\\Users\\TRINH\\OneDrive - Sang ltd\\Documents\\Nam4\\Phat trien cac ung dung di dong\\GiuaKy\\GiuaKiAndroid\\QuanLyTruyenHinh_Nhom10\\app\\src\\main\\res\\drawable\\category.png");
-        String url = "http://localhost:8080/api/image/category";
-        try {
-            int res = ConnectAPI.uploadImage(fileName, url, "POST", true);
-            if (res == HttpURLConnection.HTTP_OK) {
-            System.err.println("Success!");
-        } else {
-            System.err.printf("Failed %d\n", res);
-        }
-        } catch (IOException ex) {
-            Logger.getLogger(ProductPanel.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
     public void loadData(int page) {        
         output = pc.getProductInOnePage(page);
         jLabel_Page.setText(output.getPage() + "/" + output.getTotalPage());
@@ -142,22 +110,6 @@ public class ProductPanel extends javax.swing.JPanel {
             jComboBox_FilterBrand.addItem(b);
         }
     }
-    
-//    void loadRole() {
-//        Connection ketNoi = Connect.GetConnect();
-//        try {
-//            PreparedStatement ps = ketNoi.prepareStatement("select role from role where role.role_id != 1");
-//            ResultSet rs = ps.executeQuery();
-//            while (rs.next()) {
-//                jComboBox_Role.addItem(rs.getString(1));
-//            }
-//            ps.close();
-//            rs.close();
-//            ketNoi.close();
-//        } catch (SQLException ex) {
-//            System.out.println("Lỗi lấy role!!");
-//        }
-//    }
     
     /**
      * This method is called from within the constructor to initialize the form.
@@ -247,6 +199,7 @@ public class ProductPanel extends javax.swing.JPanel {
 
         jTextField_ID.setEditable(false);
         jTextField_ID.setFont(new java.awt.Font("Segoe UI", 0, 15)); // NOI18N
+        jTextField_ID.setEnabled(false);
 
         jLabel_Category.setFont(new java.awt.Font("Segoe UI", 0, 15)); // NOI18N
         jLabel_Category.setText("Category");
@@ -299,6 +252,7 @@ public class ProductPanel extends javax.swing.JPanel {
 
         jTextField_Sold.setEditable(false);
         jTextField_Sold.setFont(new java.awt.Font("Segoe UI", 0, 15)); // NOI18N
+        jTextField_Sold.setEnabled(false);
 
         jLabel17.setFont(new java.awt.Font("Segoe UI", 0, 15)); // NOI18N
         jLabel17.setText("Description");
@@ -830,69 +784,6 @@ public class ProductPanel extends javax.swing.JPanel {
         jTextField_NameSearch.setEnabled(!editable);
         jButton_Change.setEnabled(editable);
     }
-//    private boolean checkinput() {
-//        String id = jTextField_ID.getText();
-//        String sqlId = "select * from account where username = '" + id + "'";
-//        String sqlEmail = "select * from account where email = '" + jTextField_Email.getText() + "'";
-//        String sqlPhone = "select * from account where phone_number = '" + jTextField_PhoneNumber.getText() + "'";
-//        if ("".equals(id)) {
-//            JOptionPane.showMessageDialog(this, "Mã nhân viên không được trống!!", "Warning", JOptionPane.WARNING_MESSAGE);
-//            jTextField_ID.requestFocusInWindow();
-//            return false;
-//        } else if (checkExist(sqlId) != 0) {
-//            JOptionPane.showMessageDialog(this, "Mã nhân viên đã tồn tại!!", "Warning", JOptionPane.WARNING_MESSAGE);
-//            jTextField_ID.requestFocusInWindow();
-//            return false;
-//        } else if ("".equals(jTextField_Name.getText())) {
-//            JOptionPane.showMessageDialog(this, "Tên nhân viên không được trống!!", "Warning", JOptionPane.WARNING_MESSAGE);
-//            jTextField_Name.requestFocusInWindow();
-//            return false;
-//        } else if ("".equals(jTextField_PhoneNumber.getText())) {
-//            JOptionPane.showMessageDialog(this, "SĐT nhân viên không được trống!!", "Warning", JOptionPane.WARNING_MESSAGE);
-//            jTextField_PhoneNumber.requestFocusInWindow();
-//            return false;
-//        } else if (!jTextField_PhoneNumber.getText().matches("0[0-9]{9}")) {
-//            JOptionPane.showMessageDialog(this, "SĐT nhân viên nhập chưa đúng định dạng!!", "Warning", JOptionPane.WARNING_MESSAGE);
-//            jTextField_PhoneNumber.requestFocusInWindow();
-//            return false;
-//        } else if (checkExist(sqlPhone) != 0) {
-//            JOptionPane.showMessageDialog(this, "SĐT nhân viên đã được sử dụng!!", "Warning", JOptionPane.WARNING_MESSAGE);
-//            jTextField_ID.requestFocusInWindow();
-//            return false;
-//        } else if ("".equals(jTextField_Email.getText())) {
-//            JOptionPane.showMessageDialog(this, "Email nhân viên không được trống!!", "Warning", JOptionPane.WARNING_MESSAGE);
-//            jTextField_Email.requestFocusInWindow();
-//            return false;
-//        } else if (!jTextField_Email.getText().matches("^[a-zA-Z][\\w]+@([\\w]+\\.[\\w]+|[\\w]+\\.[\\w]{2,}\\.[\\w]{2,})$")) {
-//            JOptionPane.showMessageDialog(this, "Email nhân viên nhập chưa đúng định dạng!!", "Warning", JOptionPane.WARNING_MESSAGE);
-//            jTextField_Email.requestFocusInWindow();
-//            return false;
-//        } else if (checkExist(sqlEmail) != 0) {
-//            JOptionPane.showMessageDialog(this, "Email nhân viên đã được sử dụng!!", "Warning", JOptionPane.WARNING_MESSAGE);
-//            jTextField_ID.requestFocusInWindow();
-//            return false;
-//        } else if ("".equals(jTextField_Address.getText())) {
-//            JOptionPane.showMessageDialog(this, "Adress nhân viên không được trống!!", "Warning", JOptionPane.WARNING_MESSAGE);
-//            jTextField_Address.requestFocusInWindow();
-//            return false;
-//        } else {
-//            return true;
-//        }
-//    }
-//    public int checkExist(String sql) {
-//        Connection ketNoi = Connect.GetConnect();
-//        int tonTai = 0;
-//        try {
-//            PreparedStatement ps = ketNoi.prepareStatement(sql);
-//            ResultSet rs = ps.executeQuery();
-//            while (rs.next()) {
-//                tonTai = 1;
-//            }
-//        } catch (SQLException ex) {
-//            Logger.getLogger(ProductPanel.class.getName()).log(Level.SEVERE, null, ex);
-//        }
-//        return tonTai;
-//    }
 
     private void jButton_OKActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_OKActionPerformed
         // TODO add your handling code here:
@@ -935,6 +826,12 @@ public class ProductPanel extends javax.swing.JPanel {
                                     String str = response.body().string();
                                     product.setImage(str);
                                     System.out.println("vãi: " + product.getImage());
+                                    Response res = pc.addProduct(product);
+                                    JOptionPane.showMessageDialog(null, res.getMessage());
+                                    if(res.getResponseCode() == 200)
+                                        loadData(output.getPage());
+                                    else
+                                        return;    
                                 }
                             } catch (Exception e) {
                                 JOptionPane.showMessageDialog(null, e.getMessage());
@@ -952,21 +849,20 @@ public class ProductPanel extends javax.swing.JPanel {
                 }
             }
             else {
-                product.setImage("default.png");
+                product.setImage(imageName);
+                Response response = pc.addProduct(product);
+                JOptionPane.showMessageDialog(this, response.getMessage());
+                if(response.getResponseCode() == 200)
+                    loadData(output.getPage());
+                else
+                    return;    
             }
-            Response response = pc.addProduct(product);
-            JOptionPane.showMessageDialog(this, response.getMessage());
-            if(response.getResponseCode() == 200)
-                loadData(output.getPage());
-            else
-                return;            
         }
         if (mode == Mode.MODIFY) {
             Product product = new Product();
             product.setProductId(Integer.parseInt(jTextField_ID.getText()));
             product.setName(name);
             product.setDescription(description);
-            product.setImage(imageName);
             product.setPrice(price);
             product.setSpecification(specification);
             product.setCalculationUnit(unit);
@@ -976,18 +872,57 @@ public class ProductPanel extends javax.swing.JPanel {
             product.setCategory(category);
             product.setBrand(brand);
             product.setStatus(true);
-            Response response = pc.updateProductByID(product.getProductId(), product);
-            JOptionPane.showMessageDialog(this, response.getMessage());
-            if(response.getResponseCode() == 200)
-                loadData(output.getPage());
-            else
-                return;          
+            if(selectedFile != null) {
+                try {
+                    RequestBody requestBody = RequestBody.create(MediaType.parse("multipart/form-data"), selectedFile);
+                    MultipartBody.Part part = MultipartBody.Part.createFormData("file", selectedFile.getName(), requestBody);
+                    UploadFileService uploadFileInterface = APIClient.getClient().create(UploadFileService.class);
+                    uploadFileInterface.upload(part).enqueue(new Callback<ResponseBody>() {
+
+                        @Override
+                        public void onResponse(Call<ResponseBody> call, retrofit2.Response<ResponseBody> response) {
+                            try {
+                                if(response.isSuccessful()) {
+                                    String str = response.body().string();
+                                    product.setImage(str);
+                                    System.out.println("vãi: " + product.getImage());
+                                    Response res = pc.updateProductByID(product.getProductId(), product);
+                                    JOptionPane.showMessageDialog(null, res.getMessage());
+                                    if(res.getResponseCode() == 200)
+                                        loadData(output.getPage());
+                                    else
+                                        return;    
+                                }
+                            } catch (Exception e) {
+                                JOptionPane.showMessageDialog(null, e.getMessage());
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<ResponseBody> call, Throwable t) {
+                            JOptionPane.showMessageDialog(null, t.getMessage());
+                        }
+
+                    });
+                } catch (Exception e) {
+                    JOptionPane.showMessageDialog(this, e.getMessage());
+                }
+            }
+            else {
+                product.setImage(imageName);
+                Response response = pc.updateProductByID(product.getProductId(), product);
+                JOptionPane.showMessageDialog(this, response.getMessage());
+                if(response.getResponseCode() == 200)
+                    loadData(output.getPage());
+                else
+                    return;    
+            }         
         }
         mode = Mode.FREE;
         UIController.showCardLayout("cardFirst", jPanel_Card);
         setEditableForAll(false);
         jTable_Product.setEnabled(true);
-        imageName = "";
+        selectedFile = null;
     }//GEN-LAST:event_jButton_OKActionPerformed
 
     private void jButton_CancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_CancelActionPerformed
@@ -996,13 +931,9 @@ public class ProductPanel extends javax.swing.JPanel {
         clearAll();
         setEditableForAll(false);
         jTable_Product.setEnabled(true);
-//        if (jTable_Staff.getSelectedRow() != -1) {
-//        } else {
-//            jButton_Modify.setEnabled(false);
-//            jButton_Remove.setEnabled(false);
-//        }
+        
         UIController.showCardLayout("cardFirst", jPanel_Card);
-        imageName = "";
+        selectedFile = null;
     }//GEN-LAST:event_jButton_CancelActionPerformed
 
     private void jButton_ClearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_ClearActionPerformed
@@ -1016,8 +947,13 @@ public class ProductPanel extends javax.swing.JPanel {
         UIController.showCardLayout("cardSecond", jPanel_Card);
         setEditableForAll(true);
         jTable_Product.setEnabled(false);
-        imageName = "default.png";
         jTextField_Sold.setText("0");
+        
+        imageName = DEFAULT_IMAGE;
+        Image img = pc.getImage(imageName);
+        Image newImg = img.getScaledInstance(jLabel_Image.getWidth(), jLabel_Image.getHeight(), java.awt.Image.SCALE_SMOOTH);
+        ImageIcon icon = new ImageIcon(newImg);
+        jLabel_Image.setIcon(icon);
     }//GEN-LAST:event_jButton_AddActionPerformed
 
     public String getSelectedButtonText(ButtonGroup buttonGroup) {
@@ -1031,91 +967,8 @@ public class ProductPanel extends javax.swing.JPanel {
     }
 
     private void jButton_RemoveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_RemoveActionPerformed
-        // TODO add your handling code here:        
-        int luaChon = JOptionPane.showConfirmDialog(this, "Are you sure you want to remove this product?", "OK", 0);
-        if (luaChon == JOptionPane.CANCEL_OPTION) {
-            return;
-        } else if (luaChon == JOptionPane.OK_OPTION) {
-            Response response = pc.deleteProductByID(jTextField_ID.getText());
-            JOptionPane.showMessageDialog(this, response.getMessage());
-            if(response.getResponseCode() == 200)
-                loadData(output.getPage());
-            else
-                return;            
-        }
+        // TODO add your handling code here:    
     }//GEN-LAST:event_jButton_RemoveActionPerformed
-
-    // status 0 => 1
-//    public void xoaNhanVien(String maNV) {
-//        String sql = "update account set status = 0 where username =  ? ";
-//        Connection con = Connect.GetConnect();
-//        try {
-//            PreparedStatement ps = con.prepareStatement(sql);
-//            ps.setString(1, maNV);
-//            ps.executeUpdate();
-//            ps.close();
-//            con.close();
-//
-//        } catch (SQLException ex) {
-//            Logger.getLogger(ProductPanel.class
-//                    .getName()).log(Level.SEVERE, null, ex);
-//        }
-//    }
-//    int getIdProvince(String nameProvince) {
-//        int i = 0;
-//        Connection ketNoi = Connect.GetConnect();
-//        try {
-//            PreparedStatement ps = ketNoi.prepareStatement("select province.province_id from province where province.province_name = ?");
-//            ps.setString(1, nameProvince);
-//            ResultSet rs = ps.executeQuery();
-//            while (rs.next()) {
-//                i = rs.getInt(1);
-//            }
-//            ps.close();
-//            rs.close();
-//            ketNoi.close();
-//        } catch (SQLException ex) {
-//            System.out.println("Lỗi lấy IdProvince!!");
-//        }
-//        return i;
-//    }
-//    int getIdRole(String role) {
-//        int i = 0;
-//        Connection ketNoi = Connect.GetConnect();
-//        try {
-//            PreparedStatement ps = ketNoi.prepareStatement("select role.role_id from role where role.role = ?");
-//            ps.setString(1, role);
-//            ResultSet rs = ps.executeQuery();
-//            while (rs.next()) {
-//                i = rs.getInt(1);
-//            }
-//            ps.close();
-//            rs.close();
-//            ketNoi.close();
-//        } catch (SQLException ex) {
-//            System.out.println("Lỗi lấy role_id");
-//        }
-//        return i;
-//    }
-//    int getIdDistrict(String nameDistrict, String nameProvince) {
-//        int i = 0;
-//        Connection ketNoi = Connect.GetConnect();
-//        try {
-//            PreparedStatement ps = ketNoi.prepareStatement("select district.district_id from district where district.district_name = ? and district.province_id = ?");
-//            ps.setString(1, nameDistrict);
-//            ps.setInt(2, getIdProvince(nameProvince));
-//            ResultSet rs = ps.executeQuery();
-//            while (rs.next()) {
-//                i = rs.getInt(1);
-//            }
-//            ps.close();
-//            rs.close();
-//            ketNoi.close();
-//        } catch (SQLException ex) {
-//            System.out.println("Lỗi lấy district_id!!");
-//        }
-//        return i;
-//    }
 
     private void jTable_ProductMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable_ProductMouseClicked
         // TODO add your handling code here:   
@@ -1129,7 +982,6 @@ public class ProductPanel extends javax.swing.JPanel {
         jTextField_Specification.setText(p.getSpecification());
         jTextField_Sold.setText(p.getSoldQuantity() + "");
         jTextArea_Description.setText(p.getDescription());
-        imageName = p.getImage();
         
         for (int i = 0; i < jComboBox_Brand.getItemCount(); i++) {
             if (jComboBox_Brand.getItemAt(i).getBrandId().equals(p.getBrand().getBrandId())) {
@@ -1143,7 +995,8 @@ public class ProductPanel extends javax.swing.JPanel {
             }
         }
         
-        Image img = pc.getImage(p.getImage());
+        imageName = p.getImage();
+        Image img = pc.getImage(imageName);
         Image newImg = img.getScaledInstance(jLabel_Image.getWidth(), jLabel_Image.getHeight(), java.awt.Image.SCALE_SMOOTH);
         ImageIcon icon = new ImageIcon(newImg);
         jLabel_Image.setIcon(icon);
@@ -1156,21 +1009,7 @@ public class ProductPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_jTable_ProductMouseClicked
 
     private void jComboBox_CategoryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox_CategoryActionPerformed
-//        Connection ketNoi = Connect.GetConnect();
-//        try {
-//            PreparedStatement ps = ketNoi.prepareStatement("select role from role");
-//            ps.setInt(1, getIdRole(jComboBox_Role.getSelectedItem().toString()));
-//            ResultSet rs = ps.executeQuery();
-//            jComboBox_Role.removeAllItems();
-//            while (rs.next()) {
-//                jComboBox_Role.addItem(rs.getString(1));
-//            }
-//            ps.close();
-//            rs.close();
-//            ketNoi.close();
-//        } catch (SQLException ex) {
-//            System.out.println("Lỗi lấy role!!");
-//        }
+
     }//GEN-LAST:event_jComboBox_CategoryActionPerformed
 
     private void jTextField_NameSearchCaretUpdate(javax.swing.event.CaretEvent evt) {//GEN-FIRST:event_jTextField_NameSearchCaretUpdate
@@ -1200,7 +1039,6 @@ public class ProductPanel extends javax.swing.JPanel {
             Image img = imgIcon.getImage();
             Image newImg = img.getScaledInstance(jLabel_Image.getWidth(), jLabel_Image.getHeight(), java.awt.Image.SCALE_SMOOTH);
             jLabel_Image.setIcon(new ImageIcon(newImg));
-            imageName = selectedFile.getName();
             System.out.println(selectedFile.getName());
         }
         else {
@@ -1229,13 +1067,8 @@ public class ProductPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_jButton_BrandActionPerformed
 
     private void jButton_ImportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_ImportActionPerformed
-//        Ingredient newIngredient = ingredientList.getByID(getIDAtSelectedRow());
         this.productImportDialog = new ProductImportDialog(null, true, /*newIngredient,*/ this);
-//        UIControl.setLocationCenterForDialog(ingredientImport);
         this.productImportDialog.setVisible(true);
-//        jButton_Modify.setEnabled(false);
-//        jButton_Remove.setEnabled(false);
-//        jButton_Import.setEnabled(false);
     }//GEN-LAST:event_jButton_ImportActionPerformed
 
     private void jButton_ShowImportHistoryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_ShowImportHistoryActionPerformed
@@ -1286,19 +1119,10 @@ public class ProductPanel extends javax.swing.JPanel {
 
     private void jButton_ModifyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_ModifyActionPerformed
         // TODO add your handling code here:
-//        System.out.println("modify");
-//        mode = Mode.MODIFY;
-//        UIController.showCardLayout("cardSecond", jPanel_Card);
-//        setEditableForAll(true);
     }//GEN-LAST:event_jButton_ModifyActionPerformed
 
     private void jButton_AddMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton_AddMouseClicked
         // TODO add your handling code here:
-        clearAll();
-        mode = Mode.ADD;
-        UIController.showCardLayout("cardSecond", jPanel_Card);
-        setEditableForAll(true);
-        jTable_Product.setEnabled(false);
     }//GEN-LAST:event_jButton_AddMouseClicked
 
     private void jButton_RemoveMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton_RemoveMouseClicked
@@ -1317,55 +1141,6 @@ public class ProductPanel extends javax.swing.JPanel {
                 return;            
         }
     }//GEN-LAST:event_jButton_RemoveMouseClicked
-
-//    List<Integer> getIdDistrictAndIdProvince(String username) {
-//        int i = 0;
-//        int j = 0;
-//        int x = 0;
-//        List<Integer> list = new ArrayList<Integer>();
-//        Connection ketNoi = Connect.GetConnect();
-//        try {
-//            PreparedStatement ps = ketNoi.prepareStatement("select ward.ward_id,district.district_id,province.province_id from ward,district,province,address\n"
-//                    + "where ward.district_id = district.district_id\n"
-//                    + "and district.province_id = province.province_id\n"
-//                    + "and ward.ward_id = address.ward_id\n"
-//                    + "and address.address_id = ?");
-//            ps.setInt(1, getIdAddressByUserName(username));
-//            ResultSet rs = ps.executeQuery();
-//            while (rs.next()) {
-//                i = rs.getInt(1);
-//                j = rs.getInt(2);
-//                x = rs.getInt(3);
-//            }
-//            ps.close();
-//            rs.close();
-//            ketNoi.close();
-//        } catch (SQLException ex) {
-//            System.out.println("Lỗi lấy getIdDistrictAndIdProvince");
-//        }
-//        list.add(i);
-//        list.add(j);
-//        list.add(x);
-//        return list;
-//    }
-//    int getIdAddressByUserName(String username) {
-//        int i = 0;
-//        Connection ketNoi = Connect.GetConnect();
-//        try {
-//            PreparedStatement ps = ketNoi.prepareStatement("select account.address_id from account where account.username = ?");
-//            ps.setString(1, username);
-//            ResultSet rs = ps.executeQuery();
-//            while (rs.next()) {
-//                i = rs.getInt(1);
-//            }
-//            ps.close();
-//            rs.close();
-//            ketNoi.close();
-//        } catch (SQLException ex) {
-//            System.out.println("Lỗi lấy address_id từ username!!");
-//        }
-//        return i;
-//    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton_Add;
