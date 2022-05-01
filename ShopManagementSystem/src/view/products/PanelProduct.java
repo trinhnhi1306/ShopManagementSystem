@@ -1,7 +1,6 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
  */
 package view.products;
 
@@ -16,11 +15,9 @@ import javax.swing.AbstractButton;
 import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
-//import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.RowFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
-//import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
@@ -36,17 +33,14 @@ import output.ProductOutput;
 import retrofit2.Call;
 import retrofit2.Callback;
 import service.APIClient;
-//import model.database.Connect;
-//import model.database.Staff;
 import swing.UIController;
 import service.UploadFileService;
-//import utilities.File;
 
 /**
  *
- * @author Admin
+ * @author PC
  */
-public class ProductPanel extends javax.swing.JPanel {
+public class PanelProduct extends javax.swing.JPanel {
 
     private static final String DEFAULT_IMAGE = "default.png";
     private DefaultTableModel dtm;
@@ -68,11 +62,11 @@ public class ProductPanel extends javax.swing.JPanel {
     private ImportHistoryDialog history;
     private ProductImportDialog productImportDialog;
     private ProductDeletedDialog productDeletedDialog;
-
+    
     /**
-     * Creates new form StaffPanel
+     * Creates new form PanelProduct
      */
-    public ProductPanel() {
+    public PanelProduct() {
         initComponents();
         jTextArea_Description.setWrapStyleWord(true);
         dtm = (DefaultTableModel) jTable_Product.getModel();
@@ -85,32 +79,9 @@ public class ProductPanel extends javax.swing.JPanel {
         loadBrand();
         setEditableForAll(false);
         TableRowSorter<TableModel> sorter = new TableRowSorter<TableModel>(jTable_Product.getModel());
-        jTable_Product.setRowSorter(sorter);       
-        
-    }
-    
-    public void loadData(int page) {        
-        output = pc.getProductInOnePage(page);
-        jLabel_Page.setText(output.getPage() + "/" + output.getTotalPage());
-        pc.loadTable(output.getListResult(), dtm);
+        jTable_Product.setRowSorter(sorter);
     }
 
-    public void loadCategory() {
-        List<Category> list = cc.getAllCategories();
-        for(Category c: list) {
-            jComboBox_Category.addItem(c);
-            jComboBox_FilterCategory.addItem(c);
-        }
-    }
-    
-    public void loadBrand() {
-        List<Brand> list = bc.getAllBrands();
-        for(Brand b: list) {
-            jComboBox_Brand.addItem(b);
-            jComboBox_FilterBrand.addItem(b);
-        }
-    }
-    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -209,11 +180,6 @@ public class ProductPanel extends javax.swing.JPanel {
 
         jComboBox_Category.setEditable(true);
         jComboBox_Category.setFont(new java.awt.Font("Segoe UI", 0, 15)); // NOI18N
-        jComboBox_Category.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jComboBox_CategoryActionPerformed(evt);
-            }
-        });
 
         jTextField_Name.setFont(new java.awt.Font("Segoe UI", 0, 15)); // NOI18N
 
@@ -281,22 +247,12 @@ public class ProductPanel extends javax.swing.JPanel {
         jButton_Category.setMaximumSize(new java.awt.Dimension(35, 29));
         jButton_Category.setMinimumSize(new java.awt.Dimension(35, 29));
         jButton_Category.setPreferredSize(new java.awt.Dimension(35, 29));
-        jButton_Category.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton_CategoryActionPerformed(evt);
-            }
-        });
 
         jButton_Brand.setFont(new java.awt.Font("Segoe UI", 1, 15)); // NOI18N
         jButton_Brand.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/add.png"))); // NOI18N
         jButton_Brand.setMaximumSize(new java.awt.Dimension(35, 29));
         jButton_Brand.setMinimumSize(new java.awt.Dimension(35, 29));
         jButton_Brand.setPreferredSize(new java.awt.Dimension(35, 29));
-        jButton_Brand.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton_BrandActionPerformed(evt);
-            }
-        });
 
         jLabel_Image.setText("image");
 
@@ -333,7 +289,7 @@ public class ProductPanel extends javax.swing.JPanel {
                                         .addGap(1, 1, 1))
                                     .addGroup(jPanel1Layout.createSequentialGroup()
                                         .addGap(26, 26, 26)
-                                        .addComponent(jSpinner_Discount, javax.swing.GroupLayout.DEFAULT_SIZE, 126, Short.MAX_VALUE))))
+                                        .addComponent(jSpinner_Discount, javax.swing.GroupLayout.DEFAULT_SIZE, 118, Short.MAX_VALUE))))
                             .addComponent(jTextField_ID)))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel9)
@@ -358,7 +314,7 @@ public class ProductPanel extends javax.swing.JPanel {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 400, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 65, Short.MAX_VALUE))
+                        .addGap(0, 59, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                             .addComponent(jComboBox_Brand, 0, 235, Short.MAX_VALUE)
@@ -367,7 +323,7 @@ public class ProductPanel extends javax.swing.JPanel {
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(jButton_Category, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jButton_Brand, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 69, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 62, Short.MAX_VALUE)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jButton_Change, javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(jLabel18, javax.swing.GroupLayout.Alignment.TRAILING))))
@@ -446,11 +402,6 @@ public class ProductPanel extends javax.swing.JPanel {
         jButton_Add.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         jButton_Add.setMaximumSize(new java.awt.Dimension(95, 30));
         jButton_Add.setMinimumSize(new java.awt.Dimension(95, 30));
-        jButton_Add.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jButton_AddMouseClicked(evt);
-            }
-        });
         jButton_Add.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton_AddActionPerformed(evt);
@@ -471,11 +422,6 @@ public class ProductPanel extends javax.swing.JPanel {
                 jButton_ModifyMouseClicked(evt);
             }
         });
-        jButton_Modify.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton_ModifyActionPerformed(evt);
-            }
-        });
         jPanel_Card1.add(jButton_Modify);
 
         jButton_Remove.setFont(new java.awt.Font("Segoe UI", 1, 15)); // NOI18N
@@ -489,11 +435,6 @@ public class ProductPanel extends javax.swing.JPanel {
         jButton_Remove.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jButton_RemoveMouseClicked(evt);
-            }
-        });
-        jButton_Remove.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton_RemoveActionPerformed(evt);
             }
         });
         jPanel_Card1.add(jButton_Remove);
@@ -606,19 +547,9 @@ public class ProductPanel extends javax.swing.JPanel {
 
         jComboBox_FilterCategory.setEditable(true);
         jComboBox_FilterCategory.setFont(new java.awt.Font("Segoe UI", 0, 15)); // NOI18N
-        jComboBox_FilterCategory.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jComboBox_FilterCategoryActionPerformed(evt);
-            }
-        });
 
         jComboBox_FilterBrand.setEditable(true);
         jComboBox_FilterBrand.setFont(new java.awt.Font("Segoe UI", 0, 15)); // NOI18N
-        jComboBox_FilterBrand.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jComboBox_FilterBrandActionPerformed(evt);
-            }
-        });
 
         jButton_Import.setFont(new java.awt.Font("Segoe UI", 1, 17)); // NOI18N
         jButton_Import.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/delivery.png"))); // NOI18N
@@ -627,11 +558,6 @@ public class ProductPanel extends javax.swing.JPanel {
         jButton_Import.setEnabled(false);
         jButton_Import.setFocusPainted(false);
         jButton_Import.setPreferredSize(new java.awt.Dimension(300, 60));
-        jButton_Import.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton_ImportActionPerformed(evt);
-            }
-        });
 
         jButton_ShowImportHistory.setFont(new java.awt.Font("Segoe UI", 1, 17)); // NOI18N
         jButton_ShowImportHistory.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/history.png"))); // NOI18N
@@ -639,11 +565,6 @@ public class ProductPanel extends javax.swing.JPanel {
         jButton_ShowImportHistory.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         jButton_ShowImportHistory.setFocusPainted(false);
         jButton_ShowImportHistory.setPreferredSize(new java.awt.Dimension(300, 60));
-        jButton_ShowImportHistory.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton_ShowImportHistoryActionPerformed(evt);
-            }
-        });
 
         jButton_Deleted.setFont(new java.awt.Font("Segoe UI", 1, 17)); // NOI18N
         jButton_Deleted.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/delete_list.png"))); // NOI18N
@@ -651,11 +572,6 @@ public class ProductPanel extends javax.swing.JPanel {
         jButton_Deleted.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         jButton_Deleted.setFocusPainted(false);
         jButton_Deleted.setPreferredSize(new java.awt.Dimension(300, 60));
-        jButton_Deleted.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton_DeletedActionPerformed(evt);
-            }
-        });
 
         jButton_PreviousPage.setText("<");
         jButton_PreviousPage.setEnabled(false);
@@ -739,7 +655,7 @@ public class ProductPanel extends javax.swing.JPanel {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(18, 18, 18)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 355, Short.MAX_VALUE)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 356, Short.MAX_VALUE)
                         .addContainerGap())
                     .addGroup(layout.createSequentialGroup()
                         .addGap(86, 86, 86)
@@ -757,6 +673,28 @@ public class ProductPanel extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    public void loadData(int page) {        
+        output = pc.getProductInOnePage(page);
+        jLabel_Page.setText(output.getPage() + "/" + output.getTotalPage());
+        pc.loadTable(output.getListResult(), dtm);
+    }
+
+    public void loadCategory() {
+        List<Category> list = cc.getAllCategories();
+        for(Category c: list) {
+            jComboBox_Category.addItem(c);
+            jComboBox_FilterCategory.addItem(c);
+        }
+    }
+    
+    public void loadBrand() {
+        List<Brand> list = bc.getAllBrands();
+        for(Brand b: list) {
+            jComboBox_Brand.addItem(b);
+            jComboBox_FilterBrand.addItem(b);
+        }
+    }
+    
     public void clearAll() {
         jTextField_ID.setText("");
         jTextField_Name.setText("");
@@ -765,7 +703,7 @@ public class ProductPanel extends javax.swing.JPanel {
         jTextField_Specification.setText("");
         jComboBox_Category.setSelectedIndex(-1);
         jComboBox_Brand.setSelectedIndex(-1);
-        jSpinner_Quantity.setValue(0);
+        jSpinner_Quantity.setValue(5);
         jSpinner_Price.setValue(0);
         jSpinner_Discount.setValue(0);
     }
@@ -784,7 +722,17 @@ public class ProductPanel extends javax.swing.JPanel {
         jTextField_NameSearch.setEnabled(!editable);
         jButton_Change.setEnabled(editable);
     }
-
+    
+    public String getSelectedButtonText(ButtonGroup buttonGroup) {
+        for (Enumeration<AbstractButton> buttons = buttonGroup.getElements(); buttons.hasMoreElements();) {
+            AbstractButton button = buttons.nextElement();
+            if (button.isSelected()) {
+                return button.getText();
+            }
+        }
+        return null;
+    }
+    
     private void jButton_OKActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_OKActionPerformed
         // TODO add your handling code here:
         String name = jTextField_Name.getText();
@@ -942,6 +890,7 @@ public class ProductPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_jButton_ClearActionPerformed
 
     private void jButton_AddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_AddActionPerformed
+        // TODO add your handling code here:
         clearAll();
         mode = Mode.ADD;
         UIController.showCardLayout("cardSecond", jPanel_Card);
@@ -956,22 +905,8 @@ public class ProductPanel extends javax.swing.JPanel {
         jLabel_Image.setIcon(icon);
     }//GEN-LAST:event_jButton_AddActionPerformed
 
-    public String getSelectedButtonText(ButtonGroup buttonGroup) {
-        for (Enumeration<AbstractButton> buttons = buttonGroup.getElements(); buttons.hasMoreElements();) {
-            AbstractButton button = buttons.nextElement();
-            if (button.isSelected()) {
-                return button.getText();
-            }
-        }
-        return null;
-    }
-
-    private void jButton_RemoveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_RemoveActionPerformed
-        // TODO add your handling code here:    
-    }//GEN-LAST:event_jButton_RemoveActionPerformed
-
     private void jTable_ProductMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable_ProductMouseClicked
-        // TODO add your handling code here:   
+        // TODO add your handling code here:
         if(mode == Mode.ADD || mode == Mode.MODIFY) return;
         int selectedRow = jTable_Product.convertRowIndexToModel(jTable_Product.getSelectedRow());
 
@@ -1008,10 +943,6 @@ public class ProductPanel extends javax.swing.JPanel {
         jButton_Remove.setEnabled(true);
     }//GEN-LAST:event_jTable_ProductMouseClicked
 
-    private void jComboBox_CategoryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox_CategoryActionPerformed
-
-    }//GEN-LAST:event_jComboBox_CategoryActionPerformed
-
     private void jTextField_NameSearchCaretUpdate(javax.swing.event.CaretEvent evt) {//GEN-FIRST:event_jTextField_NameSearchCaretUpdate
         // TODO add your handling code here:
         String tuKhoa = jTextField_NameSearch.getText().toLowerCase();
@@ -1046,42 +977,6 @@ public class ProductPanel extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_jButton_ChangeActionPerformed
 
-    private void jComboBox_FilterCategoryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox_FilterCategoryActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jComboBox_FilterCategoryActionPerformed
-
-    private void jComboBox_FilterBrandActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox_FilterBrandActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jComboBox_FilterBrandActionPerformed
-
-    private void jButton_CategoryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_CategoryActionPerformed
-        // TODO add your handling code here:
-        this.newCategoryDialog = new NewCategoryDialog(null, true, this);
-        this.newCategoryDialog.setVisible(true);
-    }//GEN-LAST:event_jButton_CategoryActionPerformed
-
-    private void jButton_BrandActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_BrandActionPerformed
-        // TODO add your handling code here:
-        this.newBrandDialog = new NewBrandDialog(null, true, this);
-        this.newBrandDialog.setVisible(true);
-    }//GEN-LAST:event_jButton_BrandActionPerformed
-
-    private void jButton_ImportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_ImportActionPerformed
-        this.productImportDialog = new ProductImportDialog(null, true, /*newIngredient,*/ this);
-        this.productImportDialog.setVisible(true);
-    }//GEN-LAST:event_jButton_ImportActionPerformed
-
-    private void jButton_ShowImportHistoryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_ShowImportHistoryActionPerformed
-        history = new ImportHistoryDialog(null, true);
-        history.setVisible(true);
-    }//GEN-LAST:event_jButton_ShowImportHistoryActionPerformed
-
-    private void jButton_DeletedActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_DeletedActionPerformed
-        // TODO add your handling code here:
-        productDeletedDialog = new ProductDeletedDialog(null, true);
-        productDeletedDialog.setVisible(true);
-    }//GEN-LAST:event_jButton_DeletedActionPerformed
-
     private void jButton_NextPageActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_NextPageActionPerformed
         // TODO add your handling code here:
         if(output.getPage() < output.getTotalPage()) {
@@ -1104,8 +999,8 @@ public class ProductPanel extends javax.swing.JPanel {
 
     private void jTable_ProductFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTable_ProductFocusLost
         // TODO add your handling code here:
-        jButton_Modify.setEnabled(false);
-        jButton_Remove.setEnabled(false);
+//        jButton_Modify.setEnabled(false);
+//        jButton_Remove.setEnabled(false);
     }//GEN-LAST:event_jTable_ProductFocusLost
 
     private void jButton_ModifyMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton_ModifyMouseClicked
@@ -1116,14 +1011,6 @@ public class ProductPanel extends javax.swing.JPanel {
         setEditableForAll(true);
         jTable_Product.setEnabled(false);
     }//GEN-LAST:event_jButton_ModifyMouseClicked
-
-    private void jButton_ModifyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_ModifyActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton_ModifyActionPerformed
-
-    private void jButton_AddMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton_AddMouseClicked
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton_AddMouseClicked
 
     private void jButton_RemoveMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton_RemoveMouseClicked
         // TODO add your handling code here:

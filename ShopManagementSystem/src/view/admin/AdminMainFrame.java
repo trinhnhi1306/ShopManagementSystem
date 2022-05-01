@@ -53,13 +53,21 @@ public class AdminMainFrame extends javax.swing.JFrame {
         jPanel_User = new javax.swing.JPanel();
         jLabel_User = new javax.swing.JLabel();
         jSeparator2 = new javax.swing.JSeparator();
+        jPanel_Category = new javax.swing.JPanel();
+        jLabel_Category = new javax.swing.JLabel();
+        jSeparator3 = new javax.swing.JSeparator();
+        jPanel_Brand = new javax.swing.JPanel();
+        jLabel_Brand = new javax.swing.JLabel();
+        jSeparator6 = new javax.swing.JSeparator();
         jPanel_Profile = new javax.swing.JPanel();
         jSeparator4 = new javax.swing.JSeparator();
         jLabel_Profile = new javax.swing.JLabel();
         jPanel_CardLayout = new javax.swing.JPanel();
         profilePanel1 = new view.profile.ProfilePanel();
+        brandPanel1 = new view.brands.BrandPanel();
+        categoryPanel1 = new view.categories.CategoryPanel();
         userPanel1 = new view.users.UserPanel();
-        productPanel1 = new view.products.ProductPanel();
+        panelProduct1 = new view.products.PanelProduct();
         orderPanel1 = new view.orders.OrderPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -132,7 +140,7 @@ public class AdminMainFrame extends javax.swing.JFrame {
         });
         jPanel_Side.add(jLabel_LogOut, java.awt.BorderLayout.SOUTH);
 
-        jPanel5.setPreferredSize(new java.awt.Dimension(150, 440));
+        jPanel5.setPreferredSize(new java.awt.Dimension(150, 600));
         jPanel5.setLayout(new java.awt.GridLayout(0, 1));
 
         jPanel_Order.setBackground(new java.awt.Color(0, 204, 204));
@@ -201,6 +209,52 @@ public class AdminMainFrame extends javax.swing.JFrame {
 
         jPanel5.add(jPanel_User);
 
+        jPanel_Category.setBackground(new java.awt.Color(0, 204, 204));
+        jPanel_Category.setLayout(new java.awt.BorderLayout());
+
+        jLabel_Category.setFont(new java.awt.Font("Segoe UI", 0, 15)); // NOI18N
+        jLabel_Category.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel_Category.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel_Category.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/category.png"))); // NOI18N
+        jLabel_Category.setText("Category");
+        jLabel_Category.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        jLabel_Category.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        jLabel_Category.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel_CategoryMouseClicked(evt);
+            }
+        });
+        jPanel_Category.add(jLabel_Category, java.awt.BorderLayout.CENTER);
+
+        jSeparator3.setBackground(new java.awt.Color(235, 235, 235));
+        jSeparator3.setPreferredSize(new java.awt.Dimension(10, 2));
+        jPanel_Category.add(jSeparator3, java.awt.BorderLayout.SOUTH);
+
+        jPanel5.add(jPanel_Category);
+
+        jPanel_Brand.setBackground(new java.awt.Color(0, 204, 204));
+        jPanel_Brand.setLayout(new java.awt.BorderLayout());
+
+        jLabel_Brand.setFont(new java.awt.Font("Segoe UI", 0, 15)); // NOI18N
+        jLabel_Brand.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel_Brand.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel_Brand.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/brand.png"))); // NOI18N
+        jLabel_Brand.setText("Brand");
+        jLabel_Brand.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        jLabel_Brand.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        jLabel_Brand.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel_BrandMouseClicked(evt);
+            }
+        });
+        jPanel_Brand.add(jLabel_Brand, java.awt.BorderLayout.CENTER);
+
+        jSeparator6.setBackground(new java.awt.Color(235, 235, 235));
+        jSeparator6.setPreferredSize(new java.awt.Dimension(10, 2));
+        jPanel_Brand.add(jSeparator6, java.awt.BorderLayout.SOUTH);
+
+        jPanel5.add(jPanel_Brand);
+
         jPanel_Profile.setBackground(new java.awt.Color(0, 204, 204));
         jPanel_Profile.setLayout(new java.awt.BorderLayout());
         jPanel_Profile.add(jSeparator4, java.awt.BorderLayout.SOUTH);
@@ -227,8 +281,10 @@ public class AdminMainFrame extends javax.swing.JFrame {
 
         jPanel_CardLayout.setLayout(new java.awt.CardLayout());
         jPanel_CardLayout.add(profilePanel1, "profile");
+        jPanel_CardLayout.add(brandPanel1, "brand");
+        jPanel_CardLayout.add(categoryPanel1, "category");
         jPanel_CardLayout.add(userPanel1, "user");
-        jPanel_CardLayout.add(productPanel1, "product");
+        jPanel_CardLayout.add(panelProduct1, "product");
         jPanel_CardLayout.add(orderPanel1, "order");
 
         getContentPane().add(jPanel_CardLayout, java.awt.BorderLayout.CENTER);
@@ -248,6 +304,8 @@ public class AdminMainFrame extends javax.swing.JFrame {
         jPanel_Product.setBackground(jPanel_Side.getBackground());
         jPanel_User.setBackground(jPanel_Side.getBackground());
         jPanel_Profile.setBackground(jPanel_Side.getBackground());
+        jPanel_Brand.setBackground(jPanel_Side.getBackground());
+        jPanel_Category.setBackground(jPanel_Side.getBackground());
         UIController.showCardLayout("order", jPanel_CardLayout);
     }//GEN-LAST:event_jLabel_OrderMouseClicked
 
@@ -257,6 +315,8 @@ public class AdminMainFrame extends javax.swing.JFrame {
         jPanel_Order.setBackground(jPanel_Side.getBackground());
         jPanel_User.setBackground(jPanel_Side.getBackground());
         jPanel_Profile.setBackground(jPanel_Side.getBackground());
+        jPanel_Brand.setBackground(jPanel_Side.getBackground());
+        jPanel_Category.setBackground(jPanel_Side.getBackground());
         UIController.showCardLayout("product", jPanel_CardLayout);
     }//GEN-LAST:event_jLabel_ProductMouseClicked
 
@@ -266,6 +326,8 @@ public class AdminMainFrame extends javax.swing.JFrame {
         jPanel_Order.setBackground(jPanel_Side.getBackground());
         jPanel_Product.setBackground(jPanel_Side.getBackground());
         jPanel_Profile.setBackground(jPanel_Side.getBackground());
+        jPanel_Brand.setBackground(jPanel_Side.getBackground());
+        jPanel_Category.setBackground(jPanel_Side.getBackground());
         UIController.showCardLayout("user", jPanel_CardLayout);
     }//GEN-LAST:event_jLabel_UserMouseClicked
 
@@ -275,8 +337,32 @@ public class AdminMainFrame extends javax.swing.JFrame {
         jPanel_Order.setBackground(jPanel_Side.getBackground());
         jPanel_Product.setBackground(jPanel_Side.getBackground());
         jPanel_User.setBackground(jPanel_Side.getBackground());
+        jPanel_Brand.setBackground(jPanel_Side.getBackground());
+        jPanel_Category.setBackground(jPanel_Side.getBackground());
         UIController.showCardLayout("profile", jPanel_CardLayout);
     }//GEN-LAST:event_jLabel_ProfileMouseClicked
+
+    private void jLabel_CategoryMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel_CategoryMouseClicked
+        // TODO add your handling code here:
+        jPanel_Category.setBackground(jPanel_Title.getBackground());
+        jPanel_Order.setBackground(jPanel_Side.getBackground());
+        jPanel_Product.setBackground(jPanel_Side.getBackground());
+        jPanel_User.setBackground(jPanel_Side.getBackground());
+        jPanel_Brand.setBackground(jPanel_Side.getBackground());
+        jPanel_Profile.setBackground(jPanel_Side.getBackground());
+        UIController.showCardLayout("category", jPanel_CardLayout);
+    }//GEN-LAST:event_jLabel_CategoryMouseClicked
+
+    private void jLabel_BrandMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel_BrandMouseClicked
+        // TODO add your handling code here:
+        jPanel_Brand.setBackground(jPanel_Title.getBackground());
+        jPanel_Order.setBackground(jPanel_Side.getBackground());
+        jPanel_Product.setBackground(jPanel_Side.getBackground());
+        jPanel_User.setBackground(jPanel_Side.getBackground());
+        jPanel_Category.setBackground(jPanel_Side.getBackground());
+        jPanel_Profile.setBackground(jPanel_Side.getBackground());
+        UIController.showCardLayout("brand", jPanel_CardLayout);
+    }//GEN-LAST:event_jLabel_BrandMouseClicked
 
     /**
      * @param args the command line arguments
@@ -314,9 +400,13 @@ public class AdminMainFrame extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private view.brands.BrandPanel brandPanel1;
+    private view.categories.CategoryPanel categoryPanel1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel_Brand;
+    private javax.swing.JLabel jLabel_Category;
     private javax.swing.JLabel jLabel_LogOut;
     private javax.swing.JLabel jLabel_Name;
     private javax.swing.JLabel jLabel_Order;
@@ -325,7 +415,9 @@ public class AdminMainFrame extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel_User;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel5;
+    private javax.swing.JPanel jPanel_Brand;
     private javax.swing.JPanel jPanel_CardLayout;
+    private javax.swing.JPanel jPanel_Category;
     private javax.swing.JPanel jPanel_Order;
     private javax.swing.JPanel jPanel_Product;
     private javax.swing.JPanel jPanel_Profile;
@@ -334,10 +426,12 @@ public class AdminMainFrame extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel_User;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSeparator jSeparator2;
+    private javax.swing.JSeparator jSeparator3;
     private javax.swing.JSeparator jSeparator4;
     private javax.swing.JSeparator jSeparator5;
+    private javax.swing.JSeparator jSeparator6;
     private view.orders.OrderPanel orderPanel1;
-    private view.products.ProductPanel productPanel1;
+    private view.products.PanelProduct panelProduct1;
     private view.profile.ProfilePanel profilePanel1;
     private view.users.UserPanel userPanel1;
     // End of variables declaration//GEN-END:variables
