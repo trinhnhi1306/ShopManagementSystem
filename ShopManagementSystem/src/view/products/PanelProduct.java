@@ -80,6 +80,8 @@ public class PanelProduct extends javax.swing.JPanel {
         setEditableForAll(false);
         TableRowSorter<TableModel> sorter = new TableRowSorter<TableModel>(jTable_Product.getModel());
         jTable_Product.setRowSorter(sorter);
+        jComboBox_FilterBrand.setSelectedIndex(-1);
+        jComboBox_FilterCategory.setSelectedIndex(-1);
     }
 
     /**
@@ -118,7 +120,7 @@ public class PanelProduct extends javax.swing.JPanel {
         jScrollPane2 = new javax.swing.JScrollPane();
         jTextArea_Description = new javax.swing.JTextArea();
         jLabel18 = new javax.swing.JLabel();
-        jButton_Change = new javax.swing.JButton();
+        jButton_ChooseImage = new javax.swing.JButton();
         jButton_Category = new javax.swing.JButton();
         jButton_Brand = new javax.swing.JButton();
         jLabel_Image = new javax.swing.JLabel();
@@ -175,10 +177,8 @@ public class PanelProduct extends javax.swing.JPanel {
         jLabel_Category.setFont(new java.awt.Font("Segoe UI", 0, 15)); // NOI18N
         jLabel_Category.setText("Category");
 
-        jComboBox_Brand.setEditable(true);
         jComboBox_Brand.setFont(new java.awt.Font("Segoe UI", 0, 15)); // NOI18N
 
-        jComboBox_Category.setEditable(true);
         jComboBox_Category.setFont(new java.awt.Font("Segoe UI", 0, 15)); // NOI18N
 
         jTextField_Name.setFont(new java.awt.Font("Segoe UI", 0, 15)); // NOI18N
@@ -232,13 +232,13 @@ public class PanelProduct extends javax.swing.JPanel {
         jLabel18.setFont(new java.awt.Font("Segoe UI", 0, 15)); // NOI18N
         jLabel18.setText("Image");
 
-        jButton_Change.setFont(new java.awt.Font("Segoe UI", 1, 15)); // NOI18N
-        jButton_Change.setForeground(new java.awt.Color(51, 51, 51));
-        jButton_Change.setText("Choose file");
-        jButton_Change.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        jButton_Change.addActionListener(new java.awt.event.ActionListener() {
+        jButton_ChooseImage.setFont(new java.awt.Font("Segoe UI", 1, 15)); // NOI18N
+        jButton_ChooseImage.setForeground(new java.awt.Color(51, 51, 51));
+        jButton_ChooseImage.setText("Choose file");
+        jButton_ChooseImage.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jButton_ChooseImage.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton_ChangeActionPerformed(evt);
+                jButton_ChooseImageActionPerformed(evt);
             }
         });
 
@@ -325,7 +325,7 @@ public class PanelProduct extends javax.swing.JPanel {
                             .addComponent(jButton_Brand, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 62, Short.MAX_VALUE)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jButton_Change, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jButton_ChooseImage, javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(jLabel18, javax.swing.GroupLayout.Alignment.TRAILING))))
                 .addGap(17, 17, 17)
                 .addComponent(jLabel_Image, javax.swing.GroupLayout.PREFERRED_SIZE, 184, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -383,7 +383,7 @@ public class PanelProduct extends javax.swing.JPanel {
                                 .addComponent(jTextField_Sold, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addComponent(jLabel13)
                                 .addComponent(jComboBox_Brand, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(jButton_Change, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                                .addComponent(jButton_ChooseImage, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                 .addContainerGap())
         );
 
@@ -420,6 +420,11 @@ public class PanelProduct extends javax.swing.JPanel {
         jButton_Modify.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jButton_ModifyMouseClicked(evt);
+            }
+        });
+        jButton_Modify.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton_ModifyActionPerformed(evt);
             }
         });
         jPanel_Card1.add(jButton_Modify);
@@ -526,6 +531,9 @@ public class PanelProduct extends javax.swing.JPanel {
             }
         });
         jScrollPane1.setViewportView(jTable_Product);
+        if (jTable_Product.getColumnModel().getColumnCount() > 0) {
+            jTable_Product.getColumnModel().getColumn(0).setMaxWidth(100);
+        }
 
         jButton_ExportExcel.setFont(new java.awt.Font("Segoe UI", 1, 15)); // NOI18N
         jButton_ExportExcel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/excel.png"))); // NOI18N
@@ -545,11 +553,19 @@ public class PanelProduct extends javax.swing.JPanel {
         jLabel21.setFont(new java.awt.Font("Segoe UI", 0, 15)); // NOI18N
         jLabel21.setText("Brand");
 
-        jComboBox_FilterCategory.setEditable(true);
         jComboBox_FilterCategory.setFont(new java.awt.Font("Segoe UI", 0, 15)); // NOI18N
+        jComboBox_FilterCategory.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                jComboBox_FilterCategoryItemStateChanged(evt);
+            }
+        });
 
-        jComboBox_FilterBrand.setEditable(true);
         jComboBox_FilterBrand.setFont(new java.awt.Font("Segoe UI", 0, 15)); // NOI18N
+        jComboBox_FilterBrand.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                jComboBox_FilterBrandItemStateChanged(evt);
+            }
+        });
 
         jButton_Import.setFont(new java.awt.Font("Segoe UI", 1, 17)); // NOI18N
         jButton_Import.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/delivery.png"))); // NOI18N
@@ -696,7 +712,6 @@ public class PanelProduct extends javax.swing.JPanel {
     }
     
     public void clearAll() {
-        jTextField_ID.setText("");
         jTextField_Name.setText("");
         jTextArea_Description.setText("");
         jTextField_Unit.setText("");
@@ -720,7 +735,7 @@ public class PanelProduct extends javax.swing.JPanel {
         jComboBox_FilterBrand.setEnabled(!editable);
         jComboBox_FilterCategory.setEnabled(!editable);
         jTextField_NameSearch.setEnabled(!editable);
-        jButton_Change.setEnabled(editable);
+        jButton_ChooseImage.setEnabled(editable);
     }
     
     public String getSelectedButtonText(ButtonGroup buttonGroup) {
@@ -765,7 +780,7 @@ public class PanelProduct extends javax.swing.JPanel {
                     RequestBody requestBody = RequestBody.create(MediaType.parse("multipart/form-data"), selectedFile);
                     MultipartBody.Part part = MultipartBody.Part.createFormData("file", selectedFile.getName(), requestBody);
                     UploadFileService uploadFileInterface = APIClient.getClient().create(UploadFileService.class);
-                    uploadFileInterface.upload(part).enqueue(new Callback<ResponseBody>() {
+                    uploadFileInterface.uploadProductImage(part).enqueue(new Callback<ResponseBody>() {
 
                         @Override
                         public void onResponse(Call<ResponseBody> call, retrofit2.Response<ResponseBody> response) {
@@ -825,7 +840,7 @@ public class PanelProduct extends javax.swing.JPanel {
                     RequestBody requestBody = RequestBody.create(MediaType.parse("multipart/form-data"), selectedFile);
                     MultipartBody.Part part = MultipartBody.Part.createFormData("file", selectedFile.getName(), requestBody);
                     UploadFileService uploadFileInterface = APIClient.getClient().create(UploadFileService.class);
-                    uploadFileInterface.upload(part).enqueue(new Callback<ResponseBody>() {
+                    uploadFileInterface.uploadProductImage(part).enqueue(new Callback<ResponseBody>() {
 
                         @Override
                         public void onResponse(Call<ResponseBody> call, retrofit2.Response<ResponseBody> response) {
@@ -891,6 +906,7 @@ public class PanelProduct extends javax.swing.JPanel {
 
     private void jButton_AddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_AddActionPerformed
         // TODO add your handling code here:
+        jTextField_ID.setText("");
         clearAll();
         mode = Mode.ADD;
         UIController.showCardLayout("cardSecond", jPanel_Card);
@@ -957,7 +973,7 @@ public class PanelProduct extends javax.swing.JPanel {
         JOptionPane.showMessageDialog(this, "Xuất file excel thành công!");
     }//GEN-LAST:event_jButton_ExportExcelActionPerformed
 
-    private void jButton_ChangeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_ChangeActionPerformed
+    private void jButton_ChooseImageActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_ChooseImageActionPerformed
         // TODO add your handling code here:
         JFileChooser fileChooser = new JFileChooser();
         FileNameExtensionFilter imageFilter = new FileNameExtensionFilter("Image Files", "jpg", "png");
@@ -975,7 +991,7 @@ public class PanelProduct extends javax.swing.JPanel {
         else {
             return;
         }
-    }//GEN-LAST:event_jButton_ChangeActionPerformed
+    }//GEN-LAST:event_jButton_ChooseImageActionPerformed
 
     private void jButton_NextPageActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_NextPageActionPerformed
         // TODO add your handling code here:
@@ -1029,12 +1045,35 @@ public class PanelProduct extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_jButton_RemoveMouseClicked
 
+    private void jComboBox_FilterCategoryItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jComboBox_FilterCategoryItemStateChanged
+        // TODO add your handling code here:
+        if(jComboBox_FilterCategory.getSelectedItem() == null) return;
+        String categoryName = ((Category) jComboBox_FilterCategory.getSelectedItem()).getName();
+        TableRowSorter<TableModel> trs = new TableRowSorter<>(jTable_Product.getModel());
+        jTable_Product.setRowSorter(trs);
+        trs.setRowFilter(RowFilter.regexFilter("(?i)" + categoryName, 2));
+    }//GEN-LAST:event_jComboBox_FilterCategoryItemStateChanged
+
+    private void jComboBox_FilterBrandItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jComboBox_FilterBrandItemStateChanged
+        // TODO add your handling code here:
+        if(jComboBox_FilterBrand.getSelectedItem() == null) return;
+        String brandName = ((Brand) jComboBox_FilterBrand.getSelectedItem()).getName();
+        TableRowSorter<TableModel> trs = new TableRowSorter<>(jTable_Product.getModel());
+        jTable_Product.setRowSorter(trs);
+        trs.setRowFilter(RowFilter.regexFilter("(?i)" + brandName, 3));
+    }//GEN-LAST:event_jComboBox_FilterBrandItemStateChanged
+
+    private void jButton_ModifyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_ModifyActionPerformed
+        // TODO add your handling code here:
+        
+    }//GEN-LAST:event_jButton_ModifyActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton_Add;
     private javax.swing.JButton jButton_Brand;
     private javax.swing.JButton jButton_Cancel;
     private javax.swing.JButton jButton_Category;
-    private javax.swing.JButton jButton_Change;
+    private javax.swing.JButton jButton_ChooseImage;
     private javax.swing.JButton jButton_Clear;
     private javax.swing.JButton jButton_Deleted;
     private javax.swing.JButton jButton_ExportExcel;

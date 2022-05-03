@@ -9,10 +9,14 @@ import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.table.DefaultTableModel;
 import model.Brand;
+import model.Category;
 import model.Response;
+import output.BrandOutput;
 import utils.ConnectAPI;
 
 /**
@@ -22,7 +26,24 @@ import utils.ConnectAPI;
 public class BrandController extends BaseController{
 
     public BrandController() {
-        getAll = "/api/brand";
+        getAll = "/api/brand/all";
+        getItemInOnePage = "/api/brand?pageNo=%d&pageSize=20&sortField=brandId&sortDirection=desc";
+        getOneByID = "/api/brand/";
+        addOne = "/api/brand";
+        editOrDelete = "/api/brand/";
+        getImage = "/api/brand/image/";
+    }
+    
+    public Brand getBrandById(String id) {
+        Brand b = null;        
+        try {
+            Response response = ConnectAPI.excuteHttpMethod("", getOneByID + id, "GET", true);
+            b = gson.fromJson(response.getMessage(), Brand.class);
+            
+        } catch (IOException ex) {
+            System.out.println(ex.getMessage());
+        }
+        return b;
     }
     
     public List<Brand> getAllBrands() {
@@ -33,6 +54,20 @@ public class BrandController extends BaseController{
             founderList = gson.fromJson(response.getMessage(), typeOfT);
         } catch (IOException ex) {
             Logger.getLogger(BrandController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return founderList;
+    }
+    
+    public BrandOutput getBrandInOnePage(int pageNo) {
+        String str = String.format(getItemInOnePage, pageNo);
+        System.out.println(str);
+        BrandOutput founderList = null;
+        try {
+            Response response = ConnectAPI.excuteHttpMethod("", str, "GET", true);
+            founderList = gson.fromJson(response.getMessage(), BrandOutput.class);
+            
+        } catch (IOException ex) {
+            System.out.println(ex.getMessage());
         }
         return founderList;
     }
@@ -49,5 +84,44 @@ public class BrandController extends BaseController{
             System.out.println(ex.getMessage());
         }
         return response;
+    }
+    
+    public Response updateBrandByID(int id, Brand b) {
+        Response response = null;
+        try {            
+            String json = gson.toJson(b);
+            response = ConnectAPI.excuteHttpMethod(json, editOrDelete + id , "PUT", true);
+            //print in String
+            System.out.println(response.getMessage());
+            
+        } catch (IOException ex) {
+            System.out.println(ex.getMessage());
+        }
+        return response;
+    }
+    
+    public Response deleteBrandByID(String id) {
+        Response response = null;
+        try {  
+            response = ConnectAPI.excuteHttpMethod("", editOrDelete + id , "DELETE", true);
+            //print in String
+            System.out.println(response.getMessage());
+            
+        } catch (IOException ex) {
+            System.out.println(ex.getMessage());
+        }
+        return response;
+    }
+    
+    public void loadTable(List<Brand> list, DefaultTableModel dtm) {
+        dtm.setNumRows(0);
+        Vector vt;
+        for (Brand b: list) {
+            vt = new Vector();
+            vt.add(b.getBrandId());
+            vt.add(b.getName());
+            vt.add(b.getDescription());
+            dtm.addRow(vt);
+        }
     }
 }

@@ -19,6 +19,9 @@ public interface UploadFileService {
     
     @Multipart
     @POST("image/product")
-    Call<ResponseBody> upload(@Part MultipartBody.Part part);
+    Call<ResponseBody> uploadProductImage(@Part MultipartBody.Part part);
     
+    @Multipart
+    @POST("image/category")
+    Call<ResponseBody> uploadCategoryImage(@Part MultipartBody.Part part);
 }

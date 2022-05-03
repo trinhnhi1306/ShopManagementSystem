@@ -6,22 +6,22 @@ package output;
 
 import java.util.ArrayList;
 import java.util.List;
-import model.Product;
+import model.Category;
 
 /**
  *
  * @author TRINH
  */
-public class ProductOutput {
+public class CategoryOutput {
     private int page;
     private int totalPage;
-    private List<Product> listResult;
+    private List<Category> listResult;
 
-    public ProductOutput() {
+    public CategoryOutput() {
         listResult = new ArrayList<>();
     }
 
-    public ProductOutput(int page, int totalPage) {
+    public CategoryOutput(int page, int totalPage) {
         this.page = page;
         this.totalPage = totalPage;
     }
@@ -42,11 +42,11 @@ public class ProductOutput {
         this.totalPage = totalPage;
     }
 
-    public List<Product> getListResult() {
+    public List<Category> getListResult() {
         return listResult;
     }
 
-    public void setListResult(List<Product> listResult) {
+    public void setListResult(List<Category> listResult) {
         this.listResult = listResult;
     }
     

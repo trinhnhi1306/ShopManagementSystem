@@ -22,16 +22,13 @@ import utils.ConnectAPI;
  */
 public class ProductController extends BaseController{  
     
-    private String getProductInOnePage;
-    private String getImage;
-    
     public ProductController() {
-        getOneByID = "/api/product/get-product?idProduct=";
+        getOneByID = "/api/product/";
         getAll = "/api/products/getAllProducts";
         addOne = "/api/product";
         editOrDelete = "/api/product/";
-        getProductInOnePage = "/api/product?pageNo=%d&pageSize=20&sortField=productId&sortDirection=desc";
-        getImage = "/api/product/get-image/";
+        getItemInOnePage = "/api/product?pageNo=%d&pageSize=20&sortField=productId&sortDirection=desc";
+        getImage = "/api/product/image/";
     }
 
     public Product getProductById(String id) {
@@ -47,7 +44,7 @@ public class ProductController extends BaseController{
     }
     
     public ProductOutput getProductInOnePage(int pageNo) {
-        String str = String.format(getProductInOnePage, pageNo);
+        String str = String.format(getItemInOnePage, pageNo);
         System.out.println(str);
         ProductOutput founderList = null;
         try {

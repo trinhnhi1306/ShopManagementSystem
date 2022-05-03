@@ -16,5 +16,6 @@ public abstract class BaseController {
     public String getAll;
     public String addOne;
     public String editOrDelete;
-
+    public String getItemInOnePage;
+    public String getImage;
 }

@@ -5,14 +5,18 @@
 package controller;
 
 import com.google.gson.reflect.TypeToken;
+import java.awt.Image;
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.table.DefaultTableModel;
 import model.Category;
 import model.Response;
+import output.CategoryOutput;
 import utils.ConnectAPI;
 
 /**
@@ -22,7 +26,24 @@ import utils.ConnectAPI;
 public class CategoryController extends BaseController{
     
     public CategoryController() {
-        getAll = "/api/category";
+        getAll = "/api/category/all";
+        getItemInOnePage = "/api/category?pageNo=%d&pageSize=20&sortField=categoryId&sortDirection=desc";
+        getOneByID = "/api/category/";
+        addOne = "/api/category";
+        editOrDelete = "/api/category/";
+        getImage = "/api/category/image/";
+    }
+    
+    public Category getCategoryById(String id) {
+        Category c = null;        
+        try {
+            Response response = ConnectAPI.excuteHttpMethod("", getOneByID + id, "GET", true);
+            c = gson.fromJson(response.getMessage(), Category.class);
+            
+        } catch (IOException ex) {
+            System.out.println(ex.getMessage());
+        }
+        return c;
     }
     
     public List<Category> getAllCategories() {
@@ -33,6 +54,20 @@ public class CategoryController extends BaseController{
             founderList = gson.fromJson(reponse.getMessage(), typeOfT);
         } catch (IOException ex) {
             Logger.getLogger(CategoryController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return founderList;
+    }
+    
+    public CategoryOutput getCategoryInOnePage(int pageNo) {
+        String str = String.format(getItemInOnePage, pageNo);
+        System.out.println(str);
+        CategoryOutput founderList = null;
+        try {
+            Response response = ConnectAPI.excuteHttpMethod("", str, "GET", true);
+            founderList = gson.fromJson(response.getMessage(), CategoryOutput.class);
+            
+        } catch (IOException ex) {
+            System.out.println(ex.getMessage());
         }
         return founderList;
     }
@@ -49,5 +84,55 @@ public class CategoryController extends BaseController{
             System.out.println(ex.getMessage());
         }
         return response;
+    }
+    
+    public Response updateCategoryByID(int id, Category c) {
+        Response response = null;
+        try {            
+            String json = gson.toJson(c);
+            response = ConnectAPI.excuteHttpMethod(json, editOrDelete + id , "PUT", true);
+            //print in String
+            System.out.println(response.getMessage());
+            
+        } catch (IOException ex) {
+            System.out.println(ex.getMessage());
+        }
+        return response;
+    }
+    
+    public Response deleteCategoryByID(String id) {
+        Response response = null;
+        try {  
+            response = ConnectAPI.excuteHttpMethod("", editOrDelete + id , "DELETE", true);
+            //print in String
+            System.out.println(response.getMessage());
+            
+        } catch (IOException ex) {
+            System.out.println(ex.getMessage());
+        }
+        return response;
+    }
+    
+    public void loadTable(List<Category> list, DefaultTableModel dtm) {
+        dtm.setNumRows(0);
+        Vector vt;
+        for (Category c: list) {
+            vt = new Vector();
+            vt.add(c.getCategoryId());
+            vt.add(c.getName());
+            vt.add(c.getNote());
+            vt.add(c.getImage());
+            dtm.addRow(vt);
+        }
+    }
+    
+    public Image getImage(String imageName) {
+        Image img = null;
+        try {
+            img = ConnectAPI.getImageHasAuthentication(getImage + imageName);
+        } catch (IOException ex) {
+            Logger.getLogger(ProductController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return img;
     }
 }
