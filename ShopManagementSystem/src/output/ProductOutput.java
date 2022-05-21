@@ -13,6 +13,7 @@ import model.Product;
  * @author TRINH
  */
 public class ProductOutput {
+
     private int page;
     private int totalPage;
     private List<Product> listResult;
@@ -49,5 +50,5 @@ public class ProductOutput {
     public void setListResult(List<Product> listResult) {
         this.listResult = listResult;
     }
-    
+
 }

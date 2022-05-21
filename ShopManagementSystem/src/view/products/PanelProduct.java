@@ -62,7 +62,7 @@ public class PanelProduct extends javax.swing.JPanel {
     private ImportHistoryDialog history;
     private ProductImportDialog productImportDialog;
     private ProductDeletedDialog productDeletedDialog;
-    
+
     /**
      * Creates new form PanelProduct
      */
@@ -72,8 +72,8 @@ public class PanelProduct extends javax.swing.JPanel {
         dtm = (DefaultTableModel) jTable_Product.getModel();
         pc = new ProductController();
         cc = new CategoryController();
-        bc = new BrandController();        
-        
+        bc = new BrandController();
+
         loadData(1);
         loadCategory();
         loadBrand();
@@ -689,7 +689,7 @@ public class PanelProduct extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
-    public void loadData(int page) {        
+    public void loadData(int page) {
         output = pc.getProductInOnePage(page);
         jLabel_Page.setText(output.getPage() + "/" + output.getTotalPage());
         pc.loadTable(output.getListResult(), dtm);
@@ -697,20 +697,20 @@ public class PanelProduct extends javax.swing.JPanel {
 
     public void loadCategory() {
         List<Category> list = cc.getAllCategories();
-        for(Category c: list) {
+        for (Category c : list) {
             jComboBox_Category.addItem(c);
             jComboBox_FilterCategory.addItem(c);
         }
     }
-    
+
     public void loadBrand() {
         List<Brand> list = bc.getAllBrands();
-        for(Brand b: list) {
+        for (Brand b : list) {
             jComboBox_Brand.addItem(b);
             jComboBox_FilterBrand.addItem(b);
         }
     }
-    
+
     public void clearAll() {
         jTextField_Name.setText("");
         jTextArea_Description.setText("");
@@ -722,6 +722,7 @@ public class PanelProduct extends javax.swing.JPanel {
         jSpinner_Price.setValue(0);
         jSpinner_Discount.setValue(0);
     }
+
     public void setEditableForAll(boolean editable) {
         jTextField_Name.setEditable(editable);
         jTextArea_Description.setEditable(editable);
@@ -737,7 +738,7 @@ public class PanelProduct extends javax.swing.JPanel {
         jTextField_NameSearch.setEnabled(!editable);
         jButton_ChooseImage.setEnabled(editable);
     }
-    
+
     public String getSelectedButtonText(ButtonGroup buttonGroup) {
         for (Enumeration<AbstractButton> buttons = buttonGroup.getElements(); buttons.hasMoreElements();) {
             AbstractButton button = buttons.nextElement();
@@ -747,7 +748,7 @@ public class PanelProduct extends javax.swing.JPanel {
         }
         return null;
     }
-    
+
     private void jButton_OKActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_OKActionPerformed
         // TODO add your handling code here:
         String name = jTextField_Name.getText();
@@ -758,11 +759,11 @@ public class PanelProduct extends javax.swing.JPanel {
         int discount = Integer.parseInt(jSpinner_Discount.getValue().toString());
         int soldQuantity = Integer.parseInt(jTextField_Sold.getText());
         int quantity = Integer.parseInt(jSpinner_Quantity.getValue().toString());
-        
+
         Brand brand = (Brand) jComboBox_Brand.getSelectedItem();
-        Category category = (Category) jComboBox_Category.getSelectedItem();        
-        
-        if (mode == Mode.ADD) {            
+        Category category = (Category) jComboBox_Category.getSelectedItem();
+
+        if (mode == Mode.ADD) {
             Product product = new Product();
             product.setName(name);
             product.setDescription(description);
@@ -775,7 +776,7 @@ public class PanelProduct extends javax.swing.JPanel {
             product.setCategory(category);
             product.setBrand(brand);
             product.setStatus(true);
-            if(selectedFile != null) {
+            if (selectedFile != null) {
                 try {
                     RequestBody requestBody = RequestBody.create(MediaType.parse("multipart/form-data"), selectedFile);
                     MultipartBody.Part part = MultipartBody.Part.createFormData("file", selectedFile.getName(), requestBody);
@@ -785,16 +786,17 @@ public class PanelProduct extends javax.swing.JPanel {
                         @Override
                         public void onResponse(Call<ResponseBody> call, retrofit2.Response<ResponseBody> response) {
                             try {
-                                if(response.isSuccessful()) {
+                                if (response.isSuccessful()) {
                                     String str = response.body().string();
                                     product.setImage(str);
                                     System.out.println("vãi: " + product.getImage());
                                     Response res = pc.addProduct(product);
                                     JOptionPane.showMessageDialog(null, res.getMessage());
-                                    if(res.getResponseCode() == 200)
+                                    if (res.getResponseCode() == 200) {
                                         loadData(output.getPage());
-                                    else
-                                        return;    
+                                    } else {
+                                        return;
+                                    }
                                 }
                             } catch (Exception e) {
                                 JOptionPane.showMessageDialog(null, e.getMessage());
@@ -810,15 +812,15 @@ public class PanelProduct extends javax.swing.JPanel {
                 } catch (Exception e) {
                     JOptionPane.showMessageDialog(this, e.getMessage());
                 }
-            }
-            else {
+            } else {
                 product.setImage(imageName);
                 Response response = pc.addProduct(product);
                 JOptionPane.showMessageDialog(this, response.getMessage());
-                if(response.getResponseCode() == 200)
+                if (response.getResponseCode() == 200) {
                     loadData(output.getPage());
-                else
-                    return;    
+                } else {
+                    return;
+                }
             }
         }
         if (mode == Mode.MODIFY) {
@@ -835,7 +837,7 @@ public class PanelProduct extends javax.swing.JPanel {
             product.setCategory(category);
             product.setBrand(brand);
             product.setStatus(true);
-            if(selectedFile != null) {
+            if (selectedFile != null) {
                 try {
                     RequestBody requestBody = RequestBody.create(MediaType.parse("multipart/form-data"), selectedFile);
                     MultipartBody.Part part = MultipartBody.Part.createFormData("file", selectedFile.getName(), requestBody);
@@ -845,16 +847,17 @@ public class PanelProduct extends javax.swing.JPanel {
                         @Override
                         public void onResponse(Call<ResponseBody> call, retrofit2.Response<ResponseBody> response) {
                             try {
-                                if(response.isSuccessful()) {
+                                if (response.isSuccessful()) {
                                     String str = response.body().string();
                                     product.setImage(str);
                                     System.out.println("vãi: " + product.getImage());
                                     Response res = pc.updateProductByID(product.getProductId(), product);
                                     JOptionPane.showMessageDialog(null, res.getMessage());
-                                    if(res.getResponseCode() == 200)
+                                    if (res.getResponseCode() == 200) {
                                         loadData(output.getPage());
-                                    else
-                                        return;    
+                                    } else {
+                                        return;
+                                    }
                                 }
                             } catch (Exception e) {
                                 JOptionPane.showMessageDialog(null, e.getMessage());
@@ -870,16 +873,16 @@ public class PanelProduct extends javax.swing.JPanel {
                 } catch (Exception e) {
                     JOptionPane.showMessageDialog(this, e.getMessage());
                 }
-            }
-            else {
+            } else {
                 product.setImage(imageName);
                 Response response = pc.updateProductByID(product.getProductId(), product);
                 JOptionPane.showMessageDialog(this, response.getMessage());
-                if(response.getResponseCode() == 200)
+                if (response.getResponseCode() == 200) {
                     loadData(output.getPage());
-                else
-                    return;    
-            }         
+                } else {
+                    return;
+                }
+            }
         }
         mode = Mode.FREE;
         UIController.showCardLayout("cardFirst", jPanel_Card);
@@ -894,7 +897,7 @@ public class PanelProduct extends javax.swing.JPanel {
         clearAll();
         setEditableForAll(false);
         jTable_Product.setEnabled(true);
-        
+
         UIController.showCardLayout("cardFirst", jPanel_Card);
         selectedFile = null;
     }//GEN-LAST:event_jButton_CancelActionPerformed
@@ -913,7 +916,7 @@ public class PanelProduct extends javax.swing.JPanel {
         setEditableForAll(true);
         jTable_Product.setEnabled(false);
         jTextField_Sold.setText("0");
-        
+
         imageName = DEFAULT_IMAGE;
         Image img = pc.getImage(imageName);
         Image newImg = img.getScaledInstance(jLabel_Image.getWidth(), jLabel_Image.getHeight(), java.awt.Image.SCALE_SMOOTH);
@@ -923,7 +926,9 @@ public class PanelProduct extends javax.swing.JPanel {
 
     private void jTable_ProductMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable_ProductMouseClicked
         // TODO add your handling code here:
-        if(mode == Mode.ADD || mode == Mode.MODIFY) return;
+        if (mode == Mode.ADD || mode == Mode.MODIFY) {
+            return;
+        }
         int selectedRow = jTable_Product.convertRowIndexToModel(jTable_Product.getSelectedRow());
 
         Product p = pc.getProductById(dtm.getValueAt(selectedRow, 0).toString());
@@ -933,25 +938,25 @@ public class PanelProduct extends javax.swing.JPanel {
         jTextField_Specification.setText(p.getSpecification());
         jTextField_Sold.setText(p.getSoldQuantity() + "");
         jTextArea_Description.setText(p.getDescription());
-        
+
         for (int i = 0; i < jComboBox_Brand.getItemCount(); i++) {
             if (jComboBox_Brand.getItemAt(i).getBrandId().equals(p.getBrand().getBrandId())) {
                 jComboBox_Brand.setSelectedIndex(i);
             }
         }
-        
+
         for (int i = 0; i < jComboBox_Category.getItemCount(); i++) {
             if (jComboBox_Category.getItemAt(i).getCategoryId().equals(p.getCategory().getCategoryId())) {
                 jComboBox_Category.setSelectedIndex(i);
             }
         }
-        
+
         imageName = p.getImage();
         Image img = pc.getImage(imageName);
         Image newImg = img.getScaledInstance(jLabel_Image.getWidth(), jLabel_Image.getHeight(), java.awt.Image.SCALE_SMOOTH);
         ImageIcon icon = new ImageIcon(newImg);
         jLabel_Image.setIcon(icon);
-        
+
         jSpinner_Price.setValue(p.getPrice());
         jSpinner_Discount.setValue(p.getDiscount());
         jSpinner_Quantity.setValue(p.getQuantity());
@@ -987,29 +992,28 @@ public class PanelProduct extends javax.swing.JPanel {
             Image newImg = img.getScaledInstance(jLabel_Image.getWidth(), jLabel_Image.getHeight(), java.awt.Image.SCALE_SMOOTH);
             jLabel_Image.setIcon(new ImageIcon(newImg));
             System.out.println(selectedFile.getName());
-        }
-        else {
+        } else {
             return;
         }
     }//GEN-LAST:event_jButton_ChooseImageActionPerformed
 
     private void jButton_NextPageActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_NextPageActionPerformed
         // TODO add your handling code here:
-        if(output.getPage() < output.getTotalPage()) {
+        if (output.getPage() < output.getTotalPage()) {
             loadData(output.getPage() + 1);
             jButton_PreviousPage.setEnabled(true);
         }
-        if(output.getPage() == output.getTotalPage())
+        if (output.getPage() == output.getTotalPage())
             jButton_NextPage.setEnabled(false);
     }//GEN-LAST:event_jButton_NextPageActionPerformed
 
     private void jButton_PreviousPageActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_PreviousPageActionPerformed
         // TODO add your handling code here:
-        if(output.getPage() > 1) {
+        if (output.getPage() > 1) {
             loadData(output.getPage() - 1);
             jButton_NextPage.setEnabled(true);
         }
-        if(output.getPage() == 1)
+        if (output.getPage() == 1)
             jButton_PreviousPage.setEnabled(false);
     }//GEN-LAST:event_jButton_PreviousPageActionPerformed
 
@@ -1036,18 +1040,20 @@ public class PanelProduct extends javax.swing.JPanel {
         } else if (luaChon == JOptionPane.OK_OPTION) {
             Response response = pc.deleteProductByID(jTextField_ID.getText());
             JOptionPane.showMessageDialog(this, response.getMessage());
-            if(response.getResponseCode() == 200) {
+            if (response.getResponseCode() == 200) {
                 loadData(output.getPage());
                 clearAll();
+            } else {
+                return;
             }
-            else
-                return;            
         }
     }//GEN-LAST:event_jButton_RemoveMouseClicked
 
     private void jComboBox_FilterCategoryItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jComboBox_FilterCategoryItemStateChanged
         // TODO add your handling code here:
-        if(jComboBox_FilterCategory.getSelectedItem() == null) return;
+        if (jComboBox_FilterCategory.getSelectedItem() == null) {
+            return;
+        }
         String categoryName = ((Category) jComboBox_FilterCategory.getSelectedItem()).getName();
         TableRowSorter<TableModel> trs = new TableRowSorter<>(jTable_Product.getModel());
         jTable_Product.setRowSorter(trs);
@@ -1056,7 +1062,9 @@ public class PanelProduct extends javax.swing.JPanel {
 
     private void jComboBox_FilterBrandItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jComboBox_FilterBrandItemStateChanged
         // TODO add your handling code here:
-        if(jComboBox_FilterBrand.getSelectedItem() == null) return;
+        if (jComboBox_FilterBrand.getSelectedItem() == null) {
+            return;
+        }
         String brandName = ((Brand) jComboBox_FilterBrand.getSelectedItem()).getName();
         TableRowSorter<TableModel> trs = new TableRowSorter<>(jTable_Product.getModel());
         jTable_Product.setRowSorter(trs);
@@ -1065,7 +1073,7 @@ public class PanelProduct extends javax.swing.JPanel {
 
     private void jButton_ModifyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_ModifyActionPerformed
         // TODO add your handling code here:
-        
+
     }//GEN-LAST:event_jButton_ModifyActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

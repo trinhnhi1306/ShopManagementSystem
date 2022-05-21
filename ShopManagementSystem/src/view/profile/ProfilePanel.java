@@ -5,28 +5,11 @@
  */
 package view.profile;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.Enumeration;
-import java.util.List;
-import java.util.Vector;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.swing.AbstractButton;
 import javax.swing.ButtonGroup;
-import javax.swing.JOptionPane;
-//import model.database.Connect;
-//import view.main.librarian.ReaderPanel;
-//import static view.main.librarian.ReaderPanel.validate;
-//import static view.main.librarian.ReaderPanel.validatePhone;
-//import static view.main.librarian.ReaderPanel.verifyFullname;
 
 /**
  *
@@ -43,7 +26,7 @@ public class ProfilePanel extends javax.swing.JPanel {
         initComponents();
 //        loadAddress();
 //        layUser();
-        
+
     }
 
     /**
@@ -494,7 +477,6 @@ public class ProfilePanel extends javax.swing.JPanel {
 //            System.out.println("loi lay lay user");
 //        }
 //    }
-
 //    void loadAddress(){
 //       Connection ketNoi= Connect.GetConnect();
 //        try {
@@ -510,7 +492,6 @@ public class ProfilePanel extends javax.swing.JPanel {
 //            System.out.println("loi lay address");
 //        }
 //   }
-
 //    int getIdProvince(String nameProvince){
 //        int i = 0;
 //        Connection ketNoi= Connect.GetConnect();
@@ -529,7 +510,6 @@ public class ProfilePanel extends javax.swing.JPanel {
 //        }
 //        return i;
 //    }
-
 //    int getIdDistrict(String nameDistrict,String nameProvince){
 //        int i = 0;
 //        Connection ketNoi= Connect.GetConnect();
@@ -549,7 +529,6 @@ public class ProfilePanel extends javax.swing.JPanel {
 //        }
 //        return i;
 //    }
-
 //    public boolean updateAccount(String Full_Name,String gender,String date_of_birth, String phone_number, String email,String username){
 //       Connection ketNoi =Connect.GetConnect();
 //        String sql = "UPDATE account\n" +
@@ -574,7 +553,6 @@ public class ProfilePanel extends javax.swing.JPanel {
 //
 //        
 //   }
-
 //    void updateAddress(int addressId,int ward_id,String specific_address){
 //       Connection ketNoi =Connect.GetConnect();
 //        String sql = "UPDATE address\n" +
@@ -595,7 +573,6 @@ public class ProfilePanel extends javax.swing.JPanel {
 //      }
 //        
 //   }
-
     public String getSelectedButtonText(ButtonGroup buttonGroup) {
         for (Enumeration<AbstractButton> buttons = buttonGroup.getElements(); buttons.hasMoreElements();) {
             AbstractButton button = buttons.nextElement();
@@ -627,7 +604,6 @@ public class ProfilePanel extends javax.swing.JPanel {
 //        }
 //        return i;
 //    }
-
 //    int getIdAddressByUserName(String username){
 //        int i = 0;
 //        Connection ketNoi= Connect.GetConnect();
@@ -646,7 +622,6 @@ public class ProfilePanel extends javax.swing.JPanel {
 //        }
 //        return i;
 //    }
-
 //    int checkExistPhoneOrEmailWhenUpdate(String PhoneNumber, String Email,String username)
 //    {
 //        Connection ketNoi= Connect.GetConnect();
@@ -677,13 +652,12 @@ public class ProfilePanel extends javax.swing.JPanel {
 //        }
 //        return 0;
 //    }
-    
     // email hop le
-   public static final Pattern VALID_EMAIL_ADDRESS_REGEX = 
-    Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);
+    public static final Pattern VALID_EMAIL_ADDRESS_REGEX
+            = Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);
 
     public static boolean validate(String emailStr) {
-            Matcher matcher = VALID_EMAIL_ADDRESS_REGEX.matcher(emailStr);
-            return matcher.find();
+        Matcher matcher = VALID_EMAIL_ADDRESS_REGEX.matcher(emailStr);
+        return matcher.find();
     }
 }

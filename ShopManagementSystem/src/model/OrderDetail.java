@@ -9,6 +9,7 @@ package model;
  * @author TRINH
  */
 public class OrderDetail {
+
     private Integer id;
     private Order order;
     private Product product;
@@ -66,5 +67,4 @@ public class OrderDetail {
         this.price = price;
     }
 
-    
 }

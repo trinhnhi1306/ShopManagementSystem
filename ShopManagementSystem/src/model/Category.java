@@ -11,6 +11,7 @@ import java.util.List;
  * @author TRINH
  */
 public class Category {
+
     private Integer categoryId;
     private String name;
     private String image;
@@ -72,5 +73,5 @@ public class Category {
     public String toString() {
         return name;
     }
-    
+
 }

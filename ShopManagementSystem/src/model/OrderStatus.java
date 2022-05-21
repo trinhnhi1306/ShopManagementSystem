@@ -11,6 +11,7 @@ import java.util.List;
  * @author TRINH
  */
 public class OrderStatus {
+
     private Integer statusId;
     private String description;
     private List<Order> Orders;
@@ -47,5 +48,5 @@ public class OrderStatus {
     public void setOrders(List<Order> Orders) {
         this.Orders = Orders;
     }
-    
+
 }

@@ -18,8 +18,9 @@ import utils.ConnectAPI;
  * @author TRINH
  */
 public class APIClient {
+
     private static Retrofit retrofit;
-    
+
     public static Retrofit getClient() {
         try {
             OkHttpClient client = new OkHttpClient.Builder().addInterceptor(new Interceptor() {
@@ -40,8 +41,7 @@ public class APIClient {
                     .client(client)
                     .build();
             return retrofit;
-        }
-        catch (Exception ex) {
+        } catch (Exception ex) {
             return null;
         }
     }

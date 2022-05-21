@@ -11,6 +11,7 @@ import com.google.gson.Gson;
  * @author TRINH
  */
 public abstract class BaseController {
+
     public Gson gson = new Gson();
     public String getOneByID;
     public String getAll;

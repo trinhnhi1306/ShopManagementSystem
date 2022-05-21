@@ -9,6 +9,7 @@ package model;
  * @author TRINH
  */
 public class Cart {
+
     private Product product;
     private User user;
     private int quantity;
@@ -45,6 +46,5 @@ public class Cart {
     public void setQuantity(int quantity) {
         this.quantity = quantity;
     }
-    
-    
+
 }

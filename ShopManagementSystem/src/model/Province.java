@@ -11,6 +11,7 @@ import java.util.List;
  * @author TRINH
  */
 public class Province {
+
     private Integer provinceId;
     private String provinceName;
     private String provinceCode;
@@ -58,5 +59,4 @@ public class Province {
         this.districts = districts;
     }
 
-    
 }

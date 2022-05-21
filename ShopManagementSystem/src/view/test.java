@@ -8,20 +8,15 @@ import controller.CategoryController;
 import controller.LoginController;
 import controller.ProductController;
 import java.io.IOException;
-import java.util.Map;
-import model.Brand;
-import model.Category;
 import model.Login;
-import model.Product;
 import utils.ConnectAPI;
-
-
 
 /**
  *
  * @author TRINH
  */
 public class test {
+
     public static void main(String[] args) throws IOException {
         ProductController pc = new ProductController();
         CategoryController cc = new CategoryController();
@@ -42,8 +37,8 @@ public class test {
             System.out.println(pp.getProductId());
             System.out.println(pp.getCalculationUnit());
         }
-        */
-        
+         */
+
         LoginController loginController = new LoginController();
         Login output = loginController.login("reintrinh", "123456");
         System.out.println(output.getRoles().toArray()[0]);

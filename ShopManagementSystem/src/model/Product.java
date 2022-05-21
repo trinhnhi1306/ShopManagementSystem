@@ -9,11 +9,12 @@ package model;
  * @author TRINH
  */
 public class Product {
+
     private Integer productId;
     private String name;
     private String description;
     private String image;
-    private double price;   
+    private double price;
     private String specification;
     private String calculationUnit;
     private int discount;
@@ -146,5 +147,4 @@ public class Product {
         this.status = status;
     }
 
-    
 }

@@ -4,27 +4,26 @@
  */
 package output;
 
-import java.util.ArrayList;
 import java.util.List;
-import model.Category;
+import model.User;
 
 /**
  *
- * @author TRINH
+ * @author PC
  */
-public class CategoryOutput {
+public class UserOutput {
 
     private int page;
     private int totalPage;
-    private List<Category> listResult;
+    private List<User> listResult;
 
-    public CategoryOutput() {
-        listResult = new ArrayList<>();
+    public UserOutput() {
     }
 
-    public CategoryOutput(int page, int totalPage) {
+    public UserOutput(int page, int totalPage, List<User> listResult) {
         this.page = page;
         this.totalPage = totalPage;
+        this.listResult = listResult;
     }
 
     public int getPage() {
@@ -43,12 +42,11 @@ public class CategoryOutput {
         this.totalPage = totalPage;
     }
 
-    public List<Category> getListResult() {
+    public List<User> getListResult() {
         return listResult;
     }
 
-    public void setListResult(List<Category> listResult) {
+    public void setListResult(List<User> listResult) {
         this.listResult = listResult;
     }
-
 }

@@ -9,6 +9,7 @@ package model;
  * @author TRINH
  */
 public class Poster {
+
     private long id;
     private String name;
     private int type;
@@ -55,5 +56,5 @@ public class Poster {
     public void setIsActive(boolean isActive) {
         this.isActive = isActive;
     }
-    
+
 }

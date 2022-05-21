@@ -11,6 +11,7 @@ import java.util.List;
  * @author TRINH
  */
 public class Brand {
+
     private Integer brandId;
     private String name;
     private String description;
@@ -62,5 +63,5 @@ public class Brand {
     public String toString() {
         return name;
     }
-    
+
 }

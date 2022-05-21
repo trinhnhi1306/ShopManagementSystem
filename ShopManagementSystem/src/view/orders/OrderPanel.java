@@ -6,25 +6,10 @@
 package view.orders;
 
 import controller.OrderController;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.Enumeration;
 import java.util.List;
-import java.util.Vector;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.swing.AbstractButton;
-import javax.swing.ButtonGroup;
-import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.RowFilter;
-import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
@@ -66,7 +51,7 @@ public class OrderPanel extends javax.swing.JPanel {
         oc = new OrderController();
         dtmProduct = (DefaultTableModel) jTable_Product.getModel();
         dtmOrder = (DefaultTableModel) jTable_Order.getModel();
-        
+
         loadData(1);
         setEditableForAll(false);
     }
@@ -441,6 +426,7 @@ public class OrderPanel extends javax.swing.JPanel {
         });
         jPanel_Card3.add(jButton_No);
 
+        jButton_Search.setFont(new java.awt.Font("Segoe UI", 0, 15)); // NOI18N
         jButton_Search.setText("Search");
         jButton_Search.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -513,14 +499,14 @@ public class OrderPanel extends javax.swing.JPanel {
 
     private void jTable_OrderMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable_OrderMouseClicked
         // TODO add your handling code here:
-        int selectedRow = jTable_Product.convertRowIndexToModel(jTable_Order.getSelectedRow());        
+        int selectedRow = jTable_Product.convertRowIndexToModel(jTable_Order.getSelectedRow());
         String id = jTable_Order.getValueAt(selectedRow, 0).toString();
-        
+
         jTextField_ID.setText(id);
         jTextField_User.setText(jTable_Order.getValueAt(selectedRow, 1).toString());
         jTextField_Price.setText(jTable_Order.getValueAt(selectedRow, 2).toString());
         jTextField_Date.setText(jTable_Order.getValueAt(selectedRow, 3).toString());
-        
+
         List<OrderDetail> list = oc.getOrderDetailByOrderId(Integer.parseInt(id));
         oc.loadProductTable(list, dtmProduct);
     }//GEN-LAST:event_jTable_OrderMouseClicked
@@ -537,64 +523,70 @@ public class OrderPanel extends javax.swing.JPanel {
     private void jButton_YesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_YesActionPerformed
         // TODO add your handling code here:
         String id = jTextField_ID.getText();
-        if(id.equalsIgnoreCase("")) {
+        if (id.equalsIgnoreCase("")) {
             JOptionPane.showMessageDialog(this, "There is no selected item");
             return;
         }
-        
+
         int result = JOptionPane.showConfirmDialog(this, "Are you sure?");
-        if(result != JOptionPane.OK_OPTION)
+        if (result != JOptionPane.OK_OPTION) {
             return;
-        
+        }
+
         int orderId = Integer.parseInt(id);
-        if(jRadioButton_ChoXacNhan.isSelected()) {            
+        if (jRadioButton_ChoXacNhan.isSelected()) {
             Response res = oc.updateOrderByID(orderId, DANG_GIAO);
             JOptionPane.showMessageDialog(null, res.getMessage());
-            if(res.getResponseCode() == 200)
+            if (res.getResponseCode() == 200) {
                 loadData(1);
-            else
-                return;  
+            } else {
+                return;
+            }
         }
-        
-        if(jRadioButton_YeuCauHuy.isSelected()) {            
+
+        if (jRadioButton_YeuCauHuy.isSelected()) {
             Response res = oc.updateOrderByID(orderId, DA_HUY);
             JOptionPane.showMessageDialog(null, res.getMessage());
-            if(res.getResponseCode() == 200)
+            if (res.getResponseCode() == 200) {
                 loadData(2);
-            else
-                return;  
+            } else {
+                return;
+            }
         }
     }//GEN-LAST:event_jButton_YesActionPerformed
 
     private void jButton_NoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_NoActionPerformed
         // TODO add your handling code here:
         String id = jTextField_ID.getText();
-        if(id.equalsIgnoreCase("")) {
+        if (id.equalsIgnoreCase("")) {
             JOptionPane.showMessageDialog(this, "There is no selected item");
             return;
         }
-        
+
         int result = JOptionPane.showConfirmDialog(this, "Are you sure?");
-        if(result != JOptionPane.OK_OPTION)
+        if (result != JOptionPane.OK_OPTION) {
             return;
-        
+        }
+
         int orderId = Integer.parseInt(id);
-        if(jRadioButton_ChoXacNhan.isSelected()) {            
+        if (jRadioButton_ChoXacNhan.isSelected()) {
             Response res = oc.updateOrderByID(orderId, DA_HUY);
             JOptionPane.showMessageDialog(null, res.getMessage());
-            if(res.getResponseCode() == 200)
+            if (res.getResponseCode() == 200) {
                 loadData(1);
-            else
-                return;  
+            } else {
+                return;
+            }
         }
-        
-        if(jRadioButton_YeuCauHuy.isSelected()) {            
+
+        if (jRadioButton_YeuCauHuy.isSelected()) {
             Response res = oc.updateOrderByID(orderId, DANG_GIAO);
             JOptionPane.showMessageDialog(null, res.getMessage());
-            if(res.getResponseCode() == 200)
+            if (res.getResponseCode() == 200) {
                 loadData(2);
-            else
-                return;  
+            } else {
+                return;
+            }
         }
     }//GEN-LAST:event_jButton_NoActionPerformed
 
@@ -602,11 +594,11 @@ public class OrderPanel extends javax.swing.JPanel {
         jButton_Yes.setEnabled(b);
         jButton_No.setEnabled(b);
     }
-    
+
     private void jRadioButton_ChoXacNhanStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_jRadioButton_ChoXacNhanStateChanged
         // TODO add your handling code here:
-        
-        if(jRadioButton_ChoXacNhan.isSelected()) {
+
+        if (jRadioButton_ChoXacNhan.isSelected()) {
             filter("");
             loadData(1);
             setEnabledButton(true);
@@ -615,8 +607,8 @@ public class OrderPanel extends javax.swing.JPanel {
 
     private void jRadioButton_DangGiaoStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_jRadioButton_DangGiaoStateChanged
         // TODO add your handling code here:
-        
-        if(jRadioButton_DangGiao.isSelected()) {
+
+        if (jRadioButton_DangGiao.isSelected()) {
             filter("");
             loadData(3);
             setEnabledButton(false);
@@ -625,8 +617,8 @@ public class OrderPanel extends javax.swing.JPanel {
 
     private void jRadioButton_DaGiaoStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_jRadioButton_DaGiaoStateChanged
         // TODO add your handling code here:
-        
-        if(jRadioButton_DaGiao.isSelected()) {
+
+        if (jRadioButton_DaGiao.isSelected()) {
             filter("");
             loadData(4);
             setEnabledButton(false);
@@ -635,8 +627,8 @@ public class OrderPanel extends javax.swing.JPanel {
 
     private void jRadioButton_YeuCauHuyStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_jRadioButton_YeuCauHuyStateChanged
         // TODO add your handling code here:
-        
-        if(jRadioButton_YeuCauHuy.isSelected()) {
+
+        if (jRadioButton_YeuCauHuy.isSelected()) {
             filter("");
             loadData(2);
             setEnabledButton(true);
@@ -645,8 +637,8 @@ public class OrderPanel extends javax.swing.JPanel {
 
     private void jRadioButton_DaHuyStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_jRadioButton_DaHuyStateChanged
         // TODO add your handling code here:
-        
-        if(jRadioButton_DaHuy.isSelected()) {
+
+        if (jRadioButton_DaHuy.isSelected()) {
             filter("");
             loadData(5);
             setEnabledButton(false);
@@ -673,7 +665,7 @@ public class OrderPanel extends javax.swing.JPanel {
         jTable_Order.setRowSorter(trs);
         trs.setRowFilter(RowFilter.regexFilter(str, 3));
     }
-    
+
     private void jButton_SearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_SearchActionPerformed
         // TODO add your handling code here:
         SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");

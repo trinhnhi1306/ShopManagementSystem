@@ -20,8 +20,8 @@ import utils.ConnectAPI;
  *
  * @author TRINH
  */
-public class ProductController extends BaseController{  
-    
+public class ProductController extends BaseController {
+
     public ProductController() {
         getOneByID = "/api/product/";
         getAll = "/api/products/getAllProducts";
@@ -32,17 +32,17 @@ public class ProductController extends BaseController{
     }
 
     public Product getProductById(String id) {
-        Product p = null;        
+        Product p = null;
         try {
             Response response = ConnectAPI.excuteHttpMethod("", getOneByID + id, "GET", true);
             p = gson.fromJson(response.getMessage(), Product.class);
-            
+
         } catch (IOException ex) {
             System.out.println(ex.getMessage());
         }
         return p;
     }
-    
+
     public ProductOutput getProductInOnePage(int pageNo) {
         String str = String.format(getItemInOnePage, pageNo);
         System.out.println(str);
@@ -50,58 +50,58 @@ public class ProductController extends BaseController{
         try {
             Response response = ConnectAPI.excuteHttpMethod("", str, "GET", true);
             founderList = gson.fromJson(response.getMessage(), ProductOutput.class);
-            
+
         } catch (IOException ex) {
             System.out.println(ex.getMessage());
         }
         return founderList;
     }
-    
+
     public Response addProduct(Product p) {
         Response response = null;
         try {
             String json = gson.toJson(p);
-            response = ConnectAPI.excuteHttpMethod(json, addOne , "POST", true);
+            response = ConnectAPI.excuteHttpMethod(json, addOne, "POST", true);
             //print in String
             System.out.println(response.getMessage());
-            
+
         } catch (IOException ex) {
             System.out.println(ex.getMessage());
         }
         return response;
     }
-    
+
     public Response updateProductByID(int id, Product p) {
         Response response = null;
-        try {            
+        try {
             String json = gson.toJson(p);
-            response = ConnectAPI.excuteHttpMethod(json, editOrDelete + id , "PUT", true);
+            response = ConnectAPI.excuteHttpMethod(json, editOrDelete + id, "PUT", true);
             //print in String
             System.out.println(response.getMessage());
-            
+
         } catch (IOException ex) {
             System.out.println(ex.getMessage());
         }
         return response;
     }
-    
+
     public Response deleteProductByID(String id) {
         Response response = null;
-        try {  
-            response = ConnectAPI.excuteHttpMethod("", editOrDelete + id , "DELETE", true);
+        try {
+            response = ConnectAPI.excuteHttpMethod("", editOrDelete + id, "DELETE", true);
             //print in String
             System.out.println(response.getMessage());
-            
+
         } catch (IOException ex) {
             System.out.println(ex.getMessage());
         }
         return response;
     }
-    
+
     public void loadTable(List<Product> list, DefaultTableModel dtm) {
         dtm.setNumRows(0);
         Vector vt;
-        for (Product p: list) {
+        for (Product p : list) {
             vt = new Vector();
             vt.add(p.getProductId());
             vt.add(p.getName());
@@ -113,7 +113,7 @@ public class ProductController extends BaseController{
             dtm.addRow(vt);
         }
     }
-    
+
     public Image getImage(String imageName) {
         Image img = null;
         try {

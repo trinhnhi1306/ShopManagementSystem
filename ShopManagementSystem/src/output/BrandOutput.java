@@ -13,6 +13,7 @@ import model.Brand;
  * @author TRINH
  */
 public class BrandOutput {
+
     private int page;
     private int totalPage;
     private List<Brand> listResult;
@@ -49,5 +50,5 @@ public class BrandOutput {
     public void setListResult(List<Brand> listResult) {
         this.listResult = listResult;
     }
-    
+
 }

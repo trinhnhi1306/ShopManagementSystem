@@ -23,8 +23,8 @@ import utils.ConnectAPI;
  *
  * @author TRINH
  */
-public class CategoryController extends BaseController{
-    
+public class CategoryController extends BaseController {
+
     public CategoryController() {
         getAll = "/api/category/all";
         getItemInOnePage = "/api/category?pageNo=%d&pageSize=20&sortField=categoryId&sortDirection=desc";
@@ -33,31 +33,32 @@ public class CategoryController extends BaseController{
         editOrDelete = "/api/category/";
         getImage = "/api/category/image/";
     }
-    
+
     public Category getCategoryById(String id) {
-        Category c = null;        
+        Category c = null;
         try {
             Response response = ConnectAPI.excuteHttpMethod("", getOneByID + id, "GET", true);
             c = gson.fromJson(response.getMessage(), Category.class);
-            
+
         } catch (IOException ex) {
             System.out.println(ex.getMessage());
         }
         return c;
     }
-    
+
     public List<Category> getAllCategories() {
         List<Category> founderList = null;
         try {
             Response reponse = ConnectAPI.excuteHttpMethod("", getAll, "GET", true);
-            Type typeOfT = new TypeToken<ArrayList<Category>>(){}.getType();
+            Type typeOfT = new TypeToken<ArrayList<Category>>() {
+            }.getType();
             founderList = gson.fromJson(reponse.getMessage(), typeOfT);
         } catch (IOException ex) {
             Logger.getLogger(CategoryController.class.getName()).log(Level.SEVERE, null, ex);
         }
         return founderList;
     }
-    
+
     public CategoryOutput getCategoryInOnePage(int pageNo) {
         String str = String.format(getItemInOnePage, pageNo);
         System.out.println(str);
@@ -65,58 +66,58 @@ public class CategoryController extends BaseController{
         try {
             Response response = ConnectAPI.excuteHttpMethod("", str, "GET", true);
             founderList = gson.fromJson(response.getMessage(), CategoryOutput.class);
-            
+
         } catch (IOException ex) {
             System.out.println(ex.getMessage());
         }
         return founderList;
     }
-    
+
     public Response addCategory(Category c) {
         Response response = null;
         try {
             String json = gson.toJson(c);
-            response = ConnectAPI.excuteHttpMethod(json, addOne , "POST", true);
+            response = ConnectAPI.excuteHttpMethod(json, addOne, "POST", true);
             //print in String
             System.out.println(response.getMessage());
-            
+
         } catch (IOException ex) {
             System.out.println(ex.getMessage());
         }
         return response;
     }
-    
+
     public Response updateCategoryByID(int id, Category c) {
         Response response = null;
-        try {            
+        try {
             String json = gson.toJson(c);
-            response = ConnectAPI.excuteHttpMethod(json, editOrDelete + id , "PUT", true);
+            response = ConnectAPI.excuteHttpMethod(json, editOrDelete + id, "PUT", true);
             //print in String
             System.out.println(response.getMessage());
-            
+
         } catch (IOException ex) {
             System.out.println(ex.getMessage());
         }
         return response;
     }
-    
+
     public Response deleteCategoryByID(String id) {
         Response response = null;
-        try {  
-            response = ConnectAPI.excuteHttpMethod("", editOrDelete + id , "DELETE", true);
+        try {
+            response = ConnectAPI.excuteHttpMethod("", editOrDelete + id, "DELETE", true);
             //print in String
             System.out.println(response.getMessage());
-            
+
         } catch (IOException ex) {
             System.out.println(ex.getMessage());
         }
         return response;
     }
-    
+
     public void loadTable(List<Category> list, DefaultTableModel dtm) {
         dtm.setNumRows(0);
         Vector vt;
-        for (Category c: list) {
+        for (Category c : list) {
             vt = new Vector();
             vt.add(c.getCategoryId());
             vt.add(c.getName());
@@ -125,7 +126,7 @@ public class CategoryController extends BaseController{
             dtm.addRow(vt);
         }
     }
-    
+
     public Image getImage(String imageName) {
         Image img = null;
         try {

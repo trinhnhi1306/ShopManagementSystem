@@ -11,6 +11,7 @@ import java.util.Date;
  * @author TRINH
  */
 public class Order {
+
     private Integer orderId;
     private Date date;
     private double totalPrice;
@@ -68,5 +69,4 @@ public class Order {
         this.user = user;
     }
 
-    
 }

@@ -14,7 +14,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.table.DefaultTableModel;
 import model.Brand;
-import model.Category;
 import model.Response;
 import output.BrandOutput;
 import utils.ConnectAPI;
@@ -23,7 +22,7 @@ import utils.ConnectAPI;
  *
  * @author TRINH
  */
-public class BrandController extends BaseController{
+public class BrandController extends BaseController {
 
     public BrandController() {
         getAll = "/api/brand/all";
@@ -33,31 +32,32 @@ public class BrandController extends BaseController{
         editOrDelete = "/api/brand/";
         getImage = "/api/brand/image/";
     }
-    
+
     public Brand getBrandById(String id) {
-        Brand b = null;        
+        Brand b = null;
         try {
             Response response = ConnectAPI.excuteHttpMethod("", getOneByID + id, "GET", true);
             b = gson.fromJson(response.getMessage(), Brand.class);
-            
+
         } catch (IOException ex) {
             System.out.println(ex.getMessage());
         }
         return b;
     }
-    
+
     public List<Brand> getAllBrands() {
         List<Brand> founderList = null;
         try {
             Response response = ConnectAPI.excuteHttpMethod("", getAll, "GET", true);
-            Type typeOfT = new TypeToken<ArrayList<Brand>>(){}.getType();
+            Type typeOfT = new TypeToken<ArrayList<Brand>>() {
+            }.getType();
             founderList = gson.fromJson(response.getMessage(), typeOfT);
         } catch (IOException ex) {
             Logger.getLogger(BrandController.class.getName()).log(Level.SEVERE, null, ex);
         }
         return founderList;
     }
-    
+
     public BrandOutput getBrandInOnePage(int pageNo) {
         String str = String.format(getItemInOnePage, pageNo);
         System.out.println(str);
@@ -65,58 +65,58 @@ public class BrandController extends BaseController{
         try {
             Response response = ConnectAPI.excuteHttpMethod("", str, "GET", true);
             founderList = gson.fromJson(response.getMessage(), BrandOutput.class);
-            
+
         } catch (IOException ex) {
             System.out.println(ex.getMessage());
         }
         return founderList;
     }
-    
+
     public Response addBrand(Brand b) {
         Response response = null;
         try {
             String json = gson.toJson(b);
-            response = ConnectAPI.excuteHttpMethod(json, addOne , "POST", true);
+            response = ConnectAPI.excuteHttpMethod(json, addOne, "POST", true);
             //print in String
             System.out.println(response);
-            
+
         } catch (IOException ex) {
             System.out.println(ex.getMessage());
         }
         return response;
     }
-    
+
     public Response updateBrandByID(int id, Brand b) {
         Response response = null;
-        try {            
+        try {
             String json = gson.toJson(b);
-            response = ConnectAPI.excuteHttpMethod(json, editOrDelete + id , "PUT", true);
+            response = ConnectAPI.excuteHttpMethod(json, editOrDelete + id, "PUT", true);
             //print in String
             System.out.println(response.getMessage());
-            
+
         } catch (IOException ex) {
             System.out.println(ex.getMessage());
         }
         return response;
     }
-    
+
     public Response deleteBrandByID(String id) {
         Response response = null;
-        try {  
-            response = ConnectAPI.excuteHttpMethod("", editOrDelete + id , "DELETE", true);
+        try {
+            response = ConnectAPI.excuteHttpMethod("", editOrDelete + id, "DELETE", true);
             //print in String
             System.out.println(response.getMessage());
-            
+
         } catch (IOException ex) {
             System.out.println(ex.getMessage());
         }
         return response;
     }
-    
+
     public void loadTable(List<Brand> list, DefaultTableModel dtm) {
         dtm.setNumRows(0);
         Vector vt;
-        for (Brand b: list) {
+        for (Brand b : list) {
             vt = new Vector();
             vt.add(b.getBrandId());
             vt.add(b.getName());

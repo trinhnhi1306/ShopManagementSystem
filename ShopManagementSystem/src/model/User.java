@@ -12,6 +12,7 @@ import java.util.Set;
  * @author TRINH
  */
 public class User {
+
     private Integer id;
     private String username;
     private String password;
@@ -130,5 +131,5 @@ public class User {
     public void setStatus(boolean status) {
         this.status = status;
     }
-    
+
 }
