@@ -11,6 +11,7 @@ import java.util.List;
  * @author TRINH
  */
 public class Ward {
+
     private Integer wardId;
     private String wardName;
     private String wardPrefix;

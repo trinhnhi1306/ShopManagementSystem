@@ -5,12 +5,14 @@
 package controller;
 
 import com.google.gson.Gson;
+import output.ResponseMessage;
 
 /**
  *
  * @author TRINH
  */
 public abstract class BaseController {
+
     public Gson gson = new Gson();
     public String getOneByID;
     public String getAll;
@@ -18,4 +20,9 @@ public abstract class BaseController {
     public String editOrDelete;
     public String getItemInOnePage;
     public String getImage;
+    
+    public ResponseMessage convertResponse(String str) {
+        ResponseMessage message = gson.fromJson(str, ResponseMessage.class);
+        return message;
+    }
 }

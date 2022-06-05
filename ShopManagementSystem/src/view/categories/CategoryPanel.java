@@ -40,14 +40,14 @@ public class CategoryPanel extends javax.swing.JPanel {
     private CategoryOutput output;
     private File selectedFile;
     private String imageName;
-    
+
     private enum Mode {
         ADD,
         MODIFY,
         FREE
     }
     private Mode mode;
-    
+
     /**
      * Creates new form CategoryPanel
      */
@@ -56,7 +56,7 @@ public class CategoryPanel extends javax.swing.JPanel {
         jTextArea_Note.setWrapStyleWord(true);
         dtm = (DefaultTableModel) jTable_Category.getModel();
         cc = new CategoryController();
-        
+
         loadData(1);
         setEditableForAll(false);
     }
@@ -434,32 +434,43 @@ public class CategoryPanel extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
-    public void loadData(int page) {        
+    public void loadData(int page) {
         output = cc.getCategoryInOnePage(page);
         jLabel_Page.setText(output.getPage() + "/" + output.getTotalPage());
         cc.loadTable(output.getListResult(), dtm);
     }
-    
+
     public void clearAll() {
         jTextField_Name.setText("");
         jTextArea_Note.setText("");
     }
+
     public void setEditableForAll(boolean editable) {
         jTextField_Name.setEditable(editable);
         jTextArea_Note.setEditable(editable);
         jTextField_NameSearch.setEnabled(!editable);
         jButton_ChooseImage.setEnabled(editable);
     }
-    
+
     private void jButton_ExportExcelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_ExportExcelActionPerformed
         // TODO add your handling code here:
-        //        File.xuatFileExcel("DSNhanVien", (DefaultTableModel) jTable_Staff.getModel(), "NhanVien");
-//        JOptionPane.showMessageDialog(this, "Xuất file excel thành công!");
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setMultiSelectionEnabled(false);
+        fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+        int x = fileChooser.showDialog(this, "Choose folder");
+        if (x == JFileChooser.APPROVE_OPTION) {
+            java.io.File file = fileChooser.getSelectedFile();
+            utils.File.xuatFileExcel("CategoryList", (DefaultTableModel) jTable_Category.getModel(), file.getAbsolutePath() + "/Category");
+            JOptionPane.showMessageDialog(this, "Export excel file successfully!");
+        }
+        else {
+            return;
+        }
     }//GEN-LAST:event_jButton_ExportExcelActionPerformed
 
     private void jTextField_NameSearchCaretUpdate(javax.swing.event.CaretEvent evt) {//GEN-FIRST:event_jTextField_NameSearchCaretUpdate
         // TODO add your handling code here:
-        String tuKhoa = jTextField_NameSearch.getText().toLowerCase();
+        String tuKhoa = jTextField_NameSearch.getText();
         TableRowSorter<TableModel> trs = new TableRowSorter<>(jTable_Category.getModel());
         jTable_Category.setRowSorter(trs);
         trs.setRowFilter(RowFilter.regexFilter("(?i)" + tuKhoa));
@@ -516,18 +527,18 @@ public class CategoryPanel extends javax.swing.JPanel {
 
     private void jButton_RemoveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_RemoveActionPerformed
         // TODO add your handling code here:
-        int luaChon = JOptionPane.showConfirmDialog(this, "Are you sure you want to remove this category?", "OK", 0);
+        int luaChon = JOptionPane.showConfirmDialog(this, "Are you sure you want to remove this category?");
         if (luaChon == JOptionPane.CANCEL_OPTION) {
             return;
         } else if (luaChon == JOptionPane.OK_OPTION) {
             Response response = cc.deleteCategoryByID(jTextField_ID.getText());
-            JOptionPane.showMessageDialog(this, response.getMessage());
-            if(response.getResponseCode() == 200) {
+            JOptionPane.showMessageDialog(this, cc.convertResponse(response.getMessage()).getMessage());
+            if (response.getResponseCode() == 200) {
                 loadData(output.getPage());
                 clearAll();
+            } else {
+                return;
             }
-            else
-                return;            
         }
     }//GEN-LAST:event_jButton_RemoveActionPerformed
 
@@ -540,7 +551,7 @@ public class CategoryPanel extends javax.swing.JPanel {
             Category category = new Category();
             category.setName(name);
             category.setNote(note);
-            if(selectedFile != null) {
+            if (selectedFile != null) {
                 try {
                     RequestBody requestBody = RequestBody.create(MediaType.parse("multipart/form-data"), selectedFile);
                     MultipartBody.Part part = MultipartBody.Part.createFormData("file", selectedFile.getName(), requestBody);
@@ -550,16 +561,17 @@ public class CategoryPanel extends javax.swing.JPanel {
                         @Override
                         public void onResponse(Call<ResponseBody> call, retrofit2.Response<ResponseBody> response) {
                             try {
-                                if(response.isSuccessful()) {
+                                if (response.isSuccessful()) {
                                     String str = response.body().string();
                                     category.setImage(str);
                                     System.out.println("vãi: " + category.getImage());
                                     Response res = cc.addCategory(category);
-                                    JOptionPane.showMessageDialog(null, res.getMessage());
-                                    if(res.getResponseCode() == 200)
+                                    JOptionPane.showMessageDialog(null, cc.convertResponse(res.getMessage()).getMessage());
+                                    if (res.getResponseCode() == 200) {
                                         loadData(output.getPage());
-                                    else
+                                    } else {
                                         return;
+                                    }
                                 }
                             } catch (Exception e) {
                                 JOptionPane.showMessageDialog(null, e.getMessage());
@@ -575,15 +587,15 @@ public class CategoryPanel extends javax.swing.JPanel {
                 } catch (Exception e) {
                     JOptionPane.showMessageDialog(this, e.getMessage());
                 }
-            }
-            else {
+            } else {
                 category.setImage(imageName);
                 Response response = cc.addCategory(category);
-                JOptionPane.showMessageDialog(this, response.getMessage());
-                if(response.getResponseCode() == 200)
+                JOptionPane.showMessageDialog(this, cc.convertResponse(response.getMessage()).getMessage());
+                if (response.getResponseCode() == 200) {
                     loadData(output.getPage());
-                else
+                } else {
                     return;
+                }
             }
         }
         if (mode == Mode.MODIFY) {
@@ -591,7 +603,7 @@ public class CategoryPanel extends javax.swing.JPanel {
             category.setCategoryId(Integer.parseInt(jTextField_ID.getText()));
             category.setName(name);
             category.setNote(note);
-            if(selectedFile != null) {
+            if (selectedFile != null) {
                 try {
                     RequestBody requestBody = RequestBody.create(MediaType.parse("multipart/form-data"), selectedFile);
                     MultipartBody.Part part = MultipartBody.Part.createFormData("file", selectedFile.getName(), requestBody);
@@ -601,16 +613,17 @@ public class CategoryPanel extends javax.swing.JPanel {
                         @Override
                         public void onResponse(Call<ResponseBody> call, retrofit2.Response<ResponseBody> response) {
                             try {
-                                if(response.isSuccessful()) {
+                                if (response.isSuccessful()) {
                                     String str = response.body().string();
                                     category.setImage(str);
                                     System.out.println("vãi: " + category.getImage());
                                     Response res = cc.updateCategoryByID(category.getCategoryId(), category);
-                                    JOptionPane.showMessageDialog(null, res.getMessage());
-                                    if(res.getResponseCode() == 200)
+                                    JOptionPane.showMessageDialog(null, cc.convertResponse(res.getMessage()).getMessage());
+                                    if (res.getResponseCode() == 200) {
                                         loadData(output.getPage());
-                                    else
+                                    } else {
                                         return;
+                                    }
                                 }
                             } catch (Exception e) {
                                 JOptionPane.showMessageDialog(null, e.getMessage());
@@ -626,15 +639,15 @@ public class CategoryPanel extends javax.swing.JPanel {
                 } catch (Exception e) {
                     JOptionPane.showMessageDialog(this, e.getMessage());
                 }
-            }
-            else {
+            } else {
                 category.setImage(imageName);
                 Response response = cc.updateCategoryByID(category.getCategoryId(), category);
-                JOptionPane.showMessageDialog(this, response.getMessage());
-                if(response.getResponseCode() == 200)
+                JOptionPane.showMessageDialog(this, cc.convertResponse(response.getMessage()).getMessage());
+                if (response.getResponseCode() == 200) {
                     loadData(output.getPage());
-                else
+                } else {
                     return;
+                }
             }
         }
         mode = Mode.FREE;
@@ -674,8 +687,7 @@ public class CategoryPanel extends javax.swing.JPanel {
             Image newImg = img.getScaledInstance(jLabel_Image.getWidth(), jLabel_Image.getHeight(), java.awt.Image.SCALE_SMOOTH);
             jLabel_Image.setIcon(new ImageIcon(newImg));
             System.out.println(selectedFile.getName());
-        }
-        else {
+        } else {
             return;
         }
     }//GEN-LAST:event_jButton_ChooseImageActionPerformed
@@ -688,14 +700,16 @@ public class CategoryPanel extends javax.swing.JPanel {
 
     private void jTable_CategoryMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable_CategoryMouseClicked
         // TODO add your handling code here:
-        if(mode == Mode.ADD || mode == Mode.MODIFY) return;
+        if (mode == Mode.ADD || mode == Mode.MODIFY) {
+            return;
+        }
         int selectedRow = jTable_Category.convertRowIndexToModel(jTable_Category.getSelectedRow());
 
         Category c = cc.getCategoryById(dtm.getValueAt(selectedRow, 0).toString());
         jTextField_ID.setText(c.getCategoryId() + "");
         jTextField_Name.setText(c.getName());
         jTextArea_Note.setText(c.getNote());
-        
+
         imageName = c.getImage();
         Image img = cc.getImage(imageName);
         Image newImg = img.getScaledInstance(jLabel_Image.getWidth(), jLabel_Image.getHeight(), java.awt.Image.SCALE_SMOOTH);
@@ -708,22 +722,22 @@ public class CategoryPanel extends javax.swing.JPanel {
 
     private void jButton_PreviousPageActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_PreviousPageActionPerformed
         // TODO add your handling code here:
-        if(output.getPage() > 1) {
+        if (output.getPage() > 1) {
             loadData(output.getPage() - 1);
             jButton_NextPage.setEnabled(true);
         }
-        if(output.getPage() == 1)
-        jButton_PreviousPage.setEnabled(false);
+        if (output.getPage() == 1)
+            jButton_PreviousPage.setEnabled(false);
     }//GEN-LAST:event_jButton_PreviousPageActionPerformed
 
     private void jButton_NextPageActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_NextPageActionPerformed
         // TODO add your handling code here:
-        if(output.getPage() < output.getTotalPage()) {
+        if (output.getPage() < output.getTotalPage()) {
             loadData(output.getPage() + 1);
             jButton_PreviousPage.setEnabled(true);
         }
-        if(output.getPage() == output.getTotalPage())
-        jButton_NextPage.setEnabled(false);
+        if (output.getPage() == output.getTotalPage())
+            jButton_NextPage.setEnabled(false);
     }//GEN-LAST:event_jButton_NextPageActionPerformed
 
 

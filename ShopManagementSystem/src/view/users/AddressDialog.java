@@ -5,14 +5,7 @@
  */
 package view.users;
 
-import view.products.*;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-//import model.database.Connect;
 
 /**
  *
@@ -22,6 +15,7 @@ public class AddressDialog extends javax.swing.JDialog {
 
     /**
      * Creates new form NewCategoryDialog
+     *
      * @param parent
      * @param modal
      * @param parentPanel
@@ -164,7 +158,7 @@ public class AddressDialog extends javax.swing.JDialog {
         }
         return str;
     }
-    
+
 //    private void getId(){
 //        Connection con = Connect.GetConnect();
 //
@@ -185,7 +179,6 @@ public class AddressDialog extends javax.swing.JDialog {
 //            System.out.println("Lỗi lấy dữ liệu");
 //        }
 //    }
-    
 //    private int newCategory(String name, String note){
 //        String sql = "INSERT INTO category(category, note) VALUES (?, ?)";
 //        Connection con = Connect.GetConnect();
@@ -202,7 +195,7 @@ public class AddressDialog extends javax.swing.JDialog {
 //        }
 //        return 1;
 //    }
-    
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;

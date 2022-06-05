@@ -23,59 +23,61 @@ import utils.ConnectAPI;
  *
  * @author TRINH
  */
-public class OrderController extends BaseController{
+public class OrderController extends BaseController {
 
     private String getOrderDetail;
-    
+
     public OrderController() {
         getAll = "/api/order?statusId=";
         getOrderDetail = "/api/order/order-detail?orderId=";
         editOrDelete = "/api/order/%d?statusId=%d";
     }
-    
+
     public List<Order> getOrderByStatusId(int id) {
-        List<Order> founderList = null;        
+        List<Order> founderList = null;
         try {
             Response response = ConnectAPI.excuteHttpMethod("", getAll + id, "GET", true);
-            Type typeOfT = new TypeToken<ArrayList<Order>>(){}.getType();
+            Type typeOfT = new TypeToken<ArrayList<Order>>() {
+            }.getType();
             founderList = gson.fromJson(response.getMessage(), typeOfT);
         } catch (IOException ex) {
             Logger.getLogger(BrandController.class.getName()).log(Level.SEVERE, null, ex);
         }
         return founderList;
     }
-    
+
     public Response updateOrderByID(int orderId, int statusId) {
         String str = String.format(editOrDelete, orderId, statusId);
         Response response = null;
-        try {       
-            response = ConnectAPI.excuteHttpMethod("", str , "PUT", true);
+        try {
+            response = ConnectAPI.excuteHttpMethod("", str, "PUT", true);
             //print in String
             System.out.println(response.getMessage());
-            
+
         } catch (IOException ex) {
             System.out.println(ex.getMessage());
         }
         return response;
     }
-    
+
     public List<OrderDetail> getOrderDetailByOrderId(int id) {
-        List<OrderDetail> founderList = null;        
+        List<OrderDetail> founderList = null;
         try {
             Response response = ConnectAPI.excuteHttpMethod("", getOrderDetail + id, "GET", true);
-            Type typeOfT = new TypeToken<ArrayList<OrderDetail>>(){}.getType();
+            Type typeOfT = new TypeToken<ArrayList<OrderDetail>>() {
+            }.getType();
             founderList = gson.fromJson(response.getMessage(), typeOfT);
         } catch (IOException ex) {
             Logger.getLogger(BrandController.class.getName()).log(Level.SEVERE, null, ex);
         }
         return founderList;
     }
-    
+
     public void loadTable(List<Order> list, DefaultTableModel dtm) {
         SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
         dtm.setNumRows(0);
         Vector vt;
-        for (Order o: list) {
+        for (Order o : list) {
             vt = new Vector();
             vt.add(o.getOrderId());
             vt.add(o.getUser().getUsername());
@@ -84,12 +86,12 @@ public class OrderController extends BaseController{
             dtm.addRow(vt);
         }
     }
-    
+
     public void loadProductTable(List<OrderDetail> list, DefaultTableModel dtm) {
         SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
         dtm.setNumRows(0);
         Vector vt;
-        for (OrderDetail o: list) {
+        for (OrderDetail o : list) {
             vt = new Vector();
             vt.add(o.getProduct().getProductId());
             vt.add(o.getProduct().getName());

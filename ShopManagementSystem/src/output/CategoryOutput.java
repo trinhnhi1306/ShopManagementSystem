@@ -13,6 +13,7 @@ import model.Category;
  * @author TRINH
  */
 public class CategoryOutput {
+
     private int page;
     private int totalPage;
     private List<Category> listResult;
@@ -49,5 +50,5 @@ public class CategoryOutput {
     public void setListResult(List<Category> listResult) {
         this.listResult = listResult;
     }
-    
+
 }

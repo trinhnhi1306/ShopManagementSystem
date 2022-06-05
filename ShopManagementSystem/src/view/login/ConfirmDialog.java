@@ -24,9 +24,10 @@ public class ConfirmDialog extends javax.swing.JDialog {
 
     private boolean showPassNew = false;
     private boolean showPassVerify = false;
-    
+
     /**
      * Creates new form ConfirmDialog
+     *
      * @param parent
      * @param modal
      */

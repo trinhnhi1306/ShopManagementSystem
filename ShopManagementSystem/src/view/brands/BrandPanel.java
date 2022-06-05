@@ -5,7 +5,7 @@
 package view.brands;
 
 import controller.BrandController;
-import java.io.File;
+import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.RowFilter;
 import javax.swing.table.DefaultTableModel;
@@ -15,6 +15,7 @@ import model.Brand;
 import model.Response;
 import output.BrandOutput;
 import swing.UIController;
+import utils.File;
 
 /**
  *
@@ -26,14 +27,14 @@ public class BrandPanel extends javax.swing.JPanel {
     private DefaultTableModel dtm;
     private BrandController bc;
     private BrandOutput output;
-    
+
     private enum Mode {
         ADD,
         MODIFY,
         FREE
     }
     private Mode mode;
-    
+
     /**
      * Creates new form BrandPanel
      */
@@ -42,7 +43,7 @@ public class BrandPanel extends javax.swing.JPanel {
         jTextArea_Description.setWrapStyleWord(true);
         dtm = (DefaultTableModel) jTable_Brand.getModel();
         bc = new BrandController();
-        
+
         loadData(1);
         setEditableForAll(false);
     }
@@ -378,31 +379,42 @@ public class BrandPanel extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
-    public void loadData(int page) {        
+    public void loadData(int page) {
         output = bc.getBrandInOnePage(page);
         jLabel_Page.setText(output.getPage() + "/" + output.getTotalPage());
         bc.loadTable(output.getListResult(), dtm);
     }
-    
+
     public void clearAll() {
         jTextField_Name.setText("");
         jTextArea_Description.setText("");
     }
+
     public void setEditableForAll(boolean editable) {
         jTextField_Name.setEditable(editable);
         jTextArea_Description.setEditable(editable);
         jTextField_NameSearch.setEnabled(!editable);
     }
-    
+
     private void jButton_ExportExcelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_ExportExcelActionPerformed
         // TODO add your handling code here:
-        //        File.xuatFileExcel("DSNhanVien", (DefaultTableModel) jTable_Staff.getModel(), "NhanVien");
-        //        JOptionPane.showMessageDialog(this, "Xuất file excel thành công!");
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setMultiSelectionEnabled(false);
+        fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+        int x = fileChooser.showDialog(this, "Choose folder");
+        if (x == JFileChooser.APPROVE_OPTION) {
+            java.io.File file = fileChooser.getSelectedFile();
+            File.xuatFileExcel("BrandList", (DefaultTableModel) jTable_Brand.getModel(), file.getAbsolutePath() + "/Brand");
+            JOptionPane.showMessageDialog(this, "Export excel file successfully!");
+        }
+        else {
+            return;
+        }
     }//GEN-LAST:event_jButton_ExportExcelActionPerformed
 
     private void jTextField_NameSearchCaretUpdate(javax.swing.event.CaretEvent evt) {//GEN-FIRST:event_jTextField_NameSearchCaretUpdate
         // TODO add your handling code here:
-        String tuKhoa = jTextField_NameSearch.getText().toLowerCase();
+        String tuKhoa = jTextField_NameSearch.getText();
         TableRowSorter<TableModel> trs = new TableRowSorter<>(jTable_Brand.getModel());
         jTable_Brand.setRowSorter(trs);
         trs.setRowFilter(RowFilter.regexFilter("(?i)" + tuKhoa));
@@ -443,33 +455,33 @@ public class BrandPanel extends javax.swing.JPanel {
         // TODO add your handling code here:
         //        int luaChon = JOptionPane.showConfirmDialog(this, "Are you sure you want to remove this product?", "OK", 0);
         //        if (luaChon == JOptionPane.CANCEL_OPTION) {
-            //            return;
-            //        } else if (luaChon == JOptionPane.OK_OPTION) {
-            //            Response response = pc.deleteProductByID(jTextField_ID.getText());
-            //            JOptionPane.showMessageDialog(this, response.getMessage());
-            //            if(response.getResponseCode() == 200) {
-                //                loadData(output.getPage());
-                //                clearAll();
-                //            }
-            //            else
-            //            return;
-            //        }
+        //            return;
+        //        } else if (luaChon == JOptionPane.OK_OPTION) {
+        //            Response response = pc.deleteProductByID(jTextField_ID.getText());
+        //            JOptionPane.showMessageDialog(this, response.getMessage());
+        //            if(response.getResponseCode() == 200) {
+        //                loadData(output.getPage());
+        //                clearAll();
+        //            }
+        //            else
+        //            return;
+        //        }
     }//GEN-LAST:event_jButton_RemoveMouseClicked
 
     private void jButton_RemoveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_RemoveActionPerformed
         // TODO add your handling code here:
-        int luaChon = JOptionPane.showConfirmDialog(this, "Are you sure you want to remove this brand?", "OK", 0);
+        int luaChon = JOptionPane.showConfirmDialog(this, "Are you sure you want to remove this brand?");
         if (luaChon == JOptionPane.CANCEL_OPTION) {
             return;
         } else if (luaChon == JOptionPane.OK_OPTION) {
             Response response = bc.deleteBrandByID(jTextField_ID.getText());
-            JOptionPane.showMessageDialog(this, response.getMessage());
-            if(response.getResponseCode() == 200) {
+            JOptionPane.showMessageDialog(this, bc.convertResponse(response.getMessage()).getMessage());
+            if (response.getResponseCode() == 200) {
                 loadData(output.getPage());
                 clearAll();
+            } else {
+                return;
             }
-            else
-                return;            
         }
     }//GEN-LAST:event_jButton_RemoveActionPerformed
 
@@ -477,17 +489,18 @@ public class BrandPanel extends javax.swing.JPanel {
         // TODO add your handling code here:
         String name = jTextField_Name.getText();
         String description = jTextArea_Description.getText();
-        
+
         if (mode == Mode.ADD) {
             Brand brand = new Brand();
             brand.setName(name);
             brand.setDescription(description);
             Response res = bc.addBrand(brand);
-            JOptionPane.showMessageDialog(null, res.getMessage());
-            if(res.getResponseCode() == 200)
+            JOptionPane.showMessageDialog(this, bc.convertResponse(res.getMessage()).getMessage());
+            if (res.getResponseCode() == 200) {
                 loadData(output.getPage());
-            else
+            } else {
                 return;
+            }
         }
         if (mode == Mode.MODIFY) {
             Brand brand = new Brand();
@@ -495,11 +508,12 @@ public class BrandPanel extends javax.swing.JPanel {
             brand.setName(name);
             brand.setDescription(description);
             Response res = bc.updateBrandByID(brand.getBrandId(), brand);
-            JOptionPane.showMessageDialog(null, res.getMessage());
-            if(res.getResponseCode() == 200)
+            JOptionPane.showMessageDialog(this, bc.convertResponse(res.getMessage()).getMessage());
+            if (res.getResponseCode() == 200) {
                 loadData(output.getPage());
-            else
+            } else {
                 return;
+            }
         }
         mode = Mode.FREE;
         UIController.showCardLayout("cardFirst", jPanel_Card);
@@ -530,7 +544,9 @@ public class BrandPanel extends javax.swing.JPanel {
 
     private void jTable_BrandMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable_BrandMouseClicked
         // TODO add your handling code here:
-        if(mode == Mode.ADD || mode == Mode.MODIFY) return;
+        if (mode == Mode.ADD || mode == Mode.MODIFY) {
+            return;
+        }
         int selectedRow = jTable_Brand.convertRowIndexToModel(jTable_Brand.getSelectedRow());
 
         Brand b = bc.getBrandById(dtm.getValueAt(selectedRow, 0).toString());
@@ -544,22 +560,22 @@ public class BrandPanel extends javax.swing.JPanel {
 
     private void jButton_PreviousPageActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_PreviousPageActionPerformed
         // TODO add your handling code here:
-        if(output.getPage() > 1) {
-                loadData(output.getPage() - 1);
-                jButton_NextPage.setEnabled(true);
-            }
-        if(output.getPage() == 1)
-        jButton_PreviousPage.setEnabled(false);
+        if (output.getPage() > 1) {
+            loadData(output.getPage() - 1);
+            jButton_NextPage.setEnabled(true);
+        }
+        if (output.getPage() == 1)
+            jButton_PreviousPage.setEnabled(false);
     }//GEN-LAST:event_jButton_PreviousPageActionPerformed
 
     private void jButton_NextPageActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_NextPageActionPerformed
         // TODO add your handling code here:
-        if(output.getPage() < output.getTotalPage()) {
-                loadData(output.getPage() + 1);
-                jButton_PreviousPage.setEnabled(true);
-            }
-        if(output.getPage() == output.getTotalPage())
-        jButton_NextPage.setEnabled(false);
+        if (output.getPage() < output.getTotalPage()) {
+            loadData(output.getPage() + 1);
+            jButton_PreviousPage.setEnabled(true);
+        }
+        if (output.getPage() == output.getTotalPage())
+            jButton_NextPage.setEnabled(false);
     }//GEN-LAST:event_jButton_NextPageActionPerformed
 
 

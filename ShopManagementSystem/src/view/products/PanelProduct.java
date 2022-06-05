@@ -7,6 +7,7 @@ package view.products;
 import controller.BrandController;
 import controller.CategoryController;
 import controller.ProductController;
+import java.awt.Frame;
 import java.awt.Image;
 import java.io.File;
 import java.util.Enumeration;
@@ -62,7 +63,7 @@ public class PanelProduct extends javax.swing.JPanel {
     private ImportHistoryDialog history;
     private ProductImportDialog productImportDialog;
     private ProductDeletedDialog productDeletedDialog;
-    
+
     /**
      * Creates new form PanelProduct
      */
@@ -72,7 +73,7 @@ public class PanelProduct extends javax.swing.JPanel {
         dtm = (DefaultTableModel) jTable_Product.getModel();
         pc = new ProductController();
         cc = new CategoryController();
-        bc = new BrandController();        
+        bc = new BrandController();
         
         loadData(1);
         loadCategory();
@@ -80,8 +81,6 @@ public class PanelProduct extends javax.swing.JPanel {
         setEditableForAll(false);
         TableRowSorter<TableModel> sorter = new TableRowSorter<TableModel>(jTable_Product.getModel());
         jTable_Product.setRowSorter(sorter);
-        jComboBox_FilterBrand.setSelectedIndex(-1);
-        jComboBox_FilterCategory.setSelectedIndex(-1);
     }
 
     /**
@@ -138,14 +137,6 @@ public class PanelProduct extends javax.swing.JPanel {
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable_Product = new javax.swing.JTable();
         jButton_ExportExcel = new javax.swing.JButton();
-        jLabel19 = new javax.swing.JLabel();
-        jLabel20 = new javax.swing.JLabel();
-        jLabel21 = new javax.swing.JLabel();
-        jComboBox_FilterCategory = new javax.swing.JComboBox<>();
-        jComboBox_FilterBrand = new javax.swing.JComboBox<>();
-        jButton_Import = new javax.swing.JButton();
-        jButton_ShowImportHistory = new javax.swing.JButton();
-        jButton_Deleted = new javax.swing.JButton();
         jButton_PreviousPage = new javax.swing.JButton();
         jButton_NextPage = new javax.swing.JButton();
         jLabel_Page = new javax.swing.JLabel();
@@ -247,12 +238,22 @@ public class PanelProduct extends javax.swing.JPanel {
         jButton_Category.setMaximumSize(new java.awt.Dimension(35, 29));
         jButton_Category.setMinimumSize(new java.awt.Dimension(35, 29));
         jButton_Category.setPreferredSize(new java.awt.Dimension(35, 29));
+        jButton_Category.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton_CategoryActionPerformed(evt);
+            }
+        });
 
         jButton_Brand.setFont(new java.awt.Font("Segoe UI", 1, 15)); // NOI18N
         jButton_Brand.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/add.png"))); // NOI18N
         jButton_Brand.setMaximumSize(new java.awt.Dimension(35, 29));
         jButton_Brand.setMinimumSize(new java.awt.Dimension(35, 29));
         jButton_Brand.setPreferredSize(new java.awt.Dimension(35, 29));
+        jButton_Brand.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton_BrandActionPerformed(evt);
+            }
+        });
 
         jLabel_Image.setText("image");
 
@@ -289,7 +290,7 @@ public class PanelProduct extends javax.swing.JPanel {
                                         .addGap(1, 1, 1))
                                     .addGroup(jPanel1Layout.createSequentialGroup()
                                         .addGap(26, 26, 26)
-                                        .addComponent(jSpinner_Discount, javax.swing.GroupLayout.DEFAULT_SIZE, 118, Short.MAX_VALUE))))
+                                        .addComponent(jSpinner_Discount, javax.swing.GroupLayout.DEFAULT_SIZE, 125, Short.MAX_VALUE))))
                             .addComponent(jTextField_ID)))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel9)
@@ -314,7 +315,7 @@ public class PanelProduct extends javax.swing.JPanel {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 400, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 59, Short.MAX_VALUE))
+                        .addGap(0, 66, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                             .addComponent(jComboBox_Brand, 0, 235, Short.MAX_VALUE)
@@ -359,7 +360,7 @@ public class PanelProduct extends javax.swing.JPanel {
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jSpinner_Price, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 29, Short.MAX_VALUE)
+                                    .addComponent(jSpinner_Price, javax.swing.GroupLayout.Alignment.TRAILING)
                                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                         .addComponent(jLabel6)
                                         .addComponent(jLabel8)
@@ -544,51 +545,6 @@ public class PanelProduct extends javax.swing.JPanel {
             }
         });
 
-        jLabel19.setFont(new java.awt.Font("Segoe UI", 0, 15)); // NOI18N
-        jLabel19.setText("Filter:");
-
-        jLabel20.setFont(new java.awt.Font("Segoe UI", 0, 15)); // NOI18N
-        jLabel20.setText("Category");
-
-        jLabel21.setFont(new java.awt.Font("Segoe UI", 0, 15)); // NOI18N
-        jLabel21.setText("Brand");
-
-        jComboBox_FilterCategory.setFont(new java.awt.Font("Segoe UI", 0, 15)); // NOI18N
-        jComboBox_FilterCategory.addItemListener(new java.awt.event.ItemListener() {
-            public void itemStateChanged(java.awt.event.ItemEvent evt) {
-                jComboBox_FilterCategoryItemStateChanged(evt);
-            }
-        });
-
-        jComboBox_FilterBrand.setFont(new java.awt.Font("Segoe UI", 0, 15)); // NOI18N
-        jComboBox_FilterBrand.addItemListener(new java.awt.event.ItemListener() {
-            public void itemStateChanged(java.awt.event.ItemEvent evt) {
-                jComboBox_FilterBrandItemStateChanged(evt);
-            }
-        });
-
-        jButton_Import.setFont(new java.awt.Font("Segoe UI", 1, 17)); // NOI18N
-        jButton_Import.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/delivery.png"))); // NOI18N
-        jButton_Import.setText("Import");
-        jButton_Import.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        jButton_Import.setEnabled(false);
-        jButton_Import.setFocusPainted(false);
-        jButton_Import.setPreferredSize(new java.awt.Dimension(300, 60));
-
-        jButton_ShowImportHistory.setFont(new java.awt.Font("Segoe UI", 1, 17)); // NOI18N
-        jButton_ShowImportHistory.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/history.png"))); // NOI18N
-        jButton_ShowImportHistory.setText("History");
-        jButton_ShowImportHistory.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        jButton_ShowImportHistory.setFocusPainted(false);
-        jButton_ShowImportHistory.setPreferredSize(new java.awt.Dimension(300, 60));
-
-        jButton_Deleted.setFont(new java.awt.Font("Segoe UI", 1, 17)); // NOI18N
-        jButton_Deleted.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/delete_list.png"))); // NOI18N
-        jButton_Deleted.setText("Deleted");
-        jButton_Deleted.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        jButton_Deleted.setFocusPainted(false);
-        jButton_Deleted.setPreferredSize(new java.awt.Dimension(300, 60));
-
         jButton_PreviousPage.setText("<");
         jButton_PreviousPage.setEnabled(false);
         jButton_PreviousPage.addActionListener(new java.awt.event.ActionListener() {
@@ -615,40 +571,23 @@ public class PanelProduct extends javax.swing.JPanel {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel19)
-                        .addGap(18, 18, 18)
-                        .addComponent(jLabel20, javax.swing.GroupLayout.DEFAULT_SIZE, 69, Short.MAX_VALUE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jComboBox_FilterCategory, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(jLabel21, javax.swing.GroupLayout.DEFAULT_SIZE, 48, Short.MAX_VALUE)
-                        .addGap(3, 3, 3)
-                        .addComponent(jComboBox_FilterBrand, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
+                        .addGap(14, 14, 14)
                         .addComponent(jLabel14)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jTextField_NameSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
+                        .addComponent(jTextField_NameSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 390, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jButton_ExportExcel)
                         .addGap(18, 18, 18)
                         .addComponent(jPanel_Card, javax.swing.GroupLayout.PREFERRED_SIZE, 439, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                         .addComponent(jScrollPane1)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(18, 18, 18)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(jButton_ShowImportHistory, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 136, Short.MAX_VALUE)
-                                    .addComponent(jButton_Deleted, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-                                    .addComponent(jButton_Import, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addGap(31, 31, 31)
-                                .addComponent(jButton_PreviousPage)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 16, Short.MAX_VALUE)
-                                .addComponent(jLabel_Page, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jButton_NextPage)
-                                .addGap(22, 22, 22)))))
+                        .addGap(31, 31, 31)
+                        .addComponent(jButton_PreviousPage)
+                        .addGap(16, 16, 16)
+                        .addComponent(jLabel_Page, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jButton_NextPage)
+                        .addGap(22, 22, 22)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -662,24 +601,13 @@ public class PanelProduct extends javax.swing.JPanel {
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(jTextField_NameSearch, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(jLabel14)
-                        .addComponent(jButton_ExportExcel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jLabel19)
-                        .addComponent(jLabel20)
-                        .addComponent(jLabel21)
-                        .addComponent(jComboBox_FilterCategory, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jComboBox_FilterBrand, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(jButton_ExportExcel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(18, 18, 18)
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 356, Short.MAX_VALUE)
                         .addContainerGap())
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(86, 86, 86)
-                        .addComponent(jButton_Import, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(jButton_ShowImportHistory, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(jButton_Deleted, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jButton_PreviousPage)
@@ -689,28 +617,28 @@ public class PanelProduct extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
-    public void loadData(int page) {        
+    public void loadData(int page) {
         output = pc.getProductInOnePage(page);
         jLabel_Page.setText(output.getPage() + "/" + output.getTotalPage());
         pc.loadTable(output.getListResult(), dtm);
     }
 
     public void loadCategory() {
+        jComboBox_Category.removeAllItems();
         List<Category> list = cc.getAllCategories();
-        for(Category c: list) {
+        for (Category c : list) {
             jComboBox_Category.addItem(c);
-            jComboBox_FilterCategory.addItem(c);
         }
     }
-    
+
     public void loadBrand() {
+        jComboBox_Brand.removeAllItems();
         List<Brand> list = bc.getAllBrands();
-        for(Brand b: list) {
+        for (Brand b : list) {
             jComboBox_Brand.addItem(b);
-            jComboBox_FilterBrand.addItem(b);
         }
     }
-    
+
     public void clearAll() {
         jTextField_Name.setText("");
         jTextArea_Description.setText("");
@@ -722,6 +650,7 @@ public class PanelProduct extends javax.swing.JPanel {
         jSpinner_Price.setValue(0);
         jSpinner_Discount.setValue(0);
     }
+
     public void setEditableForAll(boolean editable) {
         jTextField_Name.setEditable(editable);
         jTextArea_Description.setEditable(editable);
@@ -732,12 +661,10 @@ public class PanelProduct extends javax.swing.JPanel {
         jSpinner_Quantity.setEnabled(editable);
         jSpinner_Price.setEnabled(editable);
         jSpinner_Discount.setEnabled(editable);
-        jComboBox_FilterBrand.setEnabled(!editable);
-        jComboBox_FilterCategory.setEnabled(!editable);
         jTextField_NameSearch.setEnabled(!editable);
         jButton_ChooseImage.setEnabled(editable);
     }
-    
+
     public String getSelectedButtonText(ButtonGroup buttonGroup) {
         for (Enumeration<AbstractButton> buttons = buttonGroup.getElements(); buttons.hasMoreElements();) {
             AbstractButton button = buttons.nextElement();
@@ -747,7 +674,7 @@ public class PanelProduct extends javax.swing.JPanel {
         }
         return null;
     }
-    
+
     private void jButton_OKActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_OKActionPerformed
         // TODO add your handling code here:
         String name = jTextField_Name.getText();
@@ -758,11 +685,11 @@ public class PanelProduct extends javax.swing.JPanel {
         int discount = Integer.parseInt(jSpinner_Discount.getValue().toString());
         int soldQuantity = Integer.parseInt(jTextField_Sold.getText());
         int quantity = Integer.parseInt(jSpinner_Quantity.getValue().toString());
-        
+
         Brand brand = (Brand) jComboBox_Brand.getSelectedItem();
-        Category category = (Category) jComboBox_Category.getSelectedItem();        
-        
-        if (mode == Mode.ADD) {            
+        Category category = (Category) jComboBox_Category.getSelectedItem();
+
+        if (mode == Mode.ADD) {
             Product product = new Product();
             product.setName(name);
             product.setDescription(description);
@@ -775,7 +702,7 @@ public class PanelProduct extends javax.swing.JPanel {
             product.setCategory(category);
             product.setBrand(brand);
             product.setStatus(true);
-            if(selectedFile != null) {
+            if (selectedFile != null) {
                 try {
                     RequestBody requestBody = RequestBody.create(MediaType.parse("multipart/form-data"), selectedFile);
                     MultipartBody.Part part = MultipartBody.Part.createFormData("file", selectedFile.getName(), requestBody);
@@ -785,16 +712,17 @@ public class PanelProduct extends javax.swing.JPanel {
                         @Override
                         public void onResponse(Call<ResponseBody> call, retrofit2.Response<ResponseBody> response) {
                             try {
-                                if(response.isSuccessful()) {
+                                if (response.isSuccessful()) {
                                     String str = response.body().string();
                                     product.setImage(str);
                                     System.out.println("vãi: " + product.getImage());
                                     Response res = pc.addProduct(product);
-                                    JOptionPane.showMessageDialog(null, res.getMessage());
-                                    if(res.getResponseCode() == 200)
+                                    JOptionPane.showMessageDialog(null, pc.convertResponse(res.getMessage()).getMessage());
+                                    if (res.getResponseCode() == 200) {
                                         loadData(output.getPage());
-                                    else
-                                        return;    
+                                    } else {
+                                        return;
+                                    }
                                 }
                             } catch (Exception e) {
                                 JOptionPane.showMessageDialog(null, e.getMessage());
@@ -810,15 +738,15 @@ public class PanelProduct extends javax.swing.JPanel {
                 } catch (Exception e) {
                     JOptionPane.showMessageDialog(this, e.getMessage());
                 }
-            }
-            else {
+            } else {
                 product.setImage(imageName);
                 Response response = pc.addProduct(product);
-                JOptionPane.showMessageDialog(this, response.getMessage());
-                if(response.getResponseCode() == 200)
+                JOptionPane.showMessageDialog(this, pc.convertResponse(response.getMessage()).getMessage());
+                if (response.getResponseCode() == 200) {
                     loadData(output.getPage());
-                else
-                    return;    
+                } else {
+                    return;
+                }
             }
         }
         if (mode == Mode.MODIFY) {
@@ -835,7 +763,7 @@ public class PanelProduct extends javax.swing.JPanel {
             product.setCategory(category);
             product.setBrand(brand);
             product.setStatus(true);
-            if(selectedFile != null) {
+            if (selectedFile != null) {
                 try {
                     RequestBody requestBody = RequestBody.create(MediaType.parse("multipart/form-data"), selectedFile);
                     MultipartBody.Part part = MultipartBody.Part.createFormData("file", selectedFile.getName(), requestBody);
@@ -845,16 +773,17 @@ public class PanelProduct extends javax.swing.JPanel {
                         @Override
                         public void onResponse(Call<ResponseBody> call, retrofit2.Response<ResponseBody> response) {
                             try {
-                                if(response.isSuccessful()) {
+                                if (response.isSuccessful()) {
                                     String str = response.body().string();
                                     product.setImage(str);
                                     System.out.println("vãi: " + product.getImage());
                                     Response res = pc.updateProductByID(product.getProductId(), product);
-                                    JOptionPane.showMessageDialog(null, res.getMessage());
-                                    if(res.getResponseCode() == 200)
+                                    JOptionPane.showMessageDialog(null, pc.convertResponse(res.getMessage()).getMessage());
+                                    if (res.getResponseCode() == 200) {
                                         loadData(output.getPage());
-                                    else
-                                        return;    
+                                    } else {
+                                        return;
+                                    }
                                 }
                             } catch (Exception e) {
                                 JOptionPane.showMessageDialog(null, e.getMessage());
@@ -870,16 +799,16 @@ public class PanelProduct extends javax.swing.JPanel {
                 } catch (Exception e) {
                     JOptionPane.showMessageDialog(this, e.getMessage());
                 }
-            }
-            else {
+            } else {
                 product.setImage(imageName);
                 Response response = pc.updateProductByID(product.getProductId(), product);
-                JOptionPane.showMessageDialog(this, response.getMessage());
-                if(response.getResponseCode() == 200)
+                JOptionPane.showMessageDialog(this, pc.convertResponse(response.getMessage()).getMessage());
+                if (response.getResponseCode() == 200) {
                     loadData(output.getPage());
-                else
-                    return;    
-            }         
+                } else {
+                    return;
+                }
+            }
         }
         mode = Mode.FREE;
         UIController.showCardLayout("cardFirst", jPanel_Card);
@@ -894,7 +823,7 @@ public class PanelProduct extends javax.swing.JPanel {
         clearAll();
         setEditableForAll(false);
         jTable_Product.setEnabled(true);
-        
+
         UIController.showCardLayout("cardFirst", jPanel_Card);
         selectedFile = null;
     }//GEN-LAST:event_jButton_CancelActionPerformed
@@ -913,7 +842,7 @@ public class PanelProduct extends javax.swing.JPanel {
         setEditableForAll(true);
         jTable_Product.setEnabled(false);
         jTextField_Sold.setText("0");
-        
+
         imageName = DEFAULT_IMAGE;
         Image img = pc.getImage(imageName);
         Image newImg = img.getScaledInstance(jLabel_Image.getWidth(), jLabel_Image.getHeight(), java.awt.Image.SCALE_SMOOTH);
@@ -923,7 +852,9 @@ public class PanelProduct extends javax.swing.JPanel {
 
     private void jTable_ProductMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable_ProductMouseClicked
         // TODO add your handling code here:
-        if(mode == Mode.ADD || mode == Mode.MODIFY) return;
+        if (mode == Mode.ADD || mode == Mode.MODIFY) {
+            return;
+        }
         int selectedRow = jTable_Product.convertRowIndexToModel(jTable_Product.getSelectedRow());
 
         Product p = pc.getProductById(dtm.getValueAt(selectedRow, 0).toString());
@@ -933,25 +864,25 @@ public class PanelProduct extends javax.swing.JPanel {
         jTextField_Specification.setText(p.getSpecification());
         jTextField_Sold.setText(p.getSoldQuantity() + "");
         jTextArea_Description.setText(p.getDescription());
-        
+
         for (int i = 0; i < jComboBox_Brand.getItemCount(); i++) {
             if (jComboBox_Brand.getItemAt(i).getBrandId().equals(p.getBrand().getBrandId())) {
                 jComboBox_Brand.setSelectedIndex(i);
             }
         }
-        
+
         for (int i = 0; i < jComboBox_Category.getItemCount(); i++) {
             if (jComboBox_Category.getItemAt(i).getCategoryId().equals(p.getCategory().getCategoryId())) {
                 jComboBox_Category.setSelectedIndex(i);
             }
         }
-        
+
         imageName = p.getImage();
         Image img = pc.getImage(imageName);
         Image newImg = img.getScaledInstance(jLabel_Image.getWidth(), jLabel_Image.getHeight(), java.awt.Image.SCALE_SMOOTH);
         ImageIcon icon = new ImageIcon(newImg);
         jLabel_Image.setIcon(icon);
-        
+
         jSpinner_Price.setValue(p.getPrice());
         jSpinner_Discount.setValue(p.getDiscount());
         jSpinner_Quantity.setValue(p.getQuantity());
@@ -961,7 +892,7 @@ public class PanelProduct extends javax.swing.JPanel {
 
     private void jTextField_NameSearchCaretUpdate(javax.swing.event.CaretEvent evt) {//GEN-FIRST:event_jTextField_NameSearchCaretUpdate
         // TODO add your handling code here:
-        String tuKhoa = jTextField_NameSearch.getText().toLowerCase();
+        String tuKhoa = jTextField_NameSearch.getText();
         TableRowSorter<TableModel> trs = new TableRowSorter<>(jTable_Product.getModel());
         jTable_Product.setRowSorter(trs);
         trs.setRowFilter(RowFilter.regexFilter("(?i)" + tuKhoa));
@@ -969,8 +900,18 @@ public class PanelProduct extends javax.swing.JPanel {
 
     private void jButton_ExportExcelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_ExportExcelActionPerformed
         // TODO add your handling code here:
-//        File.xuatFileExcel("DSNhanVien", (DefaultTableModel) jTable_Staff.getModel(), "NhanVien");
-        JOptionPane.showMessageDialog(this, "Xuất file excel thành công!");
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setMultiSelectionEnabled(false);
+        fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+        int x = fileChooser.showDialog(this, "Choose folder");
+        if (x == JFileChooser.APPROVE_OPTION) {
+            java.io.File file = fileChooser.getSelectedFile();
+            utils.File.xuatFileExcel("ProductList", (DefaultTableModel) jTable_Product.getModel(), file.getAbsolutePath() + "/Product");
+            JOptionPane.showMessageDialog(this, "Export excel file successfully!");
+        }
+        else {
+            return;
+        }
     }//GEN-LAST:event_jButton_ExportExcelActionPerformed
 
     private void jButton_ChooseImageActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_ChooseImageActionPerformed
@@ -987,29 +928,28 @@ public class PanelProduct extends javax.swing.JPanel {
             Image newImg = img.getScaledInstance(jLabel_Image.getWidth(), jLabel_Image.getHeight(), java.awt.Image.SCALE_SMOOTH);
             jLabel_Image.setIcon(new ImageIcon(newImg));
             System.out.println(selectedFile.getName());
-        }
-        else {
+        } else {
             return;
         }
     }//GEN-LAST:event_jButton_ChooseImageActionPerformed
 
     private void jButton_NextPageActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_NextPageActionPerformed
         // TODO add your handling code here:
-        if(output.getPage() < output.getTotalPage()) {
+        if (output.getPage() < output.getTotalPage()) {
             loadData(output.getPage() + 1);
             jButton_PreviousPage.setEnabled(true);
         }
-        if(output.getPage() == output.getTotalPage())
+        if (output.getPage() == output.getTotalPage())
             jButton_NextPage.setEnabled(false);
     }//GEN-LAST:event_jButton_NextPageActionPerformed
 
     private void jButton_PreviousPageActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_PreviousPageActionPerformed
         // TODO add your handling code here:
-        if(output.getPage() > 1) {
+        if (output.getPage() > 1) {
             loadData(output.getPage() - 1);
             jButton_NextPage.setEnabled(true);
         }
-        if(output.getPage() == 1)
+        if (output.getPage() == 1)
             jButton_PreviousPage.setEnabled(false);
     }//GEN-LAST:event_jButton_PreviousPageActionPerformed
 
@@ -1030,43 +970,41 @@ public class PanelProduct extends javax.swing.JPanel {
 
     private void jButton_RemoveMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton_RemoveMouseClicked
         // TODO add your handling code here:
-        int luaChon = JOptionPane.showConfirmDialog(this, "Are you sure you want to remove this product?", "OK", 0);
+        int luaChon = JOptionPane.showConfirmDialog(this, "Are you sure you want to remove this product?");
         if (luaChon == JOptionPane.CANCEL_OPTION) {
             return;
         } else if (luaChon == JOptionPane.OK_OPTION) {
             Response response = pc.deleteProductByID(jTextField_ID.getText());
-            JOptionPane.showMessageDialog(this, response.getMessage());
-            if(response.getResponseCode() == 200) {
+            JOptionPane.showMessageDialog(this, pc.convertResponse(response.getMessage()).getMessage());
+            if (response.getResponseCode() == 200) {
                 loadData(output.getPage());
                 clearAll();
+            } else {
+                return;
             }
-            else
-                return;            
         }
     }//GEN-LAST:event_jButton_RemoveMouseClicked
 
-    private void jComboBox_FilterCategoryItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jComboBox_FilterCategoryItemStateChanged
-        // TODO add your handling code here:
-        if(jComboBox_FilterCategory.getSelectedItem() == null) return;
-        String categoryName = ((Category) jComboBox_FilterCategory.getSelectedItem()).getName();
-        TableRowSorter<TableModel> trs = new TableRowSorter<>(jTable_Product.getModel());
-        jTable_Product.setRowSorter(trs);
-        trs.setRowFilter(RowFilter.regexFilter("(?i)" + categoryName, 2));
-    }//GEN-LAST:event_jComboBox_FilterCategoryItemStateChanged
-
-    private void jComboBox_FilterBrandItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jComboBox_FilterBrandItemStateChanged
-        // TODO add your handling code here:
-        if(jComboBox_FilterBrand.getSelectedItem() == null) return;
-        String brandName = ((Brand) jComboBox_FilterBrand.getSelectedItem()).getName();
-        TableRowSorter<TableModel> trs = new TableRowSorter<>(jTable_Product.getModel());
-        jTable_Product.setRowSorter(trs);
-        trs.setRowFilter(RowFilter.regexFilter("(?i)" + brandName, 3));
-    }//GEN-LAST:event_jComboBox_FilterBrandItemStateChanged
-
     private void jButton_ModifyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_ModifyActionPerformed
         // TODO add your handling code here:
-        
+
     }//GEN-LAST:event_jButton_ModifyActionPerformed
+
+    private void jButton_CategoryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_CategoryActionPerformed
+        // TODO add your handling code here:
+        newCategoryDialog = new NewCategoryDialog(null, true, this);
+
+        newCategoryDialog.setVisible(true);
+        loadCategory();
+    }//GEN-LAST:event_jButton_CategoryActionPerformed
+
+    private void jButton_BrandActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_BrandActionPerformed
+        // TODO add your handling code here:
+        newBrandDialog = new NewBrandDialog(null, true, this);
+        
+        newBrandDialog.setVisible(true);
+        loadBrand();
+    }//GEN-LAST:event_jButton_BrandActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton_Add;
@@ -1075,29 +1013,21 @@ public class PanelProduct extends javax.swing.JPanel {
     private javax.swing.JButton jButton_Category;
     private javax.swing.JButton jButton_ChooseImage;
     private javax.swing.JButton jButton_Clear;
-    private javax.swing.JButton jButton_Deleted;
     private javax.swing.JButton jButton_ExportExcel;
-    private javax.swing.JButton jButton_Import;
     private javax.swing.JButton jButton_Modify;
     private javax.swing.JButton jButton_NextPage;
     private javax.swing.JButton jButton_OK;
     private javax.swing.JButton jButton_PreviousPage;
     private javax.swing.JButton jButton_Remove;
-    private javax.swing.JButton jButton_ShowImportHistory;
     private javax.swing.JComboBox<Brand> jComboBox_Brand;
     private javax.swing.JComboBox<Category> jComboBox_Category;
-    private javax.swing.JComboBox<Brand> jComboBox_FilterBrand;
-    private javax.swing.JComboBox<Category> jComboBox_FilterCategory;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel16;
     private javax.swing.JLabel jLabel17;
     private javax.swing.JLabel jLabel18;
-    private javax.swing.JLabel jLabel19;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel20;
-    private javax.swing.JLabel jLabel21;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;

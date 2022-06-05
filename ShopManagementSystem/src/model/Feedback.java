@@ -11,6 +11,7 @@ import java.util.Date;
  * @author TRINH
  */
 public class Feedback {
+
     private Integer feedbackId;
     private Product product;
     private User user;

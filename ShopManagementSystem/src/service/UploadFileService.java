@@ -16,11 +16,11 @@ import retrofit2.http.Part;
  * @author TRINH
  */
 public interface UploadFileService {
-    
+
     @Multipart
     @POST("image/product")
     Call<ResponseBody> uploadProductImage(@Part MultipartBody.Part part);
-    
+
     @Multipart
     @POST("image/category")
     Call<ResponseBody> uploadCategoryImage(@Part MultipartBody.Part part);

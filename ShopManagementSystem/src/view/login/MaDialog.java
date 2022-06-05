@@ -5,8 +5,6 @@
  */
 package view.login;
 
-import javax.swing.JOptionPane;
-
 /**
  *
  * @author Admin

@@ -9,6 +9,7 @@ package model;
  * @author TRINH
  */
 public class Response {
+
     private int responseCode;
     private String message;
 
@@ -35,5 +36,5 @@ public class Response {
     public void setMessage(String message) {
         this.message = message;
     }
-    
+
 }

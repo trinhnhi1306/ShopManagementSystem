@@ -9,6 +9,7 @@ package model;
  * @author TRINH
  */
 public class Address {
+
     private Integer addressId;
     private String specificAddress;
     private Ward ward;
@@ -46,5 +47,4 @@ public class Address {
         this.ward = ward;
     }
 
-    
 }

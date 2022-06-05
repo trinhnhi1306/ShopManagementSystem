@@ -9,6 +9,7 @@ package model;
  * @author TRINH
  */
 public class Permission {
+
     private Integer permission_id;
     private String name;
 
@@ -35,5 +36,5 @@ public class Permission {
     public void setName(String name) {
         this.name = name;
     }
-    
+
 }

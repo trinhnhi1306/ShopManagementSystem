@@ -9,25 +9,15 @@ package output;
  * @author TRINH
  */
 public class ResponseMessage {
-    private String status;
     private String message;
     private Object data;
 
     public ResponseMessage() {
     }
 
-    public ResponseMessage(String status, String message, Object data) {
-        this.status = status;
+    public ResponseMessage(String message, Object data) {
         this.message = message;
         this.data = data;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
     }
 
     public String getMessage() {
@@ -45,6 +35,5 @@ public class ResponseMessage {
     public void setData(Object data) {
         this.data = data;
     }
-    
     
 }

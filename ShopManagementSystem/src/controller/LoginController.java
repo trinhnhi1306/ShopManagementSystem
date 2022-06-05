@@ -4,10 +4,7 @@
  */
 package controller;
 
-import com.google.gson.reflect.TypeToken;
 import java.io.IOException;
-import java.lang.reflect.Type;
-import java.util.Map;
 import model.Login;
 import model.Response;
 import utils.ConnectAPI;
@@ -16,28 +13,29 @@ import utils.ConnectAPI;
  *
  * @author TRINH
  */
-public class LoginController extends BaseController{
+public class LoginController extends BaseController {
+
     private String login;
 
     public LoginController() {
         login = "/api/auth/signin";
     }
-    
+
     public Login login(String username, String password) {
         Login input = new Login();
         input.setUsername(username);
         input.setPassword(password);
-        
+
         String json = gson.toJson(input);
         System.out.println("Json: " + json);
-        Login output = null;        
+        Login output = null;
         try {
             Response response = ConnectAPI.excuteHttpMethod(json, login, "POST", false);
             output = gson.fromJson(response.getMessage(), Login.class);
         } catch (IOException ex) {
             System.out.println(ex.getMessage());
         }
-        
+
         return output;
     }
 }

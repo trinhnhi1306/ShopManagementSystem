@@ -9,6 +9,7 @@ package model;
  * @author TRINH
  */
 public class Role {
+
     private Integer id;
     private ERole name;
 
@@ -35,5 +36,5 @@ public class Role {
     public void setName(ERole name) {
         this.name = name;
     }
-    
+
 }

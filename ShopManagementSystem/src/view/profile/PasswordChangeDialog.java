@@ -5,21 +5,9 @@
  */
 package view.profile;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-//import model.database.Connect;
-//import org.mindrot.bcrypt.BCrypt;
-//import static view.login.ConfirmDialog.hash;
-import view.login.LoginFrame;
-//import static view.login.LoginFrame.verifyHash;
-//import view.main.librarian.ReaderPanel;
 
 /**
  *
@@ -275,21 +263,20 @@ public class PasswordChangeDialog extends javax.swing.JDialog {
         String pwdOld = new String(jPasswordField_Old.getPassword());
         String pwdNew = new String(jPasswordField_New.getPassword());
         String pwdVerify = new String(jPasswordField_Verify.getPassword());
-        if(pwdOld.equalsIgnoreCase("") || pwdNew.equalsIgnoreCase("") || pwdVerify.equalsIgnoreCase("")){
+        if (pwdOld.equalsIgnoreCase("") || pwdNew.equalsIgnoreCase("") || pwdVerify.equalsIgnoreCase("")) {
             JOptionPane.showMessageDialog(null, "Không được để trống password. Vui lòng nhập lại!", "Thông báo", JOptionPane.ERROR_MESSAGE);
-             return;
+            return;
         }
 //        String passwordConfirm = getPassword(view.login.LoginFrame.username);
 //        if(!verifyHash(pwdOld, passwordConfirm)){
 //            JOptionPane.showMessageDialog(null, "Sai mật khẩu. Vui lòng nhập lại!", "Thông báo", JOptionPane.ERROR_MESSAGE);
 //             return;
 //        }
-        if(!pwdNew.equals(pwdVerify)){
+        if (!pwdNew.equals(pwdVerify)) {
             JOptionPane.showMessageDialog(null, "Mật khẩu mới và mật khẩu xác nhận không trùng nhau. Vui lòng nhập lại!", "Thông báo", JOptionPane.ERROR_MESSAGE);
-             return;
+            return;
         }
-        
-       
+
 //        Connection ketNoi =Connect.GetConnect();
 //        String sql = "update account\n" +
 //                        "SET password = ?\n" +

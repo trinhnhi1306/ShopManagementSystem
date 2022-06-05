@@ -11,6 +11,7 @@ import java.util.List;
  * @author TRINH
  */
 public class District {
+
     private Integer districtId;
     private String districtName;
     private String districtPrefix;
@@ -68,5 +69,4 @@ public class District {
         this.wards = wards;
     }
 
-    
 }

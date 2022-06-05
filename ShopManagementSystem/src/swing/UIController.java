@@ -17,6 +17,7 @@ import javax.swing.table.DefaultTableCellRenderer;
  * @author Admin
  */
 public class UIController {
+
     public static void setHorizontalAlignmentForColumn(JTable table, int columnNumber, int Alignment) {
         DefaultTableCellRenderer align = new DefaultTableCellRenderer();
         align.setHorizontalAlignment(Alignment);
@@ -39,7 +40,7 @@ public class UIController {
         setHorizontalAlignmentForColumn(table, 0, JLabel.CENTER);
         setColumnWidth(table, 0, 50);
     }
-       
+
     public static void showCardLayout(String cardName, JPanel cardPanel) {
         CardLayout layout = (CardLayout) (cardPanel.getLayout());
         layout.show(cardPanel, cardName);

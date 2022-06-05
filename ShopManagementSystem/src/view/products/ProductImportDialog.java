@@ -5,16 +5,9 @@
  */
 package view.products;
 
-import java.awt.Color;
-import java.time.LocalDateTime;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
-//import model.ingredient.ImportHistory;
-//import model.ingredient.ImportHistoryFileManagement;
-//import model.ingredient.Ingredient;
 
 public class ProductImportDialog extends javax.swing.JDialog {
 
@@ -25,7 +18,7 @@ public class ProductImportDialog extends javax.swing.JDialog {
     /**
      * Creates new form importIngredientDialog
      */
-    public ProductImportDialog(java.awt.Frame parent, boolean modal, /*Ingredient ingredient, */JPanel parentPanel) {
+    public ProductImportDialog(java.awt.Frame parent, boolean modal, /*Ingredient ingredient, */ JPanel parentPanel) {
         super(parent, modal);
         initComponents();
         setLocationRelativeTo(null);
@@ -43,7 +36,6 @@ public class ProductImportDialog extends javax.swing.JDialog {
 //        jTextField_Cost.setText(String.valueOf(this.ingredient.getCost()));
 //        jLabel_Unit.setText(ingredient.getUnit().toString());
 //    }
-
 //    private void addSpinnerListener() {
 //        jSpinner_ImportAmount.addChangeListener(new ChangeListener() {
 //            @Override
@@ -54,7 +46,6 @@ public class ProductImportDialog extends javax.swing.JDialog {
 //            }
 //        });
 //    }
-
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
