@@ -4,18 +4,20 @@
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
             <file>file:/C:/Users/TRINH/OneDrive%20-%20Sang%20ltd/Desktop/ShopManagementSystem/ShopManagementSystem/src/service/APIClient.java</file>
-            <file>file:/C:/Users/TRINH/OneDrive%20-%20Sang%20ltd/Desktop/ShopManagementSystem/ShopManagementSystem/src/view/categories/CategoryPanel.java</file>
             <file>file:/C:/Users/TRINH/OneDrive%20-%20Sang%20ltd/Desktop/ShopManagementSystem/ShopManagementSystem/src/view/orders/OrderPanel.java</file>
-            <file>file:/C:/Users/TRINH/OneDrive%20-%20Sang%20ltd/Desktop/ShopManagementSystem/ShopManagementSystem/src/model/Order.java</file>
-            <file>file:/C:/Users/TRINH/OneDrive%20-%20Sang%20ltd/Desktop/ShopManagementSystem/ShopManagementSystem/src/view/profile/ProfilePanel.java</file>
-            <file>file:/C:/Users/TRINH/OneDrive%20-%20Sang%20ltd/Desktop/ShopManagementSystem/ShopManagementSystem/src/view/brands/BrandPanel.java</file>
-            <file>file:/C:/Users/TRINH/OneDrive%20-%20Sang%20ltd/Desktop/ShopManagementSystem/ShopManagementSystem/src/controller/BaseController.java</file>
+            <file>file:/C:/Users/TRINH/OneDrive%20-%20Sang%20ltd/Desktop/ShopManagementSystem/ShopManagementSystem/src/view/categories/CategoryPanel.java</file>
+            <file>file:/C:/Users/TRINH/OneDrive%20-%20Sang%20ltd/Desktop/ShopManagementSystem/ShopManagementSystem/src/output/ResponseMessage.java</file>
+            <file>file:/C:/Users/TRINH/OneDrive%20-%20Sang%20ltd/Desktop/ShopManagementSystem/ShopManagementSystem/src/controller/LoginController.java</file>
+            <file>file:/C:/Users/TRINH/OneDrive%20-%20Sang%20ltd/Desktop/ShopManagementSystem/ShopManagementSystem/src/model/Response.java</file>
             <file>file:/C:/Users/TRINH/OneDrive%20-%20Sang%20ltd/Desktop/ShopManagementSystem/ShopManagementSystem/src/view/products/PanelProduct.java</file>
-            <file>file:/C:/Users/TRINH/OneDrive%20-%20Sang%20ltd/Desktop/ShopManagementSystem/ShopManagementSystem/src/model/OrderDetail.java</file>
+            <file>file:/C:/Users/TRINH/OneDrive%20-%20Sang%20ltd/Desktop/ShopManagementSystem/ShopManagementSystem/src/view/users/UserPanel.java</file>
+            <file>file:/C:/Users/TRINH/OneDrive%20-%20Sang%20ltd/Desktop/ShopManagementSystem/ShopManagementSystem/src/view/test.java</file>
+            <file>file:/C:/Users/TRINH/OneDrive%20-%20Sang%20ltd/Desktop/ShopManagementSystem/ShopManagementSystem/src/view/products/ProductDeletedDialog.java</file>
             <file>file:/C:/Users/TRINH/OneDrive%20-%20Sang%20ltd/Desktop/ShopManagementSystem/ShopManagementSystem/src/service/UploadFileService.java</file>
             <file>file:/C:/Users/TRINH/OneDrive%20-%20Sang%20ltd/Desktop/ShopManagementSystem/ShopManagementSystem/src/controller/CategoryController.java</file>
+            <file>file:/C:/Users/TRINH/OneDrive%20-%20Sang%20ltd/Desktop/ShopManagementSystem/ShopManagementSystem/src/utils/ConnectAPI.java</file>
             <file>file:/C:/Users/TRINH/OneDrive%20-%20Sang%20ltd/Desktop/ShopManagementSystem/ShopManagementSystem/src/controller/ProductController.java</file>
-            <file>file:/C:/Users/TRINH/OneDrive%20-%20Sang%20ltd/Desktop/ShopManagementSystem/ShopManagementSystem/src/controller/OrderController.java</file>
+            <file>file:/C:/Users/TRINH/OneDrive%20-%20Sang%20ltd/Desktop/ShopManagementSystem/ShopManagementSystem/src/view/orders/HistoryDialog.java</file>
         </group>
     </open-files>
 </project-private>
