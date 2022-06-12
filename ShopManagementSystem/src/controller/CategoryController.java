@@ -29,8 +29,8 @@ public class CategoryController extends BaseController {
         getAll = "/api/category/all";
         getItemInOnePage = "/api/category?pageNo=%d&pageSize=20&sortField=categoryId&sortDirection=desc";
         getOneByID = "/api/category/";
-        addOne = "/api/category";
-        editOrDelete = "/api/category/";
+        addOne = "/api/admin/category";
+        editOrDelete = "/api/admin/category/";
         getImage = "/api/category/image/";
     }
 

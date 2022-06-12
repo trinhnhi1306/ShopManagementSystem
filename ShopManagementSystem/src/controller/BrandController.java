@@ -28,8 +28,8 @@ public class BrandController extends BaseController {
         getAll = "/api/brand/all";
         getItemInOnePage = "/api/brand?pageNo=%d&pageSize=20&sortField=brandId&sortDirection=desc";
         getOneByID = "/api/brand/";
-        addOne = "/api/brand";
-        editOrDelete = "/api/brand/";
+        addOne = "/api/admin/brand";
+        editOrDelete = "/api/admin/brand/";
         getImage = "/api/brand/image/";
     }
 

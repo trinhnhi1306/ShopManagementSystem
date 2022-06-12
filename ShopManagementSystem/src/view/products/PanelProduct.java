@@ -43,6 +43,7 @@ import service.UploadFileService;
  */
 public class PanelProduct extends javax.swing.JPanel {
 
+    public static String selectedProductId = "";
     private static final String DEFAULT_IMAGE = "default.png";
     private DefaultTableModel dtm;
     private ProductController pc;
@@ -60,6 +61,7 @@ public class PanelProduct extends javax.swing.JPanel {
     private Mode mode;
     private NewCategoryDialog newCategoryDialog;
     private NewBrandDialog newBrandDialog;
+    private FeedbackDialog feedbackDialog;
     private ImportHistoryDialog history;
     private ProductImportDialog productImportDialog;
     private ProductDeletedDialog productDeletedDialog;
@@ -140,6 +142,7 @@ public class PanelProduct extends javax.swing.JPanel {
         jButton_PreviousPage = new javax.swing.JButton();
         jButton_NextPage = new javax.swing.JButton();
         jLabel_Page = new javax.swing.JLabel();
+        jButton_Feedback = new javax.swing.JButton();
 
         setBackground(new java.awt.Color(255, 255, 255));
 
@@ -562,6 +565,15 @@ public class PanelProduct extends javax.swing.JPanel {
 
         jLabel_Page.setText("/");
 
+        jButton_Feedback.setFont(new java.awt.Font("Segoe UI", 1, 15)); // NOI18N
+        jButton_Feedback.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/tick3.png"))); // NOI18N
+        jButton_Feedback.setText("Feedback");
+        jButton_Feedback.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton_FeedbackActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -576,6 +588,8 @@ public class PanelProduct extends javax.swing.JPanel {
                         .addGap(18, 18, 18)
                         .addComponent(jTextField_NameSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 390, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jButton_Feedback)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jButton_ExportExcel)
                         .addGap(18, 18, 18)
                         .addComponent(jPanel_Card, javax.swing.GroupLayout.PREFERRED_SIZE, 439, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -601,7 +615,8 @@ public class PanelProduct extends javax.swing.JPanel {
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(jTextField_NameSearch, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(jLabel14)
-                        .addComponent(jButton_ExportExcel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addComponent(jButton_ExportExcel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jButton_Feedback, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(18, 18, 18)
@@ -1006,6 +1021,20 @@ public class PanelProduct extends javax.swing.JPanel {
         loadBrand();
     }//GEN-LAST:event_jButton_BrandActionPerformed
 
+    private void jButton_FeedbackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_FeedbackActionPerformed
+        // TODO add your handling code here:
+        String str = jTextField_ID.getText();
+        if(str.equals("")) {
+            JOptionPane.showMessageDialog(this, "No product selected");
+            return;
+        }
+        selectedProductId = str;
+            
+        feedbackDialog = new FeedbackDialog(null, true);
+        
+        feedbackDialog.setVisible(true);
+    }//GEN-LAST:event_jButton_FeedbackActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton_Add;
     private javax.swing.JButton jButton_Brand;
@@ -1014,6 +1043,7 @@ public class PanelProduct extends javax.swing.JPanel {
     private javax.swing.JButton jButton_ChooseImage;
     private javax.swing.JButton jButton_Clear;
     private javax.swing.JButton jButton_ExportExcel;
+    private javax.swing.JButton jButton_Feedback;
     private javax.swing.JButton jButton_Modify;
     private javax.swing.JButton jButton_NextPage;
     private javax.swing.JButton jButton_OK;

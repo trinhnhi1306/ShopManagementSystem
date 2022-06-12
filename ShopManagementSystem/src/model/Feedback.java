@@ -12,7 +12,6 @@ import java.util.Date;
  */
 public class Feedback {
 
-    private Integer feedbackId;
     private Product product;
     private User user;
     private Date date;
@@ -22,21 +21,12 @@ public class Feedback {
     public Feedback() {
     }
 
-    public Feedback(Integer feedbackId, Product product, User user, Date date, String comment, Integer vote) {
-        this.feedbackId = feedbackId;
+    public Feedback(Product product, User user, Date date, String comment, Integer vote) {
         this.product = product;
         this.user = user;
         this.date = date;
         this.comment = comment;
         this.vote = vote;
-    }
-
-    public Integer getFeedbackId() {
-        return feedbackId;
-    }
-
-    public void setFeedbackId(Integer feedbackId) {
-        this.feedbackId = feedbackId;
     }
 
     public Product getProduct() {
