@@ -68,7 +68,6 @@ public class LoginFrame extends javax.swing.JFrame {
         jLabel_HideShow = new javax.swing.JLabel();
         jPasswordField_Pass = new javax.swing.JPasswordField();
         jButton_Login = new javax.swing.JButton();
-        jButton_Forgot = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Sign In");
@@ -160,17 +159,6 @@ public class LoginFrame extends javax.swing.JFrame {
             }
         });
 
-        jButton_Forgot.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
-        jButton_Forgot.setForeground(new java.awt.Color(0, 153, 153));
-        jButton_Forgot.setText("Forgot password");
-        jButton_Forgot.setContentAreaFilled(false);
-        jButton_Forgot.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        jButton_Forgot.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton_ForgotActionPerformed(evt);
-            }
-        });
-
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -183,10 +171,7 @@ public class LoginFrame extends javax.swing.JFrame {
                         .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(138, 138, 138)
-                        .addComponent(jButton_Login))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(163, 163, 163)
-                        .addComponent(jButton_Forgot)))
+                        .addComponent(jButton_Login)))
                 .addContainerGap(37, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -197,9 +182,7 @@ public class LoginFrame extends javax.swing.JFrame {
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jButton_Login, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton_Forgot)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(40, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -215,12 +198,6 @@ public class LoginFrame extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    private void jButton_ForgotActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_ForgotActionPerformed
-        // TODO add your handling code here:
-        this.recoveryPasswordDialog = new RecoveryPasswordDialog(this, true);
-        this.recoveryPasswordDialog.setVisible(true);
-    }//GEN-LAST:event_jButton_ForgotActionPerformed
 
     private void jLabel_HideShowMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel_HideShowMouseClicked
         // TODO add your handling code here:
@@ -308,7 +285,6 @@ public class LoginFrame extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton_Forgot;
     private javax.swing.JButton jButton_Login;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
