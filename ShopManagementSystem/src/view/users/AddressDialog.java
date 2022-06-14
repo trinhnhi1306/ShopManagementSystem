@@ -5,13 +5,18 @@
  */
 package view.users;
 
+import java.util.ArrayList;
+import java.util.List;
 import javax.swing.JPanel;
+import model.Address;
 
 /**
  *
  * @author Admin
  */
 public class AddressDialog extends javax.swing.JDialog {
+
+    private List<Address> listAddress = new ArrayList<>();
 
     /**
      * Creates new form NewCategoryDialog
@@ -20,11 +25,12 @@ public class AddressDialog extends javax.swing.JDialog {
      * @param modal
      * @param parentPanel
      */
-    public AddressDialog(java.awt.Frame parent, boolean modal, JPanel parentPanel) {
+    public AddressDialog(java.awt.Frame parent, boolean modal, List<Address> listAddress, JPanel parentPanel) {
         super(parent, modal);
         initComponents();
         setLocationRelativeTo(null);
-//        getId();
+        this.listAddress = listAddress;
+        loadData();
     }
 
     /**
@@ -47,6 +53,9 @@ public class AddressDialog extends javax.swing.JDialog {
         jTextField_Address2 = new javax.swing.JTextField();
         jLabel6 = new javax.swing.JLabel();
         jTextField_Address3 = new javax.swing.JTextField();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jTextArea1 = new javax.swing.JTextArea();
+        jLabel7 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -85,6 +94,15 @@ public class AddressDialog extends javax.swing.JDialog {
         jTextField_Address3.setEditable(false);
         jTextField_Address3.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
 
+        jTextArea1.setEditable(false);
+        jTextArea1.setBackground(new java.awt.Color(240, 240, 240));
+        jTextArea1.setColumns(20);
+        jTextArea1.setRows(5);
+        jScrollPane1.setViewportView(jTextArea1);
+
+        jLabel7.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        jLabel7.setText("...");
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -103,9 +121,13 @@ public class AddressDialog extends javax.swing.JDialog {
                             .addComponent(jTextField_Address1)
                             .addComponent(jTextField_Address2, javax.swing.GroupLayout.Alignment.TRAILING)))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel6)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel6)
+                            .addComponent(jLabel7))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jTextField_Address3)))
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jScrollPane1)
+                            .addComponent(jTextField_Address3))))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -127,7 +149,13 @@ public class AddressDialog extends javax.swing.JDialog {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jTextField_Address3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel6))
-                .addContainerGap(26, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 153, Short.MAX_VALUE)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jLabel7)
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addContainerGap())
         );
 
         jPanel3.add(jPanel1, java.awt.BorderLayout.CENTER);
@@ -146,55 +174,32 @@ public class AddressDialog extends javax.swing.JDialog {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private String xoaKhoangTrangThua(String str) {
-        str = str.trim();
-        String temp[] = str.split("\\s+");
-        str = "";
-        for (int i = 0; i < temp.length; i++) {
-            str += temp[i];
-            if (i < temp.length - 1) {
-                str += " ";
+    private void loadData() {
+        System.out.println(listAddress.size());
+        Address address;
+        if (listAddress.size() >= 1) {
+            address = listAddress.get(0);
+            jTextField_Address.setText(address.getSpecificAddress() + ", " + address.getWard().getWardPrefix() + " " + address.getWard().getWardName() + ", " + address.getWard().getDistrict().getDistrictPrefix() + " " + address.getWard().getDistrict().getDistrictName() + ", " + address.getWard().getDistrict().getProvince().getProvinceName());
+        }
+        if (listAddress.size() >= 2) {
+            address = listAddress.get(1);
+            jTextField_Address1.setText(address.getSpecificAddress() + ", " + address.getWard().getWardPrefix() + " " + address.getWard().getWardName() + ", " + address.getWard().getDistrict().getDistrictPrefix() + " " + address.getWard().getDistrict().getDistrictName() + ", " + address.getWard().getDistrict().getProvince().getProvinceName());
+        }
+        if (listAddress.size() >= 3) {
+            address = listAddress.get(2);
+            jTextField_Address2.setText(address.getSpecificAddress() + ", " + address.getWard().getWardPrefix() + " " + address.getWard().getWardName() + ", " + address.getWard().getDistrict().getDistrictPrefix() + " " + address.getWard().getDistrict().getDistrictName() + ", " + address.getWard().getDistrict().getProvince().getProvinceName());
+        }
+        if (listAddress.size() >= 4) {
+            address = listAddress.get(3);
+            jTextField_Address3.setText(address.getSpecificAddress() + ", " + address.getWard().getWardPrefix() + " " + address.getWard().getWardName() + ", " + address.getWard().getDistrict().getDistrictPrefix() + " " + address.getWard().getDistrict().getDistrictName() + ", " + address.getWard().getDistrict().getProvince().getProvinceName());
+        }
+        if (listAddress.size() >= 5) {
+            for (int i = 4; i < listAddress.size(); i++) {
+                address = listAddress.get(i);
+                jTextArea1.setText(address.getSpecificAddress() + ", " + address.getWard().getWardPrefix() + " " + address.getWard().getWardName() + ", " + address.getWard().getDistrict().getDistrictPrefix() + " " + address.getWard().getDistrict().getDistrictName() + ", " + address.getWard().getDistrict().getProvince().getProvinceName());
             }
         }
-        return str;
     }
-
-//    private void getId(){
-//        Connection con = Connect.GetConnect();
-//
-//        try {
-//            PreparedStatement ps = con.prepareStatement("SELECT count(c.category_id) FROM category c");
-//            ResultSet rs = ps.executeQuery();
-//            
-//            while (rs.next()) {
-//                String id = rs.getString(1);
-//                id = String.valueOf(Integer.parseInt(id) + 1);
-//                jTextField_ID.setText(id);
-//            }
-//            
-//            rs.close();
-//            ps.close();
-//            con.close();
-//        } catch (SQLException ex) {
-//            System.out.println("Lỗi lấy dữ liệu");
-//        }
-//    }
-//    private int newCategory(String name, String note){
-//        String sql = "INSERT INTO category(category, note) VALUES (?, ?)";
-//        Connection con = Connect.GetConnect();
-//        try {
-//            PreparedStatement ps = con.prepareStatement(sql);
-//            ps.setString(1, name);
-//            ps.setString(2, note);
-//            ps.executeUpdate();
-//            ps.close();
-//            con.close();
-//        } catch (SQLException ex) {
-//            System.out.println("Lỗi thêm mới thể loại!");
-//            return 0;
-//        }
-//        return 1;
-//    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel1;
@@ -202,8 +207,11 @@ public class AddressDialog extends javax.swing.JDialog {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel3;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTextArea jTextArea1;
     private javax.swing.JTextField jTextField_Address;
     private javax.swing.JTextField jTextField_Address1;
     private javax.swing.JTextField jTextField_Address2;

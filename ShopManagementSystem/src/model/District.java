@@ -69,4 +69,9 @@ public class District {
         this.wards = wards;
     }
 
+    @Override
+    public String toString() {
+        return districtName; // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/OverriddenMethodBody
+    }
+
 }

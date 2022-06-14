@@ -69,4 +69,9 @@ public class Ward {
         this.addresses = addresses;
     }
 
+    @Override
+    public String toString() {
+        return wardName; // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/OverriddenMethodBody
+    }
+
 }

@@ -5,9 +5,14 @@
  */
 package view.profile;
 
+import controller.UserController;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import model.Password;
+import model.Response;
+import model.UserDB;
+import org.mindrot.bcrypt.BCrypt;
 
 /**
  *
@@ -18,6 +23,8 @@ public class PasswordChangeDialog extends javax.swing.JDialog {
     private boolean showPassOld = false;
     private boolean showPassNew = false;
     private boolean showPassVerify = false;
+    private UserDB user;
+    private UserController uc;
 
     /**
      * Creates new form PasswordChangeDialog
@@ -26,10 +33,12 @@ public class PasswordChangeDialog extends javax.swing.JDialog {
      * @param modal
      * @param parentPanel
      */
-    public PasswordChangeDialog(java.awt.Frame parent, boolean modal, JPanel parentPanel) {
+    public PasswordChangeDialog(java.awt.Frame parent, boolean modal, UserDB user, JPanel parentPanel) {
         super(parent, modal);
         initComponents();
         setLocationRelativeTo(null);
+        uc = new UserController();
+        this.user = user;
     }
 
     /**
@@ -214,6 +223,14 @@ public class PasswordChangeDialog extends javax.swing.JDialog {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    public static String hash(String password) {
+        return BCrypt.hashpw(password, BCrypt.gensalt(12));
+    }
+
+    public static boolean verifyHash(String password, String hash) {
+        return BCrypt.checkpw(password, hash);
+    }
+
     private void jButton_CancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_CancelActionPerformed
         // TODO add your handling code here:
         this.dispose();
@@ -267,58 +284,21 @@ public class PasswordChangeDialog extends javax.swing.JDialog {
             JOptionPane.showMessageDialog(null, "Không được để trống password. Vui lòng nhập lại!", "Thông báo", JOptionPane.ERROR_MESSAGE);
             return;
         }
-//        String passwordConfirm = getPassword(view.login.LoginFrame.username);
-//        if(!verifyHash(pwdOld, passwordConfirm)){
-//            JOptionPane.showMessageDialog(null, "Sai mật khẩu. Vui lòng nhập lại!", "Thông báo", JOptionPane.ERROR_MESSAGE);
-//             return;
-//        }
+        String passwordConfirm = user.getPassword();
+        if (!verifyHash(pwdOld, passwordConfirm)) {
+            JOptionPane.showMessageDialog(null, "Sai mật khẩu. Vui lòng nhập lại!", "Thông báo", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
         if (!pwdNew.equals(pwdVerify)) {
             JOptionPane.showMessageDialog(null, "Mật khẩu mới và mật khẩu xác nhận không trùng nhau. Vui lòng nhập lại!", "Thông báo", JOptionPane.ERROR_MESSAGE);
             return;
         }
 
-//        Connection ketNoi =Connect.GetConnect();
-//        String sql = "update account\n" +
-//                        "SET password = ?\n" +
-//                        "where username = ?";
-//
-//                PreparedStatement ps;
-//              try {
-//                  ps = ketNoi.prepareStatement(sql);
-//                  ps.setString(1, hash(pwdNew));
-//                  ps.setString(2, view.login.LoginFrame.username);
-//                  ps.executeUpdate();
-//              } catch (SQLException ex) {
-//                  Logger.getLogger(ReaderPanel.class.getName()).log(Level.SEVERE, null, ex);
-//              }
-        JOptionPane.showMessageDialog(null, "Đổi mật khẩu thành công!");
-        this.dispose();
+        Password pass = new Password(user.getId(), pwdOld, pwdNew);
+        Response res = uc.updatePassword(pass);
+        JOptionPane.showMessageDialog(null, res.getMessage());
     }//GEN-LAST:event_jButton_UpdateActionPerformed
-//     public static String hash(String password) {
-//        return BCrypt.hashpw(password, BCrypt.gensalt(12));
-//    }
 
-//    public static boolean verifyHash(String password, String hash) {
-//        return BCrypt.checkpw(password, hash);
-//    }
-//    String getPassword(String username){
-//      
-//        Connection ketNoi= Connect.GetConnect();
-//        try {
-//            PreparedStatement ps=ketNoi.prepareStatement("select password from account where username = ?");
-//            ps.setString(1, username);
-//            ResultSet rs=ps.executeQuery();
-//            while(rs.next()){
-//                return rs.getString(1);
-//            }
-//            ps.close();
-//            rs.close();
-//            ketNoi.close();
-//        } catch (SQLException ex) {
-//            System.out.println("loi lay phone and email");
-//        }
-//        return "";
-//    }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton_Cancel;
     private javax.swing.JButton jButton_Update;

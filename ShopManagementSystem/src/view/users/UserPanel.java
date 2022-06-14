@@ -5,17 +5,23 @@
  */
 package view.users;
 
+import controller.AddressController;
 import controller.UserController;
 import java.awt.Image;
-import java.util.Enumeration;
-import javax.swing.AbstractButton;
-import javax.swing.ButtonGroup;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.RowFilter;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
+import model.Address;
+import model.Province;
+import model.Response;
 import model.User;
 import output.UserOutput;
 
@@ -25,10 +31,13 @@ import output.UserOutput;
  */
 public class UserPanel extends javax.swing.JPanel {
 
+//    private boolean isSelected = false;
     private DefaultTableModel dtm;
     private UserController uc;
+    private AddressController ac;
     private UserOutput output;
     private String imageName;
+    private Map<Integer, User> listUser;
 
     private AddressDialog addressDialog;
     private UserDeletedDialog userDeletedDialog;
@@ -40,8 +49,10 @@ public class UserPanel extends javax.swing.JPanel {
         initComponents();
         dtm = (DefaultTableModel) jTable_User.getModel();
         uc = new UserController();
-        setEditableForAll(false);
+        ac = new AddressController();
         loadData(1);
+        loadProvince();
+//        jButton_Remove.setEnabled(false);
     }
 
     /**
@@ -78,9 +89,7 @@ public class UserPanel extends javax.swing.JPanel {
         jTable_User = new javax.swing.JTable();
         jButton_ExportExcel = new javax.swing.JButton();
         jLabel19 = new javax.swing.JLabel();
-        jLabel20 = new javax.swing.JLabel();
         jLabel21 = new javax.swing.JLabel();
-        jComboBox_Name = new javax.swing.JComboBox<>();
         jComboBox_Address = new javax.swing.JComboBox<>();
         jButton_Deleted = new javax.swing.JButton();
         jButton_Remove = new javax.swing.JButton();
@@ -158,38 +167,41 @@ public class UserPanel extends javax.swing.JPanel {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel1)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel3)
-                            .addComponent(jLabel2)
-                            .addComponent(jLabel7))
+                            .addComponent(jLabel1)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel3)
+                                    .addComponent(jLabel2))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jTextField_ID, javax.swing.GroupLayout.PREFERRED_SIZE, 172, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jTextField_Username, javax.swing.GroupLayout.PREFERRED_SIZE, 172, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addComponent(jTextField_LastName, javax.swing.GroupLayout.PREFERRED_SIZE, 172, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(jTextField_FirstName, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addGap(107, 107, 107)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel10)
+                                    .addComponent(jLabel8)
+                                    .addComponent(jLabel11))))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jTextField_NumOfOrders, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jTextField_Email, javax.swing.GroupLayout.DEFAULT_SIZE, 300, Short.MAX_VALUE)
+                            .addComponent(jTextField_Phone))
+                        .addGap(0, 182, Short.MAX_VALUE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jLabel7)
+                        .addGap(25, 25, 25)
+                        .addComponent(jTextField_Address)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jTextField_ID, javax.swing.GroupLayout.PREFERRED_SIZE, 172, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jTextField_Username, javax.swing.GroupLayout.PREFERRED_SIZE, 172, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jTextField_LastName, javax.swing.GroupLayout.PREFERRED_SIZE, 172, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jTextField_FirstName, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jTextField_Address, javax.swing.GroupLayout.PREFERRED_SIZE, 248, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jButton_Detail, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(109, 109, 109)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel10)
-                            .addComponent(jLabel8)
-                            .addComponent(jLabel11))))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jTextField_NumOfOrders, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextField_Email, javax.swing.GroupLayout.DEFAULT_SIZE, 300, Short.MAX_VALUE)
-                    .addComponent(jTextField_Phone))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel18)
-                .addGap(18, 18, 18)
+                            .addComponent(jLabel18)
+                            .addComponent(jButton_Detail, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addComponent(jLabel_Image, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
@@ -222,8 +234,8 @@ public class UserPanel extends javax.swing.JPanel {
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jButton_Detail, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                .addComponent(jLabel7)
-                                .addComponent(jTextField_Address, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                .addComponent(jTextField_Address, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jLabel7))))
                     .addComponent(jLabel_Image, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(10, 10, 10))
         );
@@ -243,20 +255,15 @@ public class UserPanel extends javax.swing.JPanel {
 
             },
             new String [] {
-                "ID", "Username", "Last name", "First name", "Email", "Phone"
+                "ID", "Username", "Last name", "First name", "Email", "Phone", "Province"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false
+                false, false, false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];
-            }
-        });
-        jTable_User.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusLost(java.awt.event.FocusEvent evt) {
-                jTable_UserFocusLost(evt);
             }
         });
         jTable_User.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -278,25 +285,13 @@ public class UserPanel extends javax.swing.JPanel {
         jLabel19.setFont(new java.awt.Font("Segoe UI", 0, 15)); // NOI18N
         jLabel19.setText("Filter:");
 
-        jLabel20.setFont(new java.awt.Font("Segoe UI", 0, 15)); // NOI18N
-        jLabel20.setText("Name");
-
         jLabel21.setFont(new java.awt.Font("Segoe UI", 0, 15)); // NOI18N
         jLabel21.setText("Address");
 
-        jComboBox_Name.setEditable(true);
-        jComboBox_Name.setFont(new java.awt.Font("Segoe UI", 0, 15)); // NOI18N
-        jComboBox_Name.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jComboBox_NameActionPerformed(evt);
-            }
-        });
-
-        jComboBox_Address.setEditable(true);
         jComboBox_Address.setFont(new java.awt.Font("Segoe UI", 0, 15)); // NOI18N
-        jComboBox_Address.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jComboBox_AddressActionPerformed(evt);
+        jComboBox_Address.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                jComboBox_AddressItemStateChanged(evt);
             }
         });
 
@@ -317,9 +312,13 @@ public class UserPanel extends javax.swing.JPanel {
         jButton_Remove.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/trash.png"))); // NOI18N
         jButton_Remove.setText("Remove");
         jButton_Remove.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        jButton_Remove.setEnabled(false);
         jButton_Remove.setMaximumSize(new java.awt.Dimension(123, 35));
         jButton_Remove.setMinimumSize(new java.awt.Dimension(95, 30));
+        jButton_Remove.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton_RemoveActionPerformed(evt);
+            }
+        });
 
         jButton_PreviousPage.setFont(new java.awt.Font("Segoe UI", 1, 15)); // NOI18N
         jButton_PreviousPage.setText("<");
@@ -352,23 +351,19 @@ public class UserPanel extends javax.swing.JPanel {
                     .addComponent(jScrollPane1)
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                         .addComponent(jLabel19)
-                        .addGap(18, 18, 18)
-                        .addComponent(jLabel20)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jComboBox_Name, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jLabel21)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jComboBox_Address, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 24, Short.MAX_VALUE)
+                        .addComponent(jComboBox_Address, javax.swing.GroupLayout.PREFERRED_SIZE, 247, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, Short.MAX_VALUE)
                         .addComponent(jLabel14)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jTextField_Search, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
+                        .addComponent(jTextField_Search, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jButton_PreviousPage)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 14, Short.MAX_VALUE)
+                        .addGap(18, 18, 18)
                         .addComponent(jLabel_Page, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGap(18, 18, 18)
                         .addComponent(jButton_NextPage)
                         .addGap(18, 18, 18)
                         .addComponent(jButton_ExportExcel)
@@ -397,15 +392,21 @@ public class UserPanel extends javax.swing.JPanel {
                         .addComponent(jTextField_Search, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(jLabel14)
                         .addComponent(jLabel19)
-                        .addComponent(jLabel20)
                         .addComponent(jLabel21)
-                        .addComponent(jComboBox_Name, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(jComboBox_Address, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 422, Short.MAX_VALUE)
                 .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
+
+    public void loadProvince() {
+        List<Province> list = ac.getAllProvince();
+        jComboBox_Address.addItem(new Province("All"));
+        for (Province p : list) {
+            jComboBox_Address.addItem(p);
+        }
+    }
 
     private void loadData(int page) {
         output = uc.getUserInOnePage(page);
@@ -417,291 +418,32 @@ public class UserPanel extends javax.swing.JPanel {
         if (output.getPage() == output.getTotalPage()) {
             jButton_NextPage.setEnabled(false);
         }
+        listUser = output.getListResult().stream().collect(Collectors.toMap(User::getId, Function.identity()));
     }
-
-    public void clearAll() {
-//        jRadioButton_Male.setSelected(true);
-//        jDateChooser_DateOfBirth.setDate(null);
-//        jTextField_Name.setText("");
-//        jTextField_PhoneNumber.setText("");
-//        jTextField_Email.setText("");
-//        jTextField_ID.setText("");
-//        jComboBox_Province.setSelectedIndex(0);
-//        jComboBox_District.setSelectedIndex(0);
-//        jComboBox_Commune.setSelectedIndex(0);
-//        jComboBox_Role.setSelectedIndex(0);
-    }
-
-    public void setEditableForAll(boolean editable) {
-//        jDateChooser_DateOfBirth.setEnabled(editable);
-//        jTextField_Name.setEditable(editable);
-//        jTextField_PhoneNumber.setEditable(editable);
-//        jTextField_Email.setEditable(editable);
-//        jComboBox_Province.setEnabled(editable);
-//        jComboBox_District.setEnabled(editable);
-//        jComboBox_Commune.setEnabled(editable);
-//        jComboBox_Role.setEnabled(editable);
-    }
-
-//    private boolean checkinput() {
-//        String id = jTextField_ID.getText();
-//        String sqlId = "select * from account where username = '" + id + "'";
-//        String sqlEmail = "select * from account where email = '" + jTextField_Email.getText() + "'";
-//        String sqlPhone = "select * from account where phone_number = '" + jTextField_PhoneNumber.getText() + "'";
-//        if ("".equals(id)) {
-//            JOptionPane.showMessageDialog(this, "Mã nhân viên không được trống!!", "Warning", JOptionPane.WARNING_MESSAGE);
-//            jTextField_ID.requestFocusInWindow();
-//            return false;
-//        } else if (checkExist(sqlId) != 0) {
-//            JOptionPane.showMessageDialog(this, "Mã nhân viên đã tồn tại!!", "Warning", JOptionPane.WARNING_MESSAGE);
-//            jTextField_ID.requestFocusInWindow();
-//            return false;
-//        } else if ("".equals(jTextField_Name.getText())) {
-//            JOptionPane.showMessageDialog(this, "Tên nhân viên không được trống!!", "Warning", JOptionPane.WARNING_MESSAGE);
-//            jTextField_Name.requestFocusInWindow();
-//            return false;
-//        } else if ("".equals(jTextField_PhoneNumber.getText())) {
-//            JOptionPane.showMessageDialog(this, "SĐT nhân viên không được trống!!", "Warning", JOptionPane.WARNING_MESSAGE);
-//            jTextField_PhoneNumber.requestFocusInWindow();
-//            return false;
-//        } else if (!jTextField_PhoneNumber.getText().matches("0[0-9]{9}")) {
-//            JOptionPane.showMessageDialog(this, "SĐT nhân viên nhập chưa đúng định dạng!!", "Warning", JOptionPane.WARNING_MESSAGE);
-//            jTextField_PhoneNumber.requestFocusInWindow();
-//            return false;
-//        } else if (checkExist(sqlPhone) != 0) {
-//            JOptionPane.showMessageDialog(this, "SĐT nhân viên đã được sử dụng!!", "Warning", JOptionPane.WARNING_MESSAGE);
-//            jTextField_ID.requestFocusInWindow();
-//            return false;
-//        } else if ("".equals(jTextField_Email.getText())) {
-//            JOptionPane.showMessageDialog(this, "Email nhân viên không được trống!!", "Warning", JOptionPane.WARNING_MESSAGE);
-//            jTextField_Email.requestFocusInWindow();
-//            return false;
-//        } else if (!jTextField_Email.getText().matches("^[a-zA-Z][\\w]+@([\\w]+\\.[\\w]+|[\\w]+\\.[\\w]{2,}\\.[\\w]{2,})$")) {
-//            JOptionPane.showMessageDialog(this, "Email nhân viên nhập chưa đúng định dạng!!", "Warning", JOptionPane.WARNING_MESSAGE);
-//            jTextField_Email.requestFocusInWindow();
-//            return false;
-//        } else if (checkExist(sqlEmail) != 0) {
-//            JOptionPane.showMessageDialog(this, "Email nhân viên đã được sử dụng!!", "Warning", JOptionPane.WARNING_MESSAGE);
-//            jTextField_ID.requestFocusInWindow();
-//            return false;
-//        } else if ("".equals(jTextField_Address.getText())) {
-//            JOptionPane.showMessageDialog(this, "Adress nhân viên không được trống!!", "Warning", JOptionPane.WARNING_MESSAGE);
-//            jTextField_Address.requestFocusInWindow();
-//            return false;
-//        } else {
-//            return true;
-//        }
-//    }
-//    public int checkExist(String sql) {
-//        Connection ketNoi = Connect.GetConnect();
-//        int tonTai = 0;
-//        try {
-//            PreparedStatement ps = ketNoi.prepareStatement(sql);
-//            ResultSet rs = ps.executeQuery();
-//            while (rs.next()) {
-//                tonTai = 1;
-//            }
-//        } catch (SQLException ex) {
-//            Logger.getLogger(UserPanel.class.getName()).log(Level.SEVERE, null, ex);
-//        }
-//        return tonTai;
-//    }
-    // check ward_id và specific_address , nếu trùng thì không cần thêm.
-//    private int getAddress_idBySpecific_address(int ward_id, String specific_address) {
-//        int id = -1;
-//        Connection ketNoi = Connect.GetConnect();
-//        String sql = "select * from address WHERE specific_address ='" + specific_address + "' and ward_id = '" + ward_id + "'";
-//        try {
-//            PreparedStatement ps = ketNoi.prepareStatement(sql);
-//            ResultSet rs = ps.executeQuery();
-//            while (rs.next()) {
-//                id = rs.getInt("address_id");
-//
-//            }
-//        } catch (SQLException ex) {
-//            Logger.getLogger(UserPanel.class
-//                    .getName()).log(Level.SEVERE, null, ex);
-//        }
-//        return id;
-//    }
-    // nếu không trùng thì thêm specific_address
-//    private void insertNewAddress(int ward_id, String specific_address) {
-//        Connection ketNoi = Connect.GetConnect();
-//        String sql = "insert into address(ward_id,specific_address) values(?,?)";
-//        try {
-//            PreparedStatement ps = ketNoi.prepareStatement(sql);
-//            ps.setInt(1, ward_id);
-//            ps.setString(2, specific_address);
-//            ps.executeUpdate();
-//
-//        } catch (SQLException ex) {
-//            Logger.getLogger(UserPanel.class
-//                    .getName()).log(Level.SEVERE, null, ex);
-//        }
-//    }
-    //ok
-//    public boolean insertAccount(Staff s) {
-//        Connection ketNoi = Connect.GetConnect();
-//        String sql = "INSERT INTO account (username, password , Full_Name, gender,date_of_birth,registered_date,address_id,phone_number,email,role_id,status)\n"
-//                + "VALUES (?,?, ?, ?,?,?,?,?,?,?,?)";
-//        PreparedStatement ps;
-//        try {
-//            ps = ketNoi.prepareStatement(sql);
-//            ps.setString(1, s.getUsername());
-//            ps.setString(2, s.getPassword());
-//            ps.setString(3, s.getFullName());
-//            ps.setString(4, s.getGender());
-//            ps.setString(5, s.getDateOfBirth());
-//            ps.setString(6, s.getRegisteredDate());
-//            ps.setInt(7, s.getAddress_id());
-//            ps.setString(8, s.getPhoneNumber());
-//            ps.setString(9, s.getEmail());
-//            ps.setInt(10, s.getRoleId());
-//            ps.setInt(11, s.getStatus());
-//            return ps.executeUpdate() > 0;
-//
-//        } catch (SQLException ex) {
-//            Logger.getLogger(ReaderPanel.class
-//                    .getName()).log(Level.SEVERE, null, ex);
-//        }
-//        return false;
-//    }
-    //
-//    int getIdWard(String nameWard, String nameDistrict, String nameProvince) {
-//        int i = 0;
-//        Connection ketNoi = Connect.GetConnect();
-//        try {
-//            PreparedStatement ps = ketNoi.prepareStatement("select ward.ward_id from ward where ward.ward_name = ? and ward.district_id = ?");
-//            ps.setString(1, nameWard);
-//            ps.setInt(2, getIdDistrict(nameDistrict, nameProvince));
-//            ResultSet rs = ps.executeQuery();
-//            while (rs.next()) {
-//                i = rs.getInt(1);
-//            }
-//            ps.close();
-//            rs.close();
-//            ketNoi.close();
-//        } catch (SQLException ex) {
-//        }
-//        return i;
-//    }
-    public String getSelectedButtonText(ButtonGroup buttonGroup) {
-        for (Enumeration<AbstractButton> buttons = buttonGroup.getElements(); buttons.hasMoreElements();) {
-            AbstractButton button = buttons.nextElement();
-            if (button.isSelected()) {
-                return button.getText();
-            }
-        }
-        return null;
-    }
-
-//    public boolean updateAccount(String username, String Full_Name, String gender, String date_of_birth, int address_id, String phone_number, String email, int roleId) {
-//        Connection ketNoi = Connect.GetConnect();
-//        String sql = "update account\n"
-//                + "set Full_Name= ?, gender = ?, date_of_birth = ?,address_id = ?, phone_number= ?, email= ? , role_id = ?\n"
-//                + "WHERE username = ?";
-//        PreparedStatement ps;
-//        try {
-//            ps = ketNoi.prepareStatement(sql);
-//            ps.setString(1, Full_Name);
-//            ps.setString(2, gender);
-//            ps.setString(3, date_of_birth);
-//            ps.setInt(4, address_id);
-//            ps.setString(5, phone_number);
-//            ps.setString(6, email);
-//            ps.setInt(7, roleId);
-//            ps.setString(8, username);
-//            ps.executeUpdate();
-//            return true;
-//        } catch (SQLException ex) {
-//            Logger.getLogger(ReaderPanel.class
-//                    .getName()).log(Level.SEVERE, null, ex);
-//        }
-//        return false;
-//    }
-    // status 0 => 1
-//    public void xoaNhanVien(String maNV) {
-//        String sql = "update account set status = 0 where username =  ? ";
-//        Connection con = Connect.GetConnect();
-//        try {
-//            PreparedStatement ps = con.prepareStatement(sql);
-//            ps.setString(1, maNV);
-//            ps.executeUpdate();
-//            ps.close();
-//            con.close();
-//
-//        } catch (SQLException ex) {
-//            Logger.getLogger(UserPanel.class
-//                    .getName()).log(Level.SEVERE, null, ex);
-//        }
-//    }
-//    int getIdProvince(String nameProvince) {
-//        int i = 0;
-//        Connection ketNoi = Connect.GetConnect();
-//        try {
-//            PreparedStatement ps = ketNoi.prepareStatement("select province.province_id from province where province.province_name = ?");
-//            ps.setString(1, nameProvince);
-//            ResultSet rs = ps.executeQuery();
-//            while (rs.next()) {
-//                i = rs.getInt(1);
-//            }
-//            ps.close();
-//            rs.close();
-//            ketNoi.close();
-//        } catch (SQLException ex) {
-//            System.out.println("Lỗi lấy IdProvince!!");
-//        }
-//        return i;
-//    }
-//    int getIdRole(String role) {
-//        int i = 0;
-//        Connection ketNoi = Connect.GetConnect();
-//        try {
-//            PreparedStatement ps = ketNoi.prepareStatement("select role.role_id from role where role.role = ?");
-//            ps.setString(1, role);
-//            ResultSet rs = ps.executeQuery();
-//            while (rs.next()) {
-//                i = rs.getInt(1);
-//            }
-//            ps.close();
-//            rs.close();
-//            ketNoi.close();
-//        } catch (SQLException ex) {
-//            System.out.println("Lỗi lấy role_id");
-//        }
-//        return i;
-//    }
-//    int getIdDistrict(String nameDistrict, String nameProvince) {
-//        int i = 0;
-//        Connection ketNoi = Connect.GetConnect();
-//        try {
-//            PreparedStatement ps = ketNoi.prepareStatement("select district.district_id from district where district.district_name = ? and district.province_id = ?");
-//            ps.setString(1, nameDistrict);
-//            ps.setInt(2, getIdProvince(nameProvince));
-//            ResultSet rs = ps.executeQuery();
-//            while (rs.next()) {
-//                i = rs.getInt(1);
-//            }
-//            ps.close();
-//            rs.close();
-//            ketNoi.close();
-//        } catch (SQLException ex) {
-//            System.out.println("Lỗi lấy district_id!!");
-//        }
-//        return i;
-//    }
 
     private void jTable_UserMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable_UserMouseClicked
         // TODO add your handling code here:
-        int selectedRow = jTable_User.convertRowIndexToModel(jTable_User.getSelectedRow());
+        int selectedRow = jTable_User.getSelectedRow();
+        if (selectedRow == -1) {
+            return;
+        }
+        int id = Integer.parseInt(jTable_User.getValueAt(selectedRow, 0).toString());
+        User u = listUser.get(id);
 
-        User u = uc.getUserById(dtm.getValueAt(selectedRow, 0).toString());
         jTextField_ID.setText(u.getId() + "");
         jTextField_Username.setText(u.getUsername());
-        jTextField_LastName.setText(u.getFirstName());
-        jTextField_FirstName.setText(u.getLastName());
+        jTextField_LastName.setText(u.getLastName());
+        jTextField_FirstName.setText(u.getFirstName());
         jTextField_Email.setText(u.getEmail());
         jTextField_Phone.setText(u.getPhone());
+        jTextField_NumOfOrders.setText(u.getNumord() + "");
+        Address address;
+        if (u.getAddresses().isEmpty()) {
+            jTextField_Address.setText("");
+        } else {
+            address = u.getAddresses().get(0);
+            jTextField_Address.setText(address.getSpecificAddress() + ", " + address.getWard().getWardPrefix() + " " + address.getWard().getWardName() + ", " + address.getWard().getDistrict().getDistrictPrefix() + " " + address.getWard().getDistrict().getDistrictName() + ", " + address.getWard().getDistrict().getProvince().getProvinceName());
+        }
 
         imageName = u.getImage();
         Image img = uc.getImage(imageName);
@@ -709,6 +451,7 @@ public class UserPanel extends javax.swing.JPanel {
         ImageIcon icon = new ImageIcon(newImg);
         jLabel_Image.setIcon(icon);
 
+//        isSelected = true;
         jButton_Remove.setEnabled(true);
     }//GEN-LAST:event_jTable_UserMouseClicked
 
@@ -717,7 +460,7 @@ public class UserPanel extends javax.swing.JPanel {
         String tuKhoa = jTextField_Search.getText().toLowerCase();
         TableRowSorter<TableModel> trs = new TableRowSorter<>(jTable_User.getModel());
         jTable_User.setRowSorter(trs);
-        trs.setRowFilter(RowFilter.regexFilter("(?i)" + tuKhoa, 1));
+        trs.setRowFilter(RowFilter.regexFilter("(?i)" + tuKhoa));
     }//GEN-LAST:event_jTextField_SearchCaretUpdate
 
     private void jButton_ExportExcelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_ExportExcelActionPerformed
@@ -725,14 +468,6 @@ public class UserPanel extends javax.swing.JPanel {
 //        File.xuatFileExcel("DSNhanVien", (DefaultTableModel) jTable_Staff.getModel(), "NhanVien");
         JOptionPane.showMessageDialog(this, "Xuất file excel thành công!");
     }//GEN-LAST:event_jButton_ExportExcelActionPerformed
-
-    private void jComboBox_NameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox_NameActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jComboBox_NameActionPerformed
-
-    private void jComboBox_AddressActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox_AddressActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jComboBox_AddressActionPerformed
 
     private void jButton_DeletedActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_DeletedActionPerformed
         // TODO add your handling code here:
@@ -742,8 +477,12 @@ public class UserPanel extends javax.swing.JPanel {
 
     private void jButton_DetailActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_DetailActionPerformed
         // TODO add your handling code here:
-        this.addressDialog = new AddressDialog(null, true, this);
-        this.addressDialog.setVisible(true);
+        if (!jTextField_ID.getText().equals("")) {
+            List<Address> listAddress = new ArrayList<>();
+            listAddress = listUser.get(Integer.valueOf(jTextField_ID.getText())).getAddresses();
+            this.addressDialog = new AddressDialog(null, true, listAddress, this);
+            this.addressDialog.setVisible(true);
+        }
     }//GEN-LAST:event_jButton_DetailActionPerformed
 
     private void jButton_PreviousPageActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_PreviousPageActionPerformed
@@ -768,59 +507,39 @@ public class UserPanel extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_jButton_NextPageActionPerformed
 
-    private void jTable_UserFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTable_UserFocusLost
+    private void jComboBox_AddressItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jComboBox_AddressItemStateChanged
         // TODO add your handling code here:
-        jButton_Remove.setEnabled(false);
-    }//GEN-LAST:event_jTable_UserFocusLost
+        if (jComboBox_Address.getSelectedItem() == null) {
+            return;
+        }
+        String provinceName = ((Province) jComboBox_Address.getSelectedItem()).getProvinceName();
+        TableRowSorter<TableModel> trs = new TableRowSorter<>(jTable_User.getModel());
+        jTable_User.setRowSorter(trs);
+        if ("All".equals(jComboBox_Address.getSelectedItem().toString())) {
+            return;
+        }
+        trs.setRowFilter(RowFilter.regexFilter("(?i)" + provinceName, 6));
+    }//GEN-LAST:event_jComboBox_AddressItemStateChanged
 
-//    List<Integer> getIdDistrictAndIdProvince(String username) {
-//        int i = 0;
-//        int j = 0;
-//        int x = 0;
-//        List<Integer> list = new ArrayList<Integer>();
-//        Connection ketNoi = Connect.GetConnect();
-//        try {
-//            PreparedStatement ps = ketNoi.prepareStatement("select ward.ward_id,district.district_id,province.province_id from ward,district,province,address\n"
-//                    + "where ward.district_id = district.district_id\n"
-//                    + "and district.province_id = province.province_id\n"
-//                    + "and ward.ward_id = address.ward_id\n"
-//                    + "and address.address_id = ?");
-//            ps.setInt(1, getIdAddressByUserName(username));
-//            ResultSet rs = ps.executeQuery();
-//            while (rs.next()) {
-//                i = rs.getInt(1);
-//                j = rs.getInt(2);
-//                x = rs.getInt(3);
-//            }
-//            ps.close();
-//            rs.close();
-//            ketNoi.close();
-//        } catch (SQLException ex) {
-//            System.out.println("Lỗi lấy getIdDistrictAndIdProvince");
-//        }
-//        list.add(i);
-//        list.add(j);
-//        list.add(x);
-//        return list;
-//    }
-//    int getIdAddressByUserName(String username) {
-//        int i = 0;
-//        Connection ketNoi = Connect.GetConnect();
-//        try {
-//            PreparedStatement ps = ketNoi.prepareStatement("select account.address_id from account where account.username = ?");
-//            ps.setString(1, username);
-//            ResultSet rs = ps.executeQuery();
-//            while (rs.next()) {
-//                i = rs.getInt(1);
-//            }
-//            ps.close();
-//            rs.close();
-//            ketNoi.close();
-//        } catch (SQLException ex) {
-//            System.out.println("Lỗi lấy address_id từ username!!");
-//        }
-//        return i;
-//    }
+    private void jButton_RemoveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_RemoveActionPerformed
+        // TODO add your handling code here:
+        int selectedRow = jTable_User.getSelectedRow();
+        int id = Integer.parseInt(jTable_User.getValueAt(selectedRow, 0).toString());
+        User u = listUser.get(id);
+        int luaChon = JOptionPane.showConfirmDialog(this, "Are you sure you want to remove this user?", "OK", 0);
+        if (luaChon == JOptionPane.CANCEL_OPTION) {
+            return;
+        } else if (luaChon == JOptionPane.OK_OPTION) {
+            Response response = uc.updateStatusByID(u);
+            JOptionPane.showMessageDialog(this, response.getMessage());
+            if (response.getResponseCode() == 200) {
+                loadData(output.getPage());
+                jButton_Remove.setEnabled(false);
+            } else {
+                return;
+            }
+        }
+    }//GEN-LAST:event_jButton_RemoveActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton_Deleted;
@@ -829,8 +548,7 @@ public class UserPanel extends javax.swing.JPanel {
     private javax.swing.JButton jButton_NextPage;
     private javax.swing.JButton jButton_PreviousPage;
     private javax.swing.JButton jButton_Remove;
-    private javax.swing.JComboBox<String> jComboBox_Address;
-    private javax.swing.JComboBox<String> jComboBox_Name;
+    private javax.swing.JComboBox<Province> jComboBox_Address;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -838,7 +556,6 @@ public class UserPanel extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel18;
     private javax.swing.JLabel jLabel19;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel20;
     private javax.swing.JLabel jLabel21;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel7;

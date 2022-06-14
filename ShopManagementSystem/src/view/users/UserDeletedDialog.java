@@ -5,20 +5,19 @@
  */
 package view.users;
 
-import java.awt.Font;
-import java.time.format.DateTimeFormatter;
-import javax.swing.JTable;
-import javax.swing.table.DefaultTableCellRenderer;
+import controller.UserController;
+import java.util.ArrayList;
+import java.util.List;
+import javax.swing.table.DefaultTableModel;
+import model.User;
+import output.UserOutput;
 
 public class UserDeletedDialog extends javax.swing.JDialog {
 
-//    private final static ImportHistoryFileManagement importHistory
-//            = new ImportHistoryFileManagement();
-//    private ArrayList<ImportHistory> histories = new ArrayList<>();
-    private static final DateTimeFormatter DATE_TIME_FORMATTER
-            = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
-//    private IngredientList ingredientList;
-//    private ProviderList providerList;
+    private List<User> listUserDeleted = new ArrayList<>();
+    private DefaultTableModel dtm;
+    private UserController uc;
+    private UserOutput output;
 
     /**
      * Creates new form ImportHistoryDialog
@@ -28,52 +27,13 @@ public class UserDeletedDialog extends javax.swing.JDialog {
      */
     public UserDeletedDialog(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
-//        loadDataFromFiles();
         initComponents();
+        dtm = (DefaultTableModel) jTable_Deleted.getModel();
+        uc = new UserController();
         setLocationRelativeTo(null);
-        setTableHeader(jTable_Deleted);
-//        this.getContentPane().setBackground(Color.WHITE);
+        loadData(1);
     }
 
-//    public void setIngredientList(IngredientList ingredientList) {
-//        this.ingredientList = ingredientList;
-//    }
-//    public void setProviderList(ProviderList providerList) {
-//        this.providerList = providerList;
-//    }
-//    private void loadDataFromFiles() {
-//        histories = importHistory.readImportHistoriesByDate(LocalDate.now());
-//    }
-    private static void setTableHeader(JTable table) {
-        DefaultTableCellRenderer defaultTableCellRenderer;
-        table.setRowHeight(30);
-        defaultTableCellRenderer = (DefaultTableCellRenderer) table.getTableHeader().getDefaultRenderer();
-        defaultTableCellRenderer.setHorizontalAlignment(0);
-        table.getTableHeader().setFont(new Font("Segoe UI", 1, 15));
-        table.setFont(new java.awt.Font("Segoe UI", 0, 15));
-//        UIControl.setColumnWidth(table, 1, 260);
-//        UIControl.setColumnWidth(table, 3, 70);
-//        UIControl.setColumnWidth(table, 4, 75);
-//        UIControl.setCurrencyCellRenderer(table, new int[]{5});
-    }
-
-//    public void addRowsToHistoryTable(IngredientList list) {
-//        DefaultTableModel tableModel = (DefaultTableModel) jTable_History.getModel();
-//        tableModel.setRowCount(0);
-//        int IDIngredient;
-//        for (ImportHistory history: histories) {
-//            IDIngredient = history.getIngredientID();
-//            Ingredient ingredient = list.getByID(IDIngredient);
-//            tableModel.addRow(new Object[]{
-//                ingredient.getName(),
-//                providerList.getByID(ingredient.getProviderID()).getName(),
-//                history.getDatetime().format(DATE_TIME_FORMATTER),
-//                history.getQuantities(),
-//                ingredient.getUnit().toString(),
-//                history.getTotalAmount()
-//            });
-//        }
-//    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -86,6 +46,9 @@ public class UserDeletedDialog extends javax.swing.JDialog {
         jLabel_ImportHistory = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable_Deleted = new javax.swing.JTable();
+        jButton_PreviousPage = new javax.swing.JButton();
+        jLabel_Page = new javax.swing.JLabel();
+        jButton_NextPage = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -98,11 +61,11 @@ public class UserDeletedDialog extends javax.swing.JDialog {
 
             },
             new String [] {
-                "ID", "Username", "First name", "Last name", "Email", "Phone"
+                "ID", "Username", "Last name", "First name", "Email", "Phone", "Address"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false
+                false, false, false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -110,6 +73,26 @@ public class UserDeletedDialog extends javax.swing.JDialog {
             }
         });
         jScrollPane1.setViewportView(jTable_Deleted);
+
+        jButton_PreviousPage.setFont(new java.awt.Font("Segoe UI", 1, 15)); // NOI18N
+        jButton_PreviousPage.setText("<");
+        jButton_PreviousPage.setEnabled(false);
+        jButton_PreviousPage.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton_PreviousPageActionPerformed(evt);
+            }
+        });
+
+        jLabel_Page.setFont(new java.awt.Font("Segoe UI", 1, 15)); // NOI18N
+        jLabel_Page.setText("/");
+
+        jButton_NextPage.setFont(new java.awt.Font("Segoe UI", 1, 15)); // NOI18N
+        jButton_NextPage.setText(">");
+        jButton_NextPage.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton_NextPageActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -119,7 +102,14 @@ public class UserDeletedDialog extends javax.swing.JDialog {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel_ImportHistory, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 976, Short.MAX_VALUE))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 976, Short.MAX_VALUE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(jButton_PreviousPage)
+                        .addGap(18, 18, 18)
+                        .addComponent(jLabel_Page, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(jButton_NextPage)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -128,12 +118,51 @@ public class UserDeletedDialog extends javax.swing.JDialog {
                 .addContainerGap()
                 .addComponent(jLabel_ImportHistory)
                 .addGap(18, 18, 18)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 574, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 582, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButton_PreviousPage)
+                    .addComponent(jButton_NextPage)
+                    .addComponent(jLabel_Page))
                 .addContainerGap())
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void loadData(int page) {
+        output = uc.getUserDeleted(page);
+        jLabel_Page.setText(output.getPage() + "/" + output.getTotalPage());
+        uc.loadTable(output.getListResult(), dtm);
+        if (output.getPage() == 1) {
+            jButton_PreviousPage.setEnabled(false);
+        }
+        if (output.getPage() == output.getTotalPage()) {
+            jButton_NextPage.setEnabled(false);
+        }
+    }
+
+    private void jButton_PreviousPageActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_PreviousPageActionPerformed
+        // TODO add your handling code here:
+        if (output.getPage() > 1) {
+            loadData(output.getPage() - 1);
+            jButton_NextPage.setEnabled(true);
+        }
+        if (output.getPage() == 1) {
+            jButton_PreviousPage.setEnabled(false);
+        }
+    }//GEN-LAST:event_jButton_PreviousPageActionPerformed
+
+    private void jButton_NextPageActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_NextPageActionPerformed
+        // TODO add your handling code here:
+        if (output.getPage() < output.getTotalPage()) {
+            loadData(output.getPage() + 1);
+            jButton_PreviousPage.setEnabled(true);
+        }
+        if (output.getPage() == output.getTotalPage()) {
+            jButton_NextPage.setEnabled(false);
+        }
+    }//GEN-LAST:event_jButton_NextPageActionPerformed
 
     /**
      * @param args the command line arguments
@@ -209,7 +238,10 @@ public class UserDeletedDialog extends javax.swing.JDialog {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton jButton_NextPage;
+    private javax.swing.JButton jButton_PreviousPage;
     private javax.swing.JLabel jLabel_ImportHistory;
+    private javax.swing.JLabel jLabel_Page;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable_Deleted;
     // End of variables declaration//GEN-END:variables

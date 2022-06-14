@@ -20,6 +20,10 @@ public class Province {
     public Province() {
     }
 
+    public Province(String provinceName) {
+        this.provinceName = provinceName;
+    }
+
     public Province(Integer provinceId, String provinceName, String provinceCode, List<District> districts) {
         this.provinceId = provinceId;
         this.provinceName = provinceName;
@@ -57,6 +61,11 @@ public class Province {
 
     public void setDistricts(List<District> districts) {
         this.districts = districts;
+    }
+
+    @Override
+    public String toString() {
+        return provinceName;
     }
 
 }

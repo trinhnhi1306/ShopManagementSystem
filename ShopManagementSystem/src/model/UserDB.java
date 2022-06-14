@@ -4,44 +4,42 @@
  */
 package model;
 
-import java.util.List;
-
 /**
  *
  * @author TRINH
  */
-public class User {
+public class UserDB {
 
-    private Integer id;
+    private Long id;
     private String username;
     private String email;
+    private String password;
     private String firstName;
     private String lastName;
     private String phone;
     private String image;
-    private int numord;
-    private List<Address> addresses;
+    private boolean status;
 
-    public User() {
+    public UserDB() {
     }
 
-    public User(Integer id, String username, String email, String firstName, String lastName, String phone, String image, int numord, List<Address> addresses) {
+    public UserDB(Long id, String username, String email, String password, String firstName, String lastName, String phone, String image, boolean status) {
         this.id = id;
         this.username = username;
         this.email = email;
+        this.password = password;
         this.firstName = firstName;
         this.lastName = lastName;
         this.phone = phone;
         this.image = image;
-        this.numord = numord;
-        this.addresses = addresses;
+        this.status = status;
     }
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -59,6 +57,14 @@ public class User {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public String getFirstName() {
@@ -93,20 +99,11 @@ public class User {
         this.image = image;
     }
 
-    public int getNumord() {
-        return numord;
+    public boolean isStatus() {
+        return status;
     }
 
-    public void setNumord(int numord) {
-        this.numord = numord;
+    public void setStatus(boolean status) {
+        this.status = status;
     }
-
-    public List<Address> getAddresses() {
-        return addresses;
-    }
-
-    public void setAddresses(List<Address> addresses) {
-        this.addresses = addresses;
-    }
-
 }
