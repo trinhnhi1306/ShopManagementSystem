@@ -14,6 +14,7 @@ import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import javax.swing.ImageIcon;
+import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.RowFilter;
 import javax.swing.table.DefaultTableModel;
@@ -465,8 +466,18 @@ public class UserPanel extends javax.swing.JPanel {
 
     private void jButton_ExportExcelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_ExportExcelActionPerformed
         // TODO add your handling code here:
-//        File.xuatFileExcel("DSNhanVien", (DefaultTableModel) jTable_Staff.getModel(), "NhanVien");
-        JOptionPane.showMessageDialog(this, "Xuất file excel thành công!");
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setMultiSelectionEnabled(false);
+        fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+        int x = fileChooser.showDialog(this, "Choose folder");
+        if (x == JFileChooser.APPROVE_OPTION) {
+            java.io.File file = fileChooser.getSelectedFile();
+            utils.File.xuatFileExcel("UserList", (DefaultTableModel) jTable_User.getModel(), file.getAbsolutePath() + "/User");
+            JOptionPane.showMessageDialog(this, "Export excel file successfully!");
+        }
+        else {
+            return;
+        }
     }//GEN-LAST:event_jButton_ExportExcelActionPerformed
 
     private void jButton_DeletedActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_DeletedActionPerformed
