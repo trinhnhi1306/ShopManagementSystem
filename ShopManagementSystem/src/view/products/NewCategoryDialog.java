@@ -5,13 +5,40 @@
  */
 package view.products;
 
+import controller.CategoryController;
+import java.awt.Image;
+import java.io.File;
+import javax.swing.ImageIcon;
+import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.filechooser.FileNameExtensionFilter;
+import javax.swing.table.DefaultTableModel;
+import model.Category;
+import model.Response;
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
+import okhttp3.ResponseBody;
+import output.CategoryOutput;
+import retrofit2.Call;
+import retrofit2.Callback;
+import service.APIClient;
+import service.UploadFileService;
+import view.categories.CategoryPanel;
 
 /**
  *
  * @author Admin
  */
 public class NewCategoryDialog extends javax.swing.JDialog {
+    
+    private static final String DEFAULT_IMAGE = "defaul.png";
+    private DefaultTableModel dtm;
+    private CategoryController cc;
+    private CategoryOutput output;
+    private File selectedFile;
+    private String imageName;
 
     /**
      * Creates new form NewCategoryDialog
@@ -25,7 +52,7 @@ public class NewCategoryDialog extends javax.swing.JDialog {
         initComponents();
         setLocationRelativeTo(null);
         jTextArea_Note.setWrapStyleWord(true);
-//        getId();
+        cc = new CategoryController();
     }
 
     /**
@@ -49,7 +76,7 @@ public class NewCategoryDialog extends javax.swing.JDialog {
         jTextArea_Note = new javax.swing.JTextArea();
         jLabel18 = new javax.swing.JLabel();
         jButton_Change = new javax.swing.JButton();
-        jPanel_Image = new javax.swing.JPanel();
+        jLabel_Image = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
         jButton_Save = new javax.swing.JButton();
         jButton_Cancel = new javax.swing.JButton();
@@ -101,18 +128,7 @@ public class NewCategoryDialog extends javax.swing.JDialog {
             }
         });
 
-        jPanel_Image.setBorder(javax.swing.BorderFactory.createEtchedBorder());
-
-        javax.swing.GroupLayout jPanel_ImageLayout = new javax.swing.GroupLayout(jPanel_Image);
-        jPanel_Image.setLayout(jPanel_ImageLayout);
-        jPanel_ImageLayout.setHorizontalGroup(
-            jPanel_ImageLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 183, Short.MAX_VALUE)
-        );
-        jPanel_ImageLayout.setVerticalGroup(
-            jPanel_ImageLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
-        );
+        jLabel_Image.setText("image");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -133,32 +149,29 @@ public class NewCategoryDialog extends javax.swing.JDialog {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel18, javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jButton_Change, javax.swing.GroupLayout.Alignment.TRAILING))
-                .addGap(18, 18, 18)
-                .addComponent(jPanel_Image, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jLabel_Image, javax.swing.GroupLayout.PREFERRED_SIZE, 184, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(15, 15, 15))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel2)
+                    .addComponent(jTextField_ID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel18))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel3)
+                    .addComponent(jTextField_Name, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton_Change, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel2)
-                            .addComponent(jTextField_ID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel18))
-                        .addGap(18, 18, 18)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel3)
-                            .addComponent(jTextField_Name, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jButton_Change, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(18, 18, 18)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel4)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addComponent(jPanel_Image, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap())
+                    .addComponent(jLabel4)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addComponent(jLabel_Image, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         jPanel3.add(jPanel1, java.awt.BorderLayout.CENTER);
@@ -223,72 +236,55 @@ public class NewCategoryDialog extends javax.swing.JDialog {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private String xoaKhoangTrangThua(String str) {
-        str = str.trim();
-        String temp[] = str.split("\\s+");
-        str = "";
-        for (int i = 0; i < temp.length; i++) {
-            str += temp[i];
-            if (i < temp.length - 1) {
-                str += " ";
-            }
-        }
-        return str;
-    }
-
-//    private void getId(){
-//        Connection con = Connect.GetConnect();
-//
-//        try {
-//            PreparedStatement ps = con.prepareStatement("SELECT count(c.category_id) FROM category c");
-//            ResultSet rs = ps.executeQuery();
-//            
-//            while (rs.next()) {
-//                String id = rs.getString(1);
-//                id = String.valueOf(Integer.parseInt(id) + 1);
-//                jTextField_ID.setText(id);
-//            }
-//            
-//            rs.close();
-//            ps.close();
-//            con.close();
-//        } catch (SQLException ex) {
-//            System.out.println("Lỗi lấy dữ liệu");
-//        }
-//    }
-//    private int newCategory(String name, String note){
-//        String sql = "INSERT INTO category(category, note) VALUES (?, ?)";
-//        Connection con = Connect.GetConnect();
-//        try {
-//            PreparedStatement ps = con.prepareStatement(sql);
-//            ps.setString(1, name);
-//            ps.setString(2, note);
-//            ps.executeUpdate();
-//            ps.close();
-//            con.close();
-//        } catch (SQLException ex) {
-//            System.out.println("Lỗi thêm mới thể loại!");
-//            return 0;
-//        }
-//        return 1;
-//    }
-
     private void jButton_SaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_SaveActionPerformed
         // TODO add your handling code here:
-//        String name = jTextField_Name.getText();
-//        String note = jTextArea_Note.getText();
-//        if (name.equals("")) {
-//            JOptionPane.showMessageDialog(jDialog_NewCat, "Tên thể loại không được để trống!");
-//        } else {
-//            int result = newCategory(xoaKhoangTrangThua(name), xoaKhoangTrangThua(note));
-//            if(result==0){
-//                JOptionPane.showMessageDialog(jDialog_NewCat, "Thêm thể loại thất bại!");
-//            }else{
-//                JOptionPane.showMessageDialog(jDialog_NewCat, "Thêm thể loại thành công!");
-//            }
-//            jDialog_NewCat.dispose();
-        this.dispose();
-//        }    
+        String name = jTextField_Name.getText();
+        String note = jTextArea_Note.getText();
+        
+        Category category = new Category();
+        category.setName(name);
+        category.setNote(note);
+        if (selectedFile != null) {
+            try {
+                RequestBody requestBody = RequestBody.create(MediaType.parse("multipart/form-data"), selectedFile);
+                MultipartBody.Part part = MultipartBody.Part.createFormData("file", selectedFile.getName(), requestBody);
+                UploadFileService uploadFileInterface = APIClient.getClient().create(UploadFileService.class);
+                uploadFileInterface.uploadCategoryImage(part).enqueue(new Callback<ResponseBody>() {
+
+                    @Override
+                    public void onResponse(Call<ResponseBody> call, retrofit2.Response<ResponseBody> response) {
+                        try {
+                            if (response.isSuccessful()) {
+                                String str = response.body().string();
+                                category.setImage(str);
+                                System.out.println("vãi: " + category.getImage());
+                                Response res = cc.addCategory(category);
+                                JOptionPane.showMessageDialog(null, cc.convertResponse(res.getMessage()).getMessage());
+                            }
+                        } catch (Exception e) {
+                            JOptionPane.showMessageDialog(null, e.getMessage());
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<ResponseBody> call, Throwable t) {
+                        JOptionPane.showMessageDialog(null, t.getMessage());
+                    }
+
+                });
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(this, e.getMessage());
+            }
+        } else {
+            category.setImage(imageName);
+            Response response = cc.addCategory(category);
+            JOptionPane.showMessageDialog(this, cc.convertResponse(response.getMessage()).getMessage());
+            if (response.getResponseCode() == 200) {
+                this.dispose();
+            } else {
+                return;
+            }
+        }
     }//GEN-LAST:event_jButton_SaveActionPerformed
 
     private void jButton_CancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_CancelActionPerformed
@@ -298,6 +294,21 @@ public class NewCategoryDialog extends javax.swing.JDialog {
 
     private void jButton_ChangeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_ChangeActionPerformed
         // TODO add your handling code here:
+        JFileChooser fileChooser = new JFileChooser();
+        FileNameExtensionFilter imageFilter = new FileNameExtensionFilter("Image Files", "jpg", "png");
+        fileChooser.setFileFilter(imageFilter);
+        fileChooser.setMultiSelectionEnabled(false);
+        int x = fileChooser.showDialog(this, "Select image");
+        if (x == JFileChooser.APPROVE_OPTION) {
+            selectedFile = fileChooser.getSelectedFile();
+            ImageIcon imgIcon = new ImageIcon(selectedFile.getAbsolutePath());
+            Image img = imgIcon.getImage();
+            Image newImg = img.getScaledInstance(jLabel_Image.getWidth(), jLabel_Image.getHeight(), java.awt.Image.SCALE_SMOOTH);
+            jLabel_Image.setIcon(new ImageIcon(newImg));
+            System.out.println(selectedFile.getName());
+        } else {
+            return;
+        }
     }//GEN-LAST:event_jButton_ChangeActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -309,10 +320,10 @@ public class NewCategoryDialog extends javax.swing.JDialog {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel_Image;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
-    private javax.swing.JPanel jPanel_Image;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextArea jTextArea_Note;
     private javax.swing.JTextField jTextField_ID;

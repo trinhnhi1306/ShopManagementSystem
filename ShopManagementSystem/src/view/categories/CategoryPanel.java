@@ -454,13 +454,23 @@ public class CategoryPanel extends javax.swing.JPanel {
 
     private void jButton_ExportExcelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_ExportExcelActionPerformed
         // TODO add your handling code here:
-        //        File.xuatFileExcel("DSNhanVien", (DefaultTableModel) jTable_Staff.getModel(), "NhanVien");
-//        JOptionPane.showMessageDialog(this, "Xuất file excel thành công!");
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setMultiSelectionEnabled(false);
+        fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+        int x = fileChooser.showDialog(this, "Choose folder");
+        if (x == JFileChooser.APPROVE_OPTION) {
+            java.io.File file = fileChooser.getSelectedFile();
+            utils.File.xuatFileExcel("CategoryList", (DefaultTableModel) jTable_Category.getModel(), file.getAbsolutePath() + "/Category");
+            JOptionPane.showMessageDialog(this, "Export excel file successfully!");
+        }
+        else {
+            return;
+        }
     }//GEN-LAST:event_jButton_ExportExcelActionPerformed
 
     private void jTextField_NameSearchCaretUpdate(javax.swing.event.CaretEvent evt) {//GEN-FIRST:event_jTextField_NameSearchCaretUpdate
         // TODO add your handling code here:
-        String tuKhoa = jTextField_NameSearch.getText().toLowerCase();
+        String tuKhoa = jTextField_NameSearch.getText();
         TableRowSorter<TableModel> trs = new TableRowSorter<>(jTable_Category.getModel());
         jTable_Category.setRowSorter(trs);
         trs.setRowFilter(RowFilter.regexFilter("(?i)" + tuKhoa));
@@ -517,12 +527,12 @@ public class CategoryPanel extends javax.swing.JPanel {
 
     private void jButton_RemoveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_RemoveActionPerformed
         // TODO add your handling code here:
-        int luaChon = JOptionPane.showConfirmDialog(this, "Are you sure you want to remove this category?", "OK", 0);
+        int luaChon = JOptionPane.showConfirmDialog(this, "Are you sure you want to remove this category?");
         if (luaChon == JOptionPane.CANCEL_OPTION) {
             return;
         } else if (luaChon == JOptionPane.OK_OPTION) {
             Response response = cc.deleteCategoryByID(jTextField_ID.getText());
-            JOptionPane.showMessageDialog(this, response.getMessage());
+            JOptionPane.showMessageDialog(this, cc.convertResponse(response.getMessage()).getMessage());
             if (response.getResponseCode() == 200) {
                 loadData(output.getPage());
                 clearAll();
@@ -556,7 +566,7 @@ public class CategoryPanel extends javax.swing.JPanel {
                                     category.setImage(str);
                                     System.out.println("vãi: " + category.getImage());
                                     Response res = cc.addCategory(category);
-                                    JOptionPane.showMessageDialog(null, res.getMessage());
+                                    JOptionPane.showMessageDialog(null, cc.convertResponse(res.getMessage()).getMessage());
                                     if (res.getResponseCode() == 200) {
                                         loadData(output.getPage());
                                     } else {
@@ -580,7 +590,7 @@ public class CategoryPanel extends javax.swing.JPanel {
             } else {
                 category.setImage(imageName);
                 Response response = cc.addCategory(category);
-                JOptionPane.showMessageDialog(this, response.getMessage());
+                JOptionPane.showMessageDialog(this, cc.convertResponse(response.getMessage()).getMessage());
                 if (response.getResponseCode() == 200) {
                     loadData(output.getPage());
                 } else {
@@ -608,7 +618,7 @@ public class CategoryPanel extends javax.swing.JPanel {
                                     category.setImage(str);
                                     System.out.println("vãi: " + category.getImage());
                                     Response res = cc.updateCategoryByID(category.getCategoryId(), category);
-                                    JOptionPane.showMessageDialog(null, res.getMessage());
+                                    JOptionPane.showMessageDialog(null, cc.convertResponse(res.getMessage()).getMessage());
                                     if (res.getResponseCode() == 200) {
                                         loadData(output.getPage());
                                     } else {
@@ -632,7 +642,7 @@ public class CategoryPanel extends javax.swing.JPanel {
             } else {
                 category.setImage(imageName);
                 Response response = cc.updateCategoryByID(category.getCategoryId(), category);
-                JOptionPane.showMessageDialog(this, response.getMessage());
+                JOptionPane.showMessageDialog(this, cc.convertResponse(response.getMessage()).getMessage());
                 if (response.getResponseCode() == 200) {
                     loadData(output.getPage());
                 } else {

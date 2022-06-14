@@ -4,11 +4,15 @@
  */
 package view;
 
+import com.google.gson.Gson;
 import controller.CategoryController;
 import controller.LoginController;
 import controller.ProductController;
 import java.io.IOException;
 import model.Login;
+import model.Product;
+import model.Response;
+import output.ResponseMessage;
 import utils.ConnectAPI;
 
 /**
@@ -18,6 +22,7 @@ import utils.ConnectAPI;
 public class test {
 
     public static void main(String[] args) throws IOException {
+        Gson gson = new Gson();
         ProductController pc = new ProductController();
         CategoryController cc = new CategoryController();
         /*
@@ -44,6 +49,8 @@ public class test {
         System.out.println(output.getRoles().toArray()[0]);
         ConnectAPI.tokenType = output.getTokenType();
         ConnectAPI.accessToken = output.getAccessToken();
-        System.out.println(ConnectAPI.excuteHttpMethod("", "/api/test/user", "GET", true));
+        Response res = ConnectAPI.excuteHttpMethod("", "/api/category", "POST", true);
+//        ResponseMessage str = gson.fromJson(res.getMessage(), ResponseMessage.class);
+        System.out.println(res.getMessage());
     }
 }

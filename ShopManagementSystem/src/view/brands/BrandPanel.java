@@ -5,6 +5,7 @@
 package view.brands;
 
 import controller.BrandController;
+import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.RowFilter;
 import javax.swing.table.DefaultTableModel;
@@ -14,6 +15,7 @@ import model.Brand;
 import model.Response;
 import output.BrandOutput;
 import swing.UIController;
+import utils.File;
 
 /**
  *
@@ -396,13 +398,23 @@ public class BrandPanel extends javax.swing.JPanel {
 
     private void jButton_ExportExcelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_ExportExcelActionPerformed
         // TODO add your handling code here:
-        //        File.xuatFileExcel("DSNhanVien", (DefaultTableModel) jTable_Staff.getModel(), "NhanVien");
-        //        JOptionPane.showMessageDialog(this, "Xuất file excel thành công!");
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setMultiSelectionEnabled(false);
+        fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+        int x = fileChooser.showDialog(this, "Choose folder");
+        if (x == JFileChooser.APPROVE_OPTION) {
+            java.io.File file = fileChooser.getSelectedFile();
+            File.xuatFileExcel("BrandList", (DefaultTableModel) jTable_Brand.getModel(), file.getAbsolutePath() + "/Brand");
+            JOptionPane.showMessageDialog(this, "Export excel file successfully!");
+        }
+        else {
+            return;
+        }
     }//GEN-LAST:event_jButton_ExportExcelActionPerformed
 
     private void jTextField_NameSearchCaretUpdate(javax.swing.event.CaretEvent evt) {//GEN-FIRST:event_jTextField_NameSearchCaretUpdate
         // TODO add your handling code here:
-        String tuKhoa = jTextField_NameSearch.getText().toLowerCase();
+        String tuKhoa = jTextField_NameSearch.getText();
         TableRowSorter<TableModel> trs = new TableRowSorter<>(jTable_Brand.getModel());
         jTable_Brand.setRowSorter(trs);
         trs.setRowFilter(RowFilter.regexFilter("(?i)" + tuKhoa));
@@ -458,12 +470,12 @@ public class BrandPanel extends javax.swing.JPanel {
 
     private void jButton_RemoveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_RemoveActionPerformed
         // TODO add your handling code here:
-        int luaChon = JOptionPane.showConfirmDialog(this, "Are you sure you want to remove this brand?", "OK", 0);
+        int luaChon = JOptionPane.showConfirmDialog(this, "Are you sure you want to remove this brand?");
         if (luaChon == JOptionPane.CANCEL_OPTION) {
             return;
         } else if (luaChon == JOptionPane.OK_OPTION) {
             Response response = bc.deleteBrandByID(jTextField_ID.getText());
-            JOptionPane.showMessageDialog(this, response.getMessage());
+            JOptionPane.showMessageDialog(this, bc.convertResponse(response.getMessage()).getMessage());
             if (response.getResponseCode() == 200) {
                 loadData(output.getPage());
                 clearAll();
@@ -483,7 +495,7 @@ public class BrandPanel extends javax.swing.JPanel {
             brand.setName(name);
             brand.setDescription(description);
             Response res = bc.addBrand(brand);
-            JOptionPane.showMessageDialog(null, res.getMessage());
+            JOptionPane.showMessageDialog(this, bc.convertResponse(res.getMessage()).getMessage());
             if (res.getResponseCode() == 200) {
                 loadData(output.getPage());
             } else {
@@ -496,7 +508,7 @@ public class BrandPanel extends javax.swing.JPanel {
             brand.setName(name);
             brand.setDescription(description);
             Response res = bc.updateBrandByID(brand.getBrandId(), brand);
-            JOptionPane.showMessageDialog(null, res.getMessage());
+            JOptionPane.showMessageDialog(this, bc.convertResponse(res.getMessage()).getMessage());
             if (res.getResponseCode() == 200) {
                 loadData(output.getPage());
             } else {

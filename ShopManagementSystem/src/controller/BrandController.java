@@ -28,8 +28,8 @@ public class BrandController extends BaseController {
         getAll = "/api/brand/all";
         getItemInOnePage = "/api/brand?pageNo=%d&pageSize=20&sortField=brandId&sortDirection=desc";
         getOneByID = "/api/brand/";
-        addOne = "/api/brand";
-        editOrDelete = "/api/brand/";
+        addOne = "/api/admin/brand";
+        editOrDelete = "/api/admin/brand/";
         getImage = "/api/brand/image/";
     }
 
@@ -78,7 +78,7 @@ public class BrandController extends BaseController {
             String json = gson.toJson(b);
             response = ConnectAPI.excuteHttpMethod(json, addOne, "POST", true);
             //print in String
-            System.out.println(response);
+            System.out.println(response.getMessage());
 
         } catch (IOException ex) {
             System.out.println(ex.getMessage());

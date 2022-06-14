@@ -16,12 +16,6 @@ import javax.swing.table.TableRowSorter;
 import model.Order;
 import model.OrderDetail;
 import model.Response;
-//import model.database.Connect;
-//import model.database.Staff;
-//import swing.UIController;
-//import utilities.File;
-//import view.main.librarian.ReaderPanel;
-//import static view.main.librarian.ReaderPanel.hash;
 
 /**
  *
@@ -92,18 +86,17 @@ public class OrderPanel extends javax.swing.JPanel {
         jLabel14 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable_Order = new javax.swing.JTable();
-        jButton_History = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
         jRadioButton_DaHuy = new javax.swing.JRadioButton();
         jRadioButton_YeuCauHuy = new javax.swing.JRadioButton();
         jRadioButton_ChoXacNhan = new javax.swing.JRadioButton();
         jRadioButton_DangGiao = new javax.swing.JRadioButton();
         jRadioButton_DaGiao = new javax.swing.JRadioButton();
-        jDateChooser_Search = new com.toedter.calendar.JDateChooser();
         jPanel_Card3 = new javax.swing.JPanel();
         jButton_Yes = new javax.swing.JButton();
         jButton_No = new javax.swing.JButton();
         jButton_Search = new javax.swing.JButton();
+        jTextField_NameSearch = new javax.swing.JTextField();
 
         setBackground(new java.awt.Color(255, 255, 255));
 
@@ -276,18 +269,6 @@ public class OrderPanel extends javax.swing.JPanel {
             jTable_Order.getColumnModel().getColumn(0).setMaxWidth(100);
         }
 
-        jButton_History.setFont(new java.awt.Font("Segoe UI", 1, 17)); // NOI18N
-        jButton_History.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/history.png"))); // NOI18N
-        jButton_History.setText("History");
-        jButton_History.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        jButton_History.setFocusPainted(false);
-        jButton_History.setPreferredSize(new java.awt.Dimension(300, 60));
-        jButton_History.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton_HistoryActionPerformed(evt);
-            }
-        });
-
         jPanel3.setBackground(new java.awt.Color(255, 255, 255));
         jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Status", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 2, 14), new java.awt.Color(153, 153, 153))); // NOI18N
 
@@ -374,27 +355,6 @@ public class OrderPanel extends javax.swing.JPanel {
                 .addGap(0, 12, Short.MAX_VALUE))
         );
 
-        jDateChooser_Search.setDate(new java.util.Date());
-        jDateChooser_Search.setDateFormatString("dd-MM-yyyy");
-        jDateChooser_Search.setFont(new java.awt.Font("Segoe UI", 0, 15)); // NOI18N
-        jDateChooser_Search.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseEntered(java.awt.event.MouseEvent evt) {
-                jDateChooser_SearchMouseEntered(evt);
-            }
-        });
-        jDateChooser_Search.addInputMethodListener(new java.awt.event.InputMethodListener() {
-            public void caretPositionChanged(java.awt.event.InputMethodEvent evt) {
-                jDateChooser_SearchCaretPositionChanged(evt);
-            }
-            public void inputMethodTextChanged(java.awt.event.InputMethodEvent evt) {
-            }
-        });
-        jDateChooser_Search.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                jDateChooser_SearchKeyReleased(evt);
-            }
-        });
-
         jPanel_Card3.setBackground(new java.awt.Color(255, 255, 255));
         jPanel_Card3.setMaximumSize(new java.awt.Dimension(30000, 33));
         jPanel_Card3.setPreferredSize(new java.awt.Dimension(439, 30));
@@ -434,6 +394,12 @@ public class OrderPanel extends javax.swing.JPanel {
             }
         });
 
+        jTextField_NameSearch.addCaretListener(new javax.swing.event.CaretListener() {
+            public void caretUpdate(javax.swing.event.CaretEvent evt) {
+                jTextField_NameSearchCaretUpdate(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -447,16 +413,14 @@ public class OrderPanel extends javax.swing.JPanel {
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jLabel14)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jDateChooser_Search, javax.swing.GroupLayout.PREFERRED_SIZE, 177, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jTextField_NameSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 179, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
                                 .addComponent(jButton_Search)
                                 .addGap(0, 0, Short.MAX_VALUE)))
                         .addGap(18, 18, 18)
                         .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jButton_History, javax.swing.GroupLayout.DEFAULT_SIZE, 131, Short.MAX_VALUE)
-                            .addComponent(jPanel_Card3, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
+                        .addComponent(jPanel_Card3, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(jScrollPane1)))
                 .addContainerGap())
@@ -469,18 +433,21 @@ public class OrderPanel extends javax.swing.JPanel {
                     .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jDateChooser_Search, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel14)
-                            .addComponent(jButton_Search, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(18, 18, 18)
+                                .addComponent(jButton_Search, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(18, 18, 18)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(jTextField_NameSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel14))))
                         .addGap(64, 64, 64)))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jPanel_Card3, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jButton_History, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(0, 0, Short.MAX_VALUE))
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 418, Short.MAX_VALUE))
                 .addContainerGap())
         );
@@ -511,15 +478,6 @@ public class OrderPanel extends javax.swing.JPanel {
         oc.loadProductTable(list, dtmProduct);
     }//GEN-LAST:event_jTable_OrderMouseClicked
 
-    private void jButton_HistoryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_HistoryActionPerformed
-        history = new HistoryDialog(null, true);
-//        history.setIngredientList(ingredientList);
-//        history.setProviderList(providerList);
-//        history.addRowsToHistoryTable(ingredientList);
-//        UIControl.setLocationCenterForDialog(history);
-        history.setVisible(true);
-    }//GEN-LAST:event_jButton_HistoryActionPerformed
-
     private void jButton_YesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_YesActionPerformed
         // TODO add your handling code here:
         String id = jTextField_ID.getText();
@@ -536,7 +494,7 @@ public class OrderPanel extends javax.swing.JPanel {
         int orderId = Integer.parseInt(id);
         if (jRadioButton_ChoXacNhan.isSelected()) {
             Response res = oc.updateOrderByID(orderId, DANG_GIAO);
-            JOptionPane.showMessageDialog(null, res.getMessage());
+            JOptionPane.showMessageDialog(null, oc.convertResponse(res.getMessage()).getMessage());
             if (res.getResponseCode() == 200) {
                 loadData(1);
             } else {
@@ -546,7 +504,7 @@ public class OrderPanel extends javax.swing.JPanel {
 
         if (jRadioButton_YeuCauHuy.isSelected()) {
             Response res = oc.updateOrderByID(orderId, DA_HUY);
-            JOptionPane.showMessageDialog(null, res.getMessage());
+            JOptionPane.showMessageDialog(null, oc.convertResponse(res.getMessage()).getMessage());
             if (res.getResponseCode() == 200) {
                 loadData(2);
             } else {
@@ -571,7 +529,7 @@ public class OrderPanel extends javax.swing.JPanel {
         int orderId = Integer.parseInt(id);
         if (jRadioButton_ChoXacNhan.isSelected()) {
             Response res = oc.updateOrderByID(orderId, DA_HUY);
-            JOptionPane.showMessageDialog(null, res.getMessage());
+            JOptionPane.showMessageDialog(null, oc.convertResponse(res.getMessage()).getMessage());
             if (res.getResponseCode() == 200) {
                 loadData(1);
             } else {
@@ -581,7 +539,7 @@ public class OrderPanel extends javax.swing.JPanel {
 
         if (jRadioButton_YeuCauHuy.isSelected()) {
             Response res = oc.updateOrderByID(orderId, DANG_GIAO);
-            JOptionPane.showMessageDialog(null, res.getMessage());
+            JOptionPane.showMessageDialog(null, oc.convertResponse(res.getMessage()).getMessage());
             if (res.getResponseCode() == 200) {
                 loadData(2);
             } else {
@@ -645,41 +603,33 @@ public class OrderPanel extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_jRadioButton_DaHuyStateChanged
 
-    private void jDateChooser_SearchKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jDateChooser_SearchKeyReleased
-        // TODO add your handling code here:
-        System.out.println("key released");
-    }//GEN-LAST:event_jDateChooser_SearchKeyReleased
-
-    private void jDateChooser_SearchMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jDateChooser_SearchMouseEntered
-        // TODO add your handling code here:
-        System.out.println("mouse entered");
-    }//GEN-LAST:event_jDateChooser_SearchMouseEntered
-
-    private void jDateChooser_SearchCaretPositionChanged(java.awt.event.InputMethodEvent evt) {//GEN-FIRST:event_jDateChooser_SearchCaretPositionChanged
-        // TODO add your handling code here:
-        System.out.println("caret position");
-    }//GEN-LAST:event_jDateChooser_SearchCaretPositionChanged
-
     public void filter(String str) {
         TableRowSorter<TableModel> trs = new TableRowSorter<>(jTable_Order.getModel());
         jTable_Order.setRowSorter(trs);
-        trs.setRowFilter(RowFilter.regexFilter(str, 3));
+        trs.setRowFilter(RowFilter.regexFilter(str));
     }
 
     private void jButton_SearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_SearchActionPerformed
         // TODO add your handling code here:
-        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
-        String date = sdf.format(jDateChooser_Search.getDate());
-        filter(date);
+        String tuKhoa = jTextField_NameSearch.getText();
+        TableRowSorter<TableModel> trs = new TableRowSorter<>(jTable_Order.getModel());
+        jTable_Order.setRowSorter(trs);
+        trs.setRowFilter(RowFilter.regexFilter("(?i)" + tuKhoa));
     }//GEN-LAST:event_jButton_SearchActionPerformed
+
+    private void jTextField_NameSearchCaretUpdate(javax.swing.event.CaretEvent evt) {//GEN-FIRST:event_jTextField_NameSearchCaretUpdate
+        // TODO add your handling code here:
+        String tuKhoa = jTextField_NameSearch.getText();
+        TableRowSorter<TableModel> trs = new TableRowSorter<>(jTable_Order.getModel());
+        jTable_Order.setRowSorter(trs);
+        trs.setRowFilter(RowFilter.regexFilter("(?i)" + tuKhoa));
+    }//GEN-LAST:event_jTextField_NameSearchCaretUpdate
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.ButtonGroup buttonGroup1;
-    private javax.swing.JButton jButton_History;
     private javax.swing.JButton jButton_No;
     private javax.swing.JButton jButton_Search;
     private javax.swing.JButton jButton_Yes;
-    private com.toedter.calendar.JDateChooser jDateChooser_Search;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel2;
@@ -701,6 +651,7 @@ public class OrderPanel extends javax.swing.JPanel {
     private javax.swing.JTable jTable_Product;
     private javax.swing.JTextField jTextField_Date;
     private javax.swing.JTextField jTextField_ID;
+    private javax.swing.JTextField jTextField_NameSearch;
     private javax.swing.JTextField jTextField_Price;
     private javax.swing.JTextField jTextField_User;
     // End of variables declaration//GEN-END:variables

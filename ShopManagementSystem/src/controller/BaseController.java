@@ -5,6 +5,7 @@
 package controller;
 
 import com.google.gson.Gson;
+import output.ResponseMessage;
 
 /**
  *
@@ -19,4 +20,9 @@ public abstract class BaseController {
     public String editOrDelete;
     public String getItemInOnePage;
     public String getImage;
+    
+    public ResponseMessage convertResponse(String str) {
+        ResponseMessage message = gson.fromJson(str, ResponseMessage.class);
+        return message;
+    }
 }

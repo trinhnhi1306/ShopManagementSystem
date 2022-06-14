@@ -25,8 +25,8 @@ public class ProductController extends BaseController {
     public ProductController() {
         getOneByID = "/api/product/";
         getAll = "/api/products/getAllProducts";
-        addOne = "/api/product";
-        editOrDelete = "/api/product/";
+        addOne = "/api/admin/product";
+        editOrDelete = "/api/admin/product/";
         getItemInOnePage = "/api/product?pageNo=%d&pageSize=20&sortField=productId&sortDirection=desc";
         getImage = "/api/product/image/";
     }
