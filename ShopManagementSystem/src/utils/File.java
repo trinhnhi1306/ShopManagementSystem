@@ -17,17 +17,13 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.JFrame;
 import javax.swing.JOptionPane;
-import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellType;
-import org.apache.poi.ss.usermodel.FormulaEvaluator;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
@@ -38,7 +34,7 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
  * @author TRINH
  */
 public class File {
-    
+
     public static void xuatFileExcel(String sheetName, DefaultTableModel model, String fileName) {
         XSSFWorkbook workbook = new XSSFWorkbook();
         XSSFSheet sheet = workbook.createSheet(sheetName);
@@ -48,17 +44,17 @@ public class File {
         cell = row.createCell(0, CellType.STRING);
         cell.setCellValue("STT");
         int m = 1;
-        
+
         int r = model.getRowCount();
         int c = model.getColumnCount();
-        
+
         //Add header
         for (int i = 0; i < c; i++) {
             cell = row.createCell(m, CellType.STRING);
             cell.setCellValue(model.getColumnName(i));
             m++;
         }
-        
+
         //Add STT and data
         for (int i = 0; i < r; i++) {
             row = sheet.createRow(i + 1);
@@ -69,7 +65,7 @@ public class File {
                 cell.setCellValue(String.valueOf(model.getValueAt(i, j)));
             }
         }
-        
+
         //Lưu file
         java.io.File f = new java.io.File(fileName + ".xlsx");
         try {
@@ -82,15 +78,15 @@ public class File {
             Logger.getLogger(File.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
+
     public static void nhapFileExcel(String filePath, DefaultTableModel model) {
-        
+
         int slCot = model.getColumnCount();
         try {
             FileInputStream file = new FileInputStream(filePath);
             XSSFWorkbook workbook = new XSSFWorkbook(file);
             XSSFSheet sheet = workbook.getSheetAt(0);
-            for(Row row : sheet) {
+            for (Row row : sheet) {
                 for (int i = 0; i < slCot; i++) {
                     if (!String.valueOf(row.getCell(i + 1)).equals(model.getColumnName(i))) {
                         JOptionPane.showMessageDialog(null, "Thứ tự cột file excel không đúng!");
@@ -100,18 +96,18 @@ public class File {
                 JOptionPane.showMessageDialog(null, "Nhập file excel thành công!");
                 break;
             }
-            
+
             model.setNumRows(0);
             Vector vt = null;
             boolean ignore = true;
-            
-            for(Row row : sheet) {           
+
+            for (Row row : sheet) {
                 if (ignore == true) {
                     ignore = false;
                     continue;
                 }
                 vt = new Vector();
-                for (int i = 1; i <= slCot; i++){
+                for (int i = 1; i <= slCot; i++) {
                     vt.add(row.getCell(i));
                 }
                 model.addRow(vt);
@@ -120,30 +116,30 @@ public class File {
             Logger.getLogger(File.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
+
     public static void xuatFilePDF(String fileName, String title, String information, DefaultTableModel model) {
         Document document = new Document();
         java.io.File fontFile = new java.io.File("vuArial.ttf");
         int numRow = model.getRowCount();
         int numCol = model.getColumnCount();
-        
+
         //Khởi tạo một table có numCol + 1 cột (STT) 
         PdfPTable table = new PdfPTable(numCol + 1);
-        PdfPCell data;            
-        
+        PdfPCell data;
+
         try {
             PdfWriter.getInstance(document, new FileOutputStream(fileName + ".pdf"));
             BaseFont bf = BaseFont.createFont(fontFile.getAbsolutePath(), BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
             Font font = new Font(bf, 15);
             Font catFont = new Font(bf, 18, Font.BOLD);
-            
+
             //Add STT
             data = new PdfPCell(new Paragraph("STT", font));
             //Căn giữa cho header
             data.setHorizontalAlignment(Element.ALIGN_CENTER);
             //Thêm data vào bảng
             table.addCell(data);
-            
+
             //Thêm tiêu đề cho table
             for (int i = 0; i < numCol; i++) {
                 //Khởi tạo ô
@@ -167,21 +163,21 @@ public class File {
                     table.addCell(data);
                 }
             }
-            
+
             //Mở document để bắt đầu ghi
             document.open();
-            
+
             //Add title vào
             Paragraph strTitle = new Paragraph(title, catFont);
             strTitle.setAlignment(Element.ALIGN_CENTER);
             document.add(strTitle);
-            
+
             //Add information vào
             document.add(new Paragraph(information, font));
-            
+
             //Thêm vào một dòng trắng
             document.add(new Paragraph(" "));
-            
+
             //Add table
             document.add(table);
             document.close();
@@ -191,5 +187,5 @@ public class File {
             Logger.getLogger(File.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
+
 }
