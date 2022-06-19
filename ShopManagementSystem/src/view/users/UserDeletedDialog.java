@@ -11,6 +11,7 @@ import java.util.List;
 import javax.swing.table.DefaultTableModel;
 import model.User;
 import output.UserOutput;
+import swing.UIController;
 
 public class UserDeletedDialog extends javax.swing.JDialog {
 
@@ -30,6 +31,7 @@ public class UserDeletedDialog extends javax.swing.JDialog {
         initComponents();
         dtm = (DefaultTableModel) jTable_Deleted.getModel();
         uc = new UserController();
+        UIController.setDefaultTableHeader(jTable_Deleted);
         setLocationRelativeTo(null);
         loadData(1);
     }

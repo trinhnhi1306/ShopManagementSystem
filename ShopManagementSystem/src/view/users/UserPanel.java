@@ -25,6 +25,7 @@ import model.Province;
 import model.Response;
 import model.User;
 import output.UserOutput;
+import swing.UIController;
 
 /**
  *
@@ -51,6 +52,7 @@ public class UserPanel extends javax.swing.JPanel {
         dtm = (DefaultTableModel) jTable_User.getModel();
         uc = new UserController();
         ac = new AddressController();
+        UIController.setDefaultTableHeader(jTable_User);
         loadData(1);
         loadProvince();
 //        jButton_Remove.setEnabled(false);

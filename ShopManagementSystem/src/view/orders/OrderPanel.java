@@ -6,7 +6,6 @@
 package view.orders;
 
 import controller.OrderController;
-import java.text.SimpleDateFormat;
 import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.RowFilter;
@@ -16,6 +15,7 @@ import javax.swing.table.TableRowSorter;
 import model.Order;
 import model.OrderDetail;
 import model.Response;
+import swing.UIController;
 
 /**
  *
@@ -45,6 +45,8 @@ public class OrderPanel extends javax.swing.JPanel {
         oc = new OrderController();
         dtmProduct = (DefaultTableModel) jTable_Product.getModel();
         dtmOrder = (DefaultTableModel) jTable_Order.getModel();
+        UIController.setDefaultTableHeader(jTable_Order);
+        UIController.setDefaultTableHeader(jTable_Product);
 
         loadData(1);
         setEditableForAll(false);

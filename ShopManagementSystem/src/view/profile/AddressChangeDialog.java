@@ -16,6 +16,7 @@ import model.District;
 import model.Province;
 import model.Response;
 import model.Ward;
+import swing.UIController;
 import view.login.LoginFrame;
 
 /**
@@ -42,6 +43,7 @@ public class AddressChangeDialog extends javax.swing.JDialog {
         setLocationRelativeTo(null);
         dtm = (DefaultTableModel) jTable_Address.getModel();
         ac = new AddressController();
+        UIController.setDefaultTableHeader(jTable_Address);
         loadData();
         loadProvince();
     }

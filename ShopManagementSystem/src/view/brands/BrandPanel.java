@@ -43,6 +43,7 @@ public class BrandPanel extends javax.swing.JPanel {
         jTextArea_Description.setWrapStyleWord(true);
         dtm = (DefaultTableModel) jTable_Brand.getModel();
         bc = new BrandController();
+        UIController.setDefaultTableHeader(jTable_Brand);
 
         loadData(1);
         setEditableForAll(false);

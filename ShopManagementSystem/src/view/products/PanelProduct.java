@@ -7,7 +7,6 @@ package view.products;
 import controller.BrandController;
 import controller.CategoryController;
 import controller.ProductController;
-import java.awt.Frame;
 import java.awt.Image;
 import java.io.File;
 import java.util.Enumeration;
@@ -76,6 +75,7 @@ public class PanelProduct extends javax.swing.JPanel {
         pc = new ProductController();
         cc = new CategoryController();
         bc = new BrandController();
+        UIController.setDefaultTableHeader(jTable_Product);
         
         loadData(1);
         loadCategory();

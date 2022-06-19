@@ -56,6 +56,7 @@ public class CategoryPanel extends javax.swing.JPanel {
         jTextArea_Note.setWrapStyleWord(true);
         dtm = (DefaultTableModel) jTable_Category.getModel();
         cc = new CategoryController();
+        UIController.setDefaultTableHeader(jTable_Category);
 
         loadData(1);
         setEditableForAll(false);
