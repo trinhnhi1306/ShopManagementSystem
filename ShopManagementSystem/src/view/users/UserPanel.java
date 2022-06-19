@@ -474,8 +474,7 @@ public class UserPanel extends javax.swing.JPanel {
             java.io.File file = fileChooser.getSelectedFile();
             utils.File.xuatFileExcel("UserList", (DefaultTableModel) jTable_User.getModel(), file.getAbsolutePath() + "/User");
             JOptionPane.showMessageDialog(this, "Export excel file successfully!");
-        }
-        else {
+        } else {
             return;
         }
     }//GEN-LAST:event_jButton_ExportExcelActionPerformed
@@ -535,19 +534,21 @@ public class UserPanel extends javax.swing.JPanel {
     private void jButton_RemoveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_RemoveActionPerformed
         // TODO add your handling code here:
         int selectedRow = jTable_User.getSelectedRow();
-        int id = Integer.parseInt(jTable_User.getValueAt(selectedRow, 0).toString());
-        User u = listUser.get(id);
-        int luaChon = JOptionPane.showConfirmDialog(this, "Are you sure you want to remove this user?", "OK", 0);
-        if (luaChon == JOptionPane.CANCEL_OPTION) {
-            return;
-        } else if (luaChon == JOptionPane.OK_OPTION) {
-            Response response = uc.updateStatusByID(u);
-            JOptionPane.showMessageDialog(this, response.getMessage());
-            if (response.getResponseCode() == 200) {
-                loadData(output.getPage());
-                jButton_Remove.setEnabled(false);
-            } else {
+        if (selectedRow != -1) {
+            int id = Integer.parseInt(jTable_User.getValueAt(selectedRow, 0).toString());
+            User u = listUser.get(id);
+            int luaChon = JOptionPane.showConfirmDialog(this, "Are you sure you want to remove this user?", "OK", 0);
+            if (luaChon == JOptionPane.CANCEL_OPTION) {
                 return;
+            } else if (luaChon == JOptionPane.OK_OPTION) {
+                Response response = uc.updateStatusByID(u);
+                JOptionPane.showMessageDialog(this, response.getMessage());
+                if (response.getResponseCode() == 200) {
+                    loadData(output.getPage());
+                    jButton_Remove.setEnabled(false);
+                } else {
+                    return;
+                }
             }
         }
     }//GEN-LAST:event_jButton_RemoveActionPerformed
